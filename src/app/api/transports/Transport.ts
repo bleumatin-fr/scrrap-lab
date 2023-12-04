@@ -1,13 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
 import normalize from "normalize-mongoose";
+import TransportMode from "./TransportMode";
 
-enum TransportMode {
-  CAR = "CAR",
-  TRAIN = "TRAIN",
-  BUS = "BUS",
-  PLANE = "PLANE",
-  BOAT = "BOAT",
-}
 
 interface Transport {
   mode: TransportMode;

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
     "mongoose": "^8.0.2",
     "next": "14.0.3",
     "normalize-mongoose": "^1.0.0",
