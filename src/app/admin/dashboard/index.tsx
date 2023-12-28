@@ -3,7 +3,6 @@ import { Title } from "react-admin";
 import CardWithIcon from "./CardWithIcon";
 import TransportResource from "../transports";
 import styled from "@emotion/styled";
-import TransportMode from "@/app/api/transports/TransportMode";
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +22,7 @@ const Table = styled.table`
 `;
 
 const Dashboard = () => {
-  const modes = Object.values(TransportMode).map((mode, index) => mode);
+  // const modes = Object.values(TransportMode).map((mode, index) => mode);
   
   return (
   <>
@@ -35,12 +34,12 @@ const Dashboard = () => {
         title={"Transports"}
         subtitle={(
           <Table>
-            {modes.map((mode, index) => (
+            {/* {modes.map((mode, index) => (
               <tr key={index}>
                 <td>{mode}</td>
                 <td>1278 km</td>
               </tr>
-            ))}
+            ))} */}
           </Table>
 
         )}

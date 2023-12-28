@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
-import Transport from "../Transport";
+import Offcut from "../Offcut";
 import { NextApiRequest } from "next";
+import { File } from "buffer";
+import { nanoid } from "nanoid";
+import fs from "fs";
+import formDataToObject from "../formDataToObject";
 
 export async function GET(
   request: NextApiRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const document = await Transport.findOne({
+  const document = await Offcut.findOne({
     _id: params.id,
   });
   return NextResponse.json(document);
@@ -19,45 +23,27 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const {
-    date,
-    mode,
-    consumption,
-    distance,
-    weight,
-    passengers,
-    reason,
-    from,
-    to,
-  } = await request.json();
-  const updatedDocument = await Transport.findOneAndUpdate(
+
+  const formData = await request.formData();
+  let modifications = await formDataToObject(formData);
+
+  const updatedDocument = await Offcut.findOneAndUpdate(
     {
       _id: params.id,
     },
-    {
-      $set: {
-        date,
-        mode,
-        consumption,
-        distance,
-        weight,
-        passengers,
-        reason,
-        from,
-        to,
-      },
-    },
+    { $set: modifications },
     { new: true }
   );
   return NextResponse.json(updatedDocument);
 }
 
 export async function DELETE(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const deletedDocument = await Transport.findOneAndDelete({
+
+  const deletedDocument = await Offcut.findOneAndDelete({
     _id: params.id,
   });
   return NextResponse.json(deletedDocument);

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 declare global {
   var mongoose: any; // This must be a `var` and not a `let / const`
 }
@@ -39,3 +39,6 @@ export async function connect() {
   return cached.conn;
 }
 
+type ExtractDoc<T> = T extends Model<infer U> ? U : never;
+type ExtractI<T> = Pick<T, Exclude<keyof T, keyof Document>>;
+export type ExtractInterface<T> = ExtractI<ExtractDoc<T>>;
