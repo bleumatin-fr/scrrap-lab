@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 import normalize from "normalize-mongoose";
 
 export const availableLists = [
-  // "offcuts",
+  // offcuts
   "matters",
   "materials",
   "sizes",
@@ -10,9 +10,12 @@ export const availableLists = [
   "qualities",
   "audiences",
   "brandPolicies",
-  // "transports",
+  // transports
   "transportModes",
   "transportReasons",
+  // investments
+  "investmentTypes",
+  "investmentConditions",
 ];
 
 interface List {

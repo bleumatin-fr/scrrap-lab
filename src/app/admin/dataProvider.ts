@@ -5,30 +5,9 @@ import {
   UpdateParams,
   fetchUtils,
 } from "react-admin";
-import { ExtractInterface } from "../api/db";
-import Offcut from "../api/offcuts/Offcut";
-import List from "../api/[listCategory]/List";
-import { serialize } from "object-to-formdata";
 const endpoint = "/api";
 const baseDataProvider = jsonServerProvider("/api");
 
-// interface Offcut {
-//   name: string;
-//   description: string;
-//   quantity: number;
-//   matter: ExtractInterface<typeof List>;
-//   material: ExtractInterface<typeof List>;
-//   size: ExtractInterface<typeof List>[];
-//   color: ExtractInterface<typeof List>[];
-//   createdAt: Date;
-//   updatedAt: Date;
-//   pictures: Picture[];
-//   quality: ExtractInterface<typeof List>;
-//   reference: string;
-//   audience: ExtractInterface<typeof List>;
-//   brandPolicy: ExtractInterface<typeof List>;
-//   source: string;
-// }
 type PostParams = {
   id: string;
   name: string;

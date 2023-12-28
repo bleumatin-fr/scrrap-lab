@@ -168,6 +168,48 @@ const data = [
     key: "internal-event",
     value: "Événement interne",
   },
+  // ...
+  {
+    category: "investmentTypes",
+    key: "vehicule",
+    value: "Véhicule",
+  },
+  {
+    category: "investmentTypes",
+    key: "machine",
+    value: "Machine",
+  },
+  {
+    category: "investmentTypes",
+    key: "tablet",
+    value: "Tablette",
+  },
+  {
+    category: "investmentTypes",
+    key: "computer",
+    value: "Ordinateur",
+  },
+  {
+    category: "investmentTypes",
+    key: "screen",
+    value: "Écran",
+  },
+  {
+    category: "investmentTypes",
+    key: "furniture",
+    value: "Mobilier",
+  },
+  //... 
+  {
+    category: "investmentConditions",
+    key: "new",
+    value: "Neuf",
+  },
+  {
+    category: "investmentConditions",
+    key: "second-hand",
+    value: "Occasion",
+  },
 ];
 
 const seed = async () => {

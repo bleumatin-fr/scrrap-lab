@@ -8,6 +8,7 @@ import theme from "./theme";
 import listRessourceFactory from "./lists";
 import AppLayout from "./Layout";
 import dataProvider from "./dataProvider";
+import investments from "./investments";
 
 
 const AdminApp = () => (
@@ -22,6 +23,9 @@ const AdminApp = () => (
     <Resource {...transports} />
     <Resource {...offcuts} options={{
       label: "Chutes",
+    }}/>
+    <Resource {...investments} options={{
+      label: "Investissements",
     }}/>
     <Resource
       {...listRessourceFactory("matters")}
@@ -58,6 +62,14 @@ const AdminApp = () => (
     <Resource
       {...listRessourceFactory("transportReasons")}
       options={{ label: "Raisons de transport", menu: "Administration" }}
+    />
+    <Resource
+      {...listRessourceFactory("investmentTypes")}
+      options={{ label: "Types d'investissement", menu: "Administration" }}
+    />
+    <Resource
+      {...listRessourceFactory("investmentConditions")}
+      options={{ label: "Condition des investissements", menu: "Administration" }}
     />
   </Admin>
 );
