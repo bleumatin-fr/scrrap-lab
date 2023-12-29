@@ -9,6 +9,7 @@ import listRessourceFactory from "./lists";
 import AppLayout from "./Layout";
 import dataProvider from "./dataProvider";
 import investments from "./investments";
+import entries from "./entries";
 
 
 const AdminApp = () => (
@@ -20,10 +21,13 @@ const AdminApp = () => (
     disableTelemetry
     theme={theme}
   >
-    <Resource {...transports} />
+    <Resource {...entries} options={{
+      label: "Entrées",
+    }}/>
     <Resource {...offcuts} options={{
       label: "Chutes",
     }}/>
+    <Resource {...transports} />
     <Resource {...investments} options={{
       label: "Investissements",
     }}/>
