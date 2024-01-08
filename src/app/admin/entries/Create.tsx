@@ -1,82 +1,43 @@
-import {
-  ArrayInput,
-  Create,
-  Datagrid,
-  DateInput,
-  NumberInput,
-  ReferenceArrayInput,
-  ReferenceInput,
-  SimpleForm,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-  useInput,
-} from "react-admin";
-import AddressAutoComplete from "../transports/AddressAutocomplete";
+import styled from "@emotion/styled";
+import SaveIcon from "@mui/icons-material/Save";
+import { CreateBase, SaveButton, SimpleForm } from "react-admin";
+import GeneralInformationStep from "./GeneralInformationStep";
+import OffcutStep from "./OffcutStep";
+import TransportsStep from "./TransportsStep";
 
-const AddTransportButton = ({ source }: { source: string }) => {
-  const { field } = useInput({
-    source,
-  });
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  gap: 1rem;
+  width: 100%;
+`;
 
-  const handleClick = () => {
-    field.onChange([
-      ...field.value,
-      {
-        date: new Date(),
-        mode: null,
-        consumption: null,
-        distance: null,
-        weight: null,
-        passengers: null,
-        reason: null,
-        from: null,
-        to: null,
-      },
-    ]);
-
-    console.log(field.value);
-  };
+const CreateWizard = () => {
   return (
-    <button type="button" onClick={handleClick}>
-      Ajouter un transport
-    </button>
+    <Container>
+      <GeneralInformationStep />
+      <OffcutStep />
+      <TransportsStep />
+      <SaveButton
+        label="Enregistrer"
+        variant="contained"
+        fullWidth
+        icon={<SaveIcon />}
+        size="large"
+        color="primary"
+      />
+    </Container>
   );
 };
 
-const EntryCreate = () => (
-  <Create redirect="list">
-    <TabbedForm>
-      <TabbedForm.Tab label="Général">
-        <DateInput label="Date" source="date" />
-      </TabbedForm.Tab>
-      <TabbedForm.Tab label="Transports">
-        <AddTransportButton source="transports" />
-        <ArrayInput source={"transports"}>
-          <SimpleFormIterator inline>
-            <DateInput source="date" label="Date" />
-            <ReferenceInput
-              source="mode"
-              reference="transportModes"
-              label="Mode de transport"
-            />
-            <NumberInput source="consumption" />
-            <NumberInput source="distance" />
-            <NumberInput source="weight" />
-            <NumberInput source="passengers" />
-            <ReferenceInput
-              source="reason"
-              reference="transportReasons"
-              label="Raison"
-            />
-            <AddressAutoComplete source="from" label="Départ" />
-            <AddressAutoComplete source="to" label="Destination" />
-          </SimpleFormIterator>
-        </ArrayInput>
-      </TabbedForm.Tab>
-      <TabbedForm.Tab label="Chutes"></TabbedForm.Tab>
-    </TabbedForm>
-  </Create>
-);
-
-export default EntryCreate;
+const ModelCreate = () => {
+  return (
+    <CreateBase redirect="list">
+      <SimpleForm toolbar={false} component={undefined}>
+        <CreateWizard />
+      </SimpleForm>
+    </CreateBase>
+  );
+};
+export default ModelCreate;

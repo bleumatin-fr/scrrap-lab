@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import normalize from "normalize-mongoose";
 import { ExtractInterface } from "../db";
 import List from "../[listCategory]/List";
+import Entry from "../entries/Entry";
 
 interface Transport {
   date: Date;
@@ -61,6 +62,7 @@ export const transportSchema = new Schema<Transport>(
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
   }
 );
+
 
 transportSchema.plugin(normalize);
 

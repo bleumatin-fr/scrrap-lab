@@ -11,6 +11,7 @@ export interface Picture {
 
 interface Offcut {
   name: string;
+  reference: string;
   description: string;
   quantity: number;
   matter: ExtractInterface<typeof List>;
@@ -21,7 +22,6 @@ interface Offcut {
   updatedAt: Date;
   pictures: Picture[];
   quality: ExtractInterface<typeof List>;
-  reference: string;
   audience: ExtractInterface<typeof List>;
   brandPolicy: ExtractInterface<typeof List>;
   source: string;
@@ -32,7 +32,7 @@ export const offcutSchema = new Schema<Offcut>(
     name: { type: String, index: true },
     reference: { type: String, index: true },
     description: { type: String, index: true },
-    quantity: { type: Number },
+    quantity: { type: Number, default: 0 },
     matter: { type: Schema.Types.ObjectId, ref: "List" },
     material: { type: Schema.Types.ObjectId, ref: "List" },
     sizes: [{ type: Schema.Types.ObjectId, ref: "List" }],

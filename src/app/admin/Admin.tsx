@@ -10,72 +10,95 @@ import AppLayout from "./Layout";
 import dataProvider from "./dataProvider";
 import investments from "./investments";
 import entries from "./entries";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const AdminApp = () => (
-  <Admin
-    dashboard={Dashboard}
-    dataProvider={dataProvider}
-    layout={AppLayout}
-    title="ChutoCollector"
-    disableTelemetry
-    theme={theme}
-  >
-    <Resource {...entries} options={{
-      label: "Entrées",
-    }}/>
-    <Resource {...offcuts} options={{
-      label: "Chutes",
-    }}/>
-    <Resource {...transports} />
-    <Resource {...investments} options={{
-      label: "Investissements",
-    }}/>
-    <Resource
-      {...listRessourceFactory("matters")}
-      options={{ label: "Matières", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("materials")}
-      options={{ label: "Matériaux", menu: "Administration", linkedTo: "matters" }}
-    />
-    <Resource
-      {...listRessourceFactory("sizes")}
-      options={{ label: "Tailles", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("colors")}
-      options={{ label: "Couleurs", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("qualities")}
-      options={{ label: "Qualités", menu: "Administration", availableTags: ["new", "second-hand"] }}
-    />
-    <Resource
-      {...listRessourceFactory("audiences")}
-      options={{ label: "Publics cibles", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("brandPolicies")}
-      options={{ label: "Utilisation marque", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("transportModes")}
-      options={{ label: "Modes de transport", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("transportReasons")}
-      options={{ label: "Raisons de transport", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("investmentTypes")}
-      options={{ label: "Types d'investissement", menu: "Administration" }}
-    />
-    <Resource
-      {...listRessourceFactory("investmentConditions")}
-      options={{ label: "Condition des investissements", menu: "Administration" }}
-    />
-  </Admin>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Admin
+      dashboard={Dashboard}
+      dataProvider={dataProvider}
+      layout={AppLayout}
+      title="ChutoCollector"
+      disableTelemetry
+      theme={theme}
+    >
+      <Resource
+        {...entries}
+        options={{
+          label: "Entrées",
+        }}
+      />
+      <Resource
+        {...offcuts}
+        options={{
+          label: "Chutes",
+        }}
+      />
+      <Resource {...transports} />
+      <Resource
+        {...investments}
+        options={{
+          label: "Investissements",
+        }}
+      />
+      <Resource
+        {...listRessourceFactory("matters")}
+        options={{ label: "Matières", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("materials")}
+        options={{
+          label: "Matériaux",
+          menu: "Administration",
+          linkedTo: "matters",
+        }}
+      />
+      <Resource
+        {...listRessourceFactory("sizes")}
+        options={{ label: "Tailles", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("colors")}
+        options={{ label: "Couleurs", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("qualities")}
+        options={{
+          label: "Qualités",
+          menu: "Administration",
+          availableTags: ["new", "second-hand"],
+        }}
+      />
+      <Resource
+        {...listRessourceFactory("audiences")}
+        options={{ label: "Publics cibles", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("brandPolicies")}
+        options={{ label: "Utilisation marque", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("transportModes")}
+        options={{ label: "Modes de transport", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("transportReasons")}
+        options={{ label: "Raisons de transport", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("investmentTypes")}
+        options={{ label: "Types d'investissement", menu: "Administration" }}
+      />
+      <Resource
+        {...listRessourceFactory("investmentConditions")}
+        options={{
+          label: "Condition des investissements",
+          menu: "Administration",
+        }}
+      />
+    </Admin>
+  </LocalizationProvider>
 );
 
 export default AdminApp;

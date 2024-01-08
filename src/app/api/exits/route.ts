@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
-import Entry from "./Entry";
+import Exit from "./Exit";
 import { FilterQuery, SortOrder } from "mongoose";
-import Transport from "../transports/Transport";
 import populatePaths from "./populatePaths";
 import recalculateQuantities from "../offcuts/recalculateQuantities";
 
 export async function GET(request: NextRequest) {
   await connect();
-  let filters: FilterQuery<typeof Entry> = {};
+  let filters: FilterQuery<typeof Exit> = {};
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
   };
@@ -21,8 +20,8 @@ export async function GET(request: NextRequest) {
     };
   }
 
-  const document = await Entry.find(filters).sort(sort).populate(populatePaths);
-  const count = await Entry.countDocuments(filters);
+  const document = await Exit.find(filters).sort(sort).populate(populatePaths);
+  const count = await Exit.countDocuments(filters);
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
@@ -30,14 +29,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   await connect();
-  const { date, transports, offcuts } = await request.json();
-
-  const transportIds = await Promise.all(
-    transports.map(async (transport: any) => {
-      const createdTransport = await Transport.create(transport);
-      return createdTransport._id;
-    })
-  );
+  const { date, offcuts } = await request.json();
 
   const offcutIds = offcuts.map((offcut: any) => {
     return {
@@ -46,9 +38,8 @@ export async function POST(request: NextRequest) {
     };
   });
 
-  const addedDocument = await Entry.create({
+  const addedDocument = await Exit.create({
     date,
-    transports: transportIds,
     offcuts: offcutIds,
   });
 
@@ -57,6 +48,6 @@ export async function POST(request: NextRequest) {
       await recalculateQuantities(offcut.offcut.id);
     })
   );
-
+  
   return NextResponse.json(addedDocument);
 }

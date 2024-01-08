@@ -13,6 +13,7 @@ import {
   RadioButtonGroupInput,
   ImageInput,
   ImageField,
+  NumberField,
 } from "react-admin";
 import { MaterialInput } from "./Create";
 
@@ -40,7 +41,7 @@ const OffcutEdit = () => {
             },
           }}
         />
-        <NumberInput source="quantity" label="Quantité" />
+        <NumberField source="quantity" label="Quantité" />
         <ReferenceInput source="matter" reference="matters">
           <AutocompleteInput optionText="value" label="Matière" />
         </ReferenceInput>

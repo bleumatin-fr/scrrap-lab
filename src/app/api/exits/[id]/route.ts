@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
-import Entry from "../Entry";
+import Exit from "../Exit";
 import { NextApiRequest } from "next";
 import Transport from "../../transports/Transport";
 import populatePaths from "../populatePaths";
@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const document = await Entry.findOne({
+  const document = await Exit.findOne({
     _id: params.id,
   }).populate(populatePaths);
 
@@ -23,17 +23,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const { date, transports, offcuts } = await request.json();
-
-  const transportIds = await Promise.all(
-    transports.map(async (transport: any) => {
-      if (!transport.new) {
-        return transport.id;
-      }
-      const createdTransport = await Transport.create(transport);
-      return createdTransport._id;
-    })
-  );
+  const { date, offcuts } = await request.json();
 
   const offcutIds = offcuts.map((offcut: any) => {
     if (offcut.id) {
@@ -49,14 +39,13 @@ export async function PUT(
     };
   });
 
-  const updatedDocument = await Entry.findOneAndUpdate(
+  const updatedDocument = await Exit.findOneAndUpdate(
     {
       _id: params.id,
     },
     {
       $set: {
         date,
-        transports: transportIds,
         offcuts: offcutIds,
       },
     },
@@ -68,7 +57,7 @@ export async function PUT(
       await recalculateQuantities(offcut.offcut.id);
     })
   );
-
+  
   return NextResponse.json(updatedDocument);
 }
 
@@ -77,7 +66,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const deletedDocument = await Entry.findOneAndDelete({
+  const deletedDocument = await Exit.findOneAndDelete({
     _id: params.id,
   });
 
@@ -88,6 +77,6 @@ export async function DELETE(
       })
     );
   }
-
+  
   return NextResponse.json(deletedDocument);
 }

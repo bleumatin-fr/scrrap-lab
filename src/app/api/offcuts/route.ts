@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
     createdAt: "desc",
   };
 
-
   if (request.nextUrl.searchParams.has("q")) {
     const q = request.nextUrl.searchParams.get("q");
     if (q) {
@@ -25,6 +24,11 @@ export async function GET(request: NextRequest) {
         ],
       };
     }
+  }
+
+  if (request.nextUrl.searchParams.has("id")) {
+    const ids = request.nextUrl.searchParams.getAll("id");
+    filters = { ...filters, _id: { $in: ids } };
   }
 
   if (request.nextUrl.searchParams.has("matter")) {
@@ -96,8 +100,28 @@ export async function GET(request: NextRequest) {
     };
   }
 
-  const documents = await Offcut.find(filters).sort(sort);
+  let populate: string[] = [];
+  if (request.nextUrl.searchParams.has("meta.populate")) {
+    populate = request.nextUrl.searchParams.getAll("meta.populate");
+  }
+
+  let limit = 10;
+  let skip = 0;
+  if (request.nextUrl.searchParams.has("_limit")) {
+    limit = parseInt(request.nextUrl.searchParams.get("_limit") || "10");
+  }
+  if (request.nextUrl.searchParams.has("_skip")) {
+    skip = parseInt(request.nextUrl.searchParams.get("_skip") || "0");
+  }
+
+  const documents = await Offcut.find(filters)
+    .sort(sort)
+    .limit(limit)
+    .skip(skip)
+    .populate(populate);
+
   const count = await Offcut.countDocuments(filters);
+
   return NextResponse.json(documents, {
     headers: [["x-total-count", count.toString()]],
   });

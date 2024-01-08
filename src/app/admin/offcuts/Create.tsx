@@ -54,7 +54,6 @@ const OffcutCreate = () => {
             },
           }}
         />
-        <NumberInput source="quantity" label="Quantité" />
         <ReferenceInput source="matter" reference="matters">
           <AutocompleteInput optionText="value" label="Matière" />
         </ReferenceInput>
