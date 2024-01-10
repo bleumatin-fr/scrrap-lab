@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build-image": "docker build --no-cache --tag registry.bleumatin.fr/talm/chutocollector:latest .",
+    "deploy": "docker push registry.bleumatin.fr/talm/chutocollector:latest",
     "start": "next start",
     "lint": "next lint"
   },

@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
 import Offcut from "../Offcut";
-import { NextApiRequest } from "next";
-import { File } from "buffer";
-import { nanoid } from "nanoid";
-import fs from "fs";
 import formDataToObject from "../formDataToObject";
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();

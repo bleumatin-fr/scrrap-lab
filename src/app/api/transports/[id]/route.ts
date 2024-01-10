@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
 import Transport from "../Transport";
-import { NextApiRequest } from "next";
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
@@ -53,7 +52,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();

@@ -1,8 +1,7 @@
+import { FilterQuery } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
-import { NextApiRequest } from "next";
 import List, { availableLists } from "./List";
-import { FilterQuery } from "mongoose";
 
 export async function GET(
   request: NextRequest,

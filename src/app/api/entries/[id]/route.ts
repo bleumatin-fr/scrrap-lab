@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
-import Entry from "../Entry";
-import { NextApiRequest } from "next";
-import Transport from "../../transports/Transport";
-import populatePaths from "../populatePaths";
 import recalculateQuantities from "../../offcuts/recalculateQuantities";
+import Transport from "../../transports/Transport";
+import Entry from "../Entry";
+import populatePaths from "../populatePaths";
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
@@ -73,21 +72,26 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextApiRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
-  const deletedDocument = await Entry.findOneAndDelete({
+
+  const document = await Entry.findOne({
     _id: params.id,
   });
 
-  if (deletedDocument.value) {
+  await Entry.findOneAndDelete({
+    _id: params.id,
+  });
+
+  if (document) {
     await Promise.all(
-      deletedDocument.value.offcuts.map(async (offcut: any) => {
+      document.offcuts.map(async (offcut: any) => {
         await recalculateQuantities(offcut.offcut);
       })
     );
   }
 
-  return NextResponse.json(deletedDocument);
+  return NextResponse.json(document);
 }

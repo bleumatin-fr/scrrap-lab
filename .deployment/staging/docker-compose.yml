@@ -1,0 +1,24 @@
+services:
+  talm_chutocollector:
+    image: registry.bleumatin.fr/talm/chutocollector:latest
+    environment:
+      - MONGO_URL=mongodb://root:r00tp4skalF10@talm_mongo:27017/admin
+    deploy:
+      restart_policy:
+        condition: on-failure
+    links:
+      - talm_mongo
+
+  talm_mongo:
+    image: mongo:latest
+    command: mongod --storageEngine=wiredTiger
+    volumes:
+      - ./.docker/mongo/data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=r00tp4skalF10
+
+networks:
+  default:
+    name: srv_default
+    external: true

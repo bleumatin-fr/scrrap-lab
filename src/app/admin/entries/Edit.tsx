@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import SaveIcon from "@mui/icons-material/Save";
-import { CreateBase, EditBase, SaveButton, SimpleForm, useRecordContext } from "react-admin";
+import { EditBase, SaveButton, SimpleForm } from "react-admin";
 import GeneralInformationStep from "./GeneralInformationStep";
 import OffcutStep from "./OffcutStep";
 import TransportsStep from "./TransportsStep";
@@ -14,7 +14,6 @@ const Container = styled.div`
 `;
 
 const CreateWizard = () => {
-  const record = useRecordContext();
   return (
     <Container>
       <GeneralInformationStep />

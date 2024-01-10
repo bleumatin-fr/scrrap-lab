@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
-import { NextApiRequest } from "next";
 import List, { availableLists } from "../List";
 
 export async function GET(
-  request: NextApiRequest,
+  request: NextRequest,
   {
     params,
   }: { params: { listCategory: (typeof availableLists)[number]; id: string } }
@@ -41,7 +40,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextApiRequest,
+  request: NextRequest,
   {
     params,
   }: { params: { listCategory: (typeof availableLists)[number]; id: string } }
