@@ -39,11 +39,12 @@ export async function POST(
   { params }: { params: { listCategory: (typeof availableLists)[number] } }
 ) {
   await connect();
-  const { key, value } = await request.json();
+  const { key, value, parent } = await request.json();
   const createdDocument = await List.create({
     category: params.listCategory,
     key,
     value,
+    parent,
   });
   return NextResponse.json(createdDocument);
 }

@@ -27,49 +27,6 @@ const Layout = styled.div`
   }
 `;
 
-const offcutGridColumnsModel: (prefix?: string) => GridColDef<any>[] = (
-  prefix?: string
-) => [
-  {
-    field: `${prefix ? `${prefix}.` : ""}reference`,
-    headerName: "Référence",
-    flex: 1,
-  },
-  { field: `${prefix ? `${prefix}.` : ""}name`, headerName: "Nom", flex: 1 },
-  {
-    field: `${prefix ? `${prefix}.` : ""}matter`,
-    headerName: "Matière",
-    flex: 1,
-    valueGetter: (params) => params.row.offcut.material.value,
-  },
-  {
-    field: `${prefix ? `${prefix}.` : ""}material`,
-    headerName: "Matériaux",
-    flex: 1,
-    valueGetter: (params) => params.row.offcut.material.value,
-  },
-  {
-    field: `${prefix ? `${prefix}.` : ""}quality`,
-    headerName: "Qualité",
-    flex: 1,
-    valueGetter: (params) => params.row.offcut.quality.value,
-  },
-  {
-    field: `${prefix ? `${prefix}.` : ""}sizes`,
-    headerName: "Taille",
-    flex: 1,
-    valueGetter: (params) =>
-      params.row.offcut.sizes.map((size: any) => size.value).join(", "),
-  },
-  {
-    field: `${prefix ? `${prefix}.` : ""}colors`,
-    headerName: "Couleur",
-    flex: 1,
-    valueGetter: (params) =>
-      params.row.offcut.colors.map((color: any) => color.value).join(", "),
-  },
-];
-
 const Catalog = () => {
   const { field } = useInput({
     source: "offcuts",
@@ -121,33 +78,33 @@ const Catalog = () => {
             field: `matter`,
             headerName: "Matière",
             flex: 1,
-            valueGetter: (params) => params.row.material.value,
+            valueGetter: (params) => params.row.matter?.value,
           },
           {
             field: `material`,
             headerName: "Matériaux",
             flex: 1,
-            valueGetter: (params) => params.row.material.value,
+            valueGetter: (params) => params.row.material?.value,
           },
           {
             field: `quality`,
             headerName: "Qualité",
             flex: 1,
-            valueGetter: (params) => params.row.quality.value,
+            valueGetter: (params) => params.row.quality?.value,
           },
           {
             field: `sizes`,
             headerName: "Taille",
             flex: 1,
             valueGetter: (params) =>
-              params.row.sizes.map((size: any) => size.value).join(", "),
+              params.row.sizes?.map((size: any) => size.value).join(", "),
           },
           {
             field: `colors`,
             headerName: "Couleur",
             flex: 1,
             valueGetter: (params) =>
-              params.row.colors.map((color: any) => color.value).join(", "),
+              params.row.colors?.map((color: any) => color.value).join(", "),
           },
           {
             field: "action",

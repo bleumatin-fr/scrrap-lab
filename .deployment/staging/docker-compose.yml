@@ -20,5 +20,5 @@ services:
 
 networks:
   default:
-    name: srv_default
+    name: debian_default
     external: true

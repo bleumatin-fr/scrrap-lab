@@ -53,7 +53,7 @@ const formDataToObject = async (formData: FormData) => {
       const name = nanoid();
       const path = `./public/uploads/${name}`;
       const pictureObject: Picture = {
-        src: `/uploads/${name}`,
+        src: `/api/images/${name}`,
         title: file.name,
       };
 
