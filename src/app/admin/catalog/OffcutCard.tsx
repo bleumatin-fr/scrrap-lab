@@ -31,6 +31,7 @@ const CardMediaContainer = styled.div`
   position: relative;
   max-height: 200px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const CardWeightContainer = styled.div`
@@ -73,19 +74,21 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
       />
       <Card
         key={offcut.id}
-        onClick={(e) => {
-          e.preventDefault();
-          redirect("show", "offcuts", offcut.id);
-        }}
         sx={{
           maxWidth: 345,
-          cursor: "pointer",
+          // cursor: "pointer",
           display: "flex",
           flexDirection: "column",
         }}
       >
         {offcut.pictures && offcut.pictures.length > 0 && (
-          <CardMediaContainer>
+          <CardMediaContainer
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setPicturesOpen(true);
+            }}
+          >
             <img
               loading="lazy"
               src={offcut.pictures[0].src}
@@ -101,11 +104,6 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
               }`}
               size="small"
               icon={<CropOriginalIcon />}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setPicturesOpen(true);
-              }}
               sx={{
                 position: "absolute",
                 top: 8,
@@ -128,6 +126,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             component="div"
             sx={{
               position: "relative",
+              paddingRight: "60px",
             }}
           >
             {offcut.name}

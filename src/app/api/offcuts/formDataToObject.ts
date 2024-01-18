@@ -23,6 +23,9 @@ const formDataToObject = async (formData: FormData) => {
   let fileKeys: string[] = [];
   formData.forEach((value, key) => {
     if (value instanceof File) {
+      if (fileKeys.includes(key)) {
+        return;
+      }
       fileKeys.push(key);
       return;
     }

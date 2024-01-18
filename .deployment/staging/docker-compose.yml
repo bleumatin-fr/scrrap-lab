@@ -25,8 +25,9 @@ services:
     image: registry.bleumatin.fr/talm/chutocollector:latest
     environment:
       - MONGO_URL=mongodb://root:r00tp4skalF10@talm_mongo:27017/admin
+      - HOSTNAME=0.0.0.0
     volumes:
-      - ./.docker/chutocollector/uploads:/app/public/uploads
+      - chutocollector-uploads:/app/public/uploads
     deploy:
       restart_policy:
         condition: on-failure
@@ -49,3 +50,6 @@ networks:
   default:
     name: debian_default
     external: true
+
+volumes:
+  chutocollector-uploads:

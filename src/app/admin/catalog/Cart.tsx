@@ -29,6 +29,7 @@ const Cart = () => {
         refresh();
       },
       onError: (e) => {
+        notify(`Erreur lors de la commande`, { type: "error" });
         console.log("ERROR", e);
       },
     }

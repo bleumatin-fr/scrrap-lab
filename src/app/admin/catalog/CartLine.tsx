@@ -19,6 +19,8 @@ const PictureContainer = styled.div`
   height: 50px;
   overflow: hidden;
   border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 10px;
 
   > img {
     width: 100%;
@@ -60,7 +62,11 @@ const CartLine = ({
         <Typography variant="body2">{item.offcut.name}</Typography>
       </div>
       <div style={{ flexGrow: 1 }}></div>
-      <div>
+      <div
+        style={{
+          marginTop: 15,
+        }}
+      >
         <TextField
           label="Quantité"
           type="number"
@@ -68,6 +74,8 @@ const CartLine = ({
           variant="outlined"
           sx={{
             maxWidth: "100px",
+            minWidth: "100px",
+            width: "100px",
           }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onChange(parseFloat(e.target.value))
@@ -76,8 +84,8 @@ const CartLine = ({
       </div>
       <CloseIcon
         style={{
-          alignSelf: "center",
           cursor: "pointer",
+          marginTop: 22,
         }}
         onClick={onRemove}
       />
