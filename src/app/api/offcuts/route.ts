@@ -6,6 +6,7 @@ import { FilterQuery, SortOrder } from "mongoose";
 
 export async function GET(request: NextRequest) {
   await connect();
+  
   let filters: FilterQuery<typeof Offcut> = {};
   let sort: { [key: string]: SortOrder } = {
     createdAt: "desc",
