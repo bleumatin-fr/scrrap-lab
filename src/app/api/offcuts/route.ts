@@ -6,7 +6,7 @@ import { FilterQuery, SortOrder } from "mongoose";
 
 export async function GET(request: NextRequest) {
   await connect();
-  
+
   let filters: FilterQuery<typeof Offcut> = {};
   let sort: { [key: string]: SortOrder } = {
     createdAt: "desc",
@@ -67,9 +67,14 @@ export async function GET(request: NextRequest) {
     filters = { ...filters, quality };
   }
 
-  if (request.nextUrl.searchParams.has("audience")) {
-    const audience = request.nextUrl.searchParams.get("audience");
-    filters = { ...filters, audience };
+  if (request.nextUrl.searchParams.has("audiences")) {
+    const audiences = request.nextUrl.searchParams.get("audiences");
+    filters = {
+      ...filters,
+      audiences: {
+        $in: audiences,
+      },
+    };
   }
 
   if (request.nextUrl.searchParams.has("createdBefore")) {

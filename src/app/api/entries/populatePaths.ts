@@ -38,7 +38,7 @@ const populatePaths = [
         model: "List",
       },
       {
-        path: "audience",
+        path: "audiences",
         model: "List",
       },
       {

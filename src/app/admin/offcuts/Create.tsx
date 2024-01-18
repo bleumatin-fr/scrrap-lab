@@ -82,13 +82,13 @@ export const Fields = () => {
       <ReferenceInput source="quality" reference="qualities">
         <RadioButtonGroupInput optionText="value" label="Qualité" />
       </ReferenceInput>
-      <ReferenceInput source="audience" reference="audiences">
-        <RadioButtonGroupInput
+      <ReferenceArrayInput source="audiences" reference="audiences">
+        <CheckboxGroupInput
           optionText="value"
           label="Destinataires"
           validate={required()}
         />
-      </ReferenceInput>
+      </ReferenceArrayInput>
       <ReferenceInput source="brandPolicy" reference="brandPolicies">
         <RadioButtonGroupInput optionText="value" label="Utilisation marque" />
       </ReferenceInput>

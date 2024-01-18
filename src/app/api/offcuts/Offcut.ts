@@ -22,14 +22,14 @@ interface Offcut {
   updatedAt: Date;
   pictures?: Picture[];
   quality?: ExtractInterface<typeof List>;
-  audience: ExtractInterface<typeof List>[];
+  audiences: ExtractInterface<typeof List>[];
   brandPolicy?: ExtractInterface<typeof List>;
   source?: string;
 }
 
 export const offcutSchema = new Schema<Offcut>(
   {
-    name: { type: String, index: true , required: true},
+    name: { type: String, index: true, required: true },
     reference: { type: String, index: true, required: true },
     description: { type: String, index: true },
     quantity: { type: Number, default: 0, required: true },
@@ -38,7 +38,7 @@ export const offcutSchema = new Schema<Offcut>(
     sizes: [{ type: Schema.Types.ObjectId, ref: "List" }],
     colors: [{ type: Schema.Types.ObjectId, ref: "List" }],
     quality: { type: Schema.Types.ObjectId, ref: "List" },
-    audience: [{ type: Schema.Types.ObjectId, ref: "List", required: true }],
+    audiences: [{ type: Schema.Types.ObjectId, ref: "List", required: true }],
     brandPolicy: { type: Schema.Types.ObjectId, ref: "List" },
     source: { type: String },
     pictures: [

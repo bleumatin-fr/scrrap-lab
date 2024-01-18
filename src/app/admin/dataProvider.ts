@@ -21,7 +21,7 @@ type PostParams = {
   colors: string[];
   quality: string;
   reference: string;
-  audience: string;
+  audiences: string[];
   brandPolicy: string;
   source: string;
   pictures: {
@@ -48,7 +48,8 @@ const createOffcutsPostData = (
     params.data.colors.forEach((colors) => formData.append(`colors`, colors));
   params.data.quality && formData.append("quality", params.data.quality);
   params.data.reference && formData.append("reference", params.data.reference);
-  params.data.audience && formData.append("audience", params.data.audience);
+  params.data.audiences &&
+    params.data.audiences.forEach((audiences) => formData.append(`audiences`, audiences));
   params.data.brandPolicy &&
     formData.append("brandPolicy", params.data.brandPolicy);
   params.data.source && formData.append("source", params.data.source);

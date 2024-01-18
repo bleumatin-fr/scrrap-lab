@@ -52,14 +52,14 @@ const filters = [
   >
     <RadioButtonGroupInput optionText="value" label="Qualité" />
   </ReferenceInput>,
-  <ReferenceInput
-    key="audience"
-    source="audience"
+  <ReferenceArrayInput
+    key="audiences"
+    source="audiences"
     reference="audiences"
     label="Destinataires"
   >
-    <RadioButtonGroupInput optionText="value" label="Destinataires" />
-  </ReferenceInput>,
+    <CheckboxGroupInput optionText="value" label="Destinataires" />
+  </ReferenceArrayInput>,
   <DateInput key="date" source="createdBefore" label="Ajouté avant le" />,
   <DateInput key="date" source="createdAfter" label="Ajouté après le" />,
 ];
