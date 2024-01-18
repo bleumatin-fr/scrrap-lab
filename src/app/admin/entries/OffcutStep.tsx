@@ -4,17 +4,21 @@ import {
   Button,
   Card,
   CardContent,
+  Dialog,
+  DialogTitle,
   IconButton,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import { useGetList, useInput } from "react-admin";
+import { SimpleForm, useGetList, useInput } from "react-admin";
 import Alert from "@mui/material/Alert";
+import { CartItem } from "./CartItem";
+import { Fields as OffcutFields } from "../offcuts/Create";
 
 const Layout = styled.div`
   display: flex;
@@ -28,6 +32,7 @@ const Layout = styled.div`
 `;
 
 const Catalog = () => {
+  const [addOffcutModalOpen, setAddOffcutModalOpen] = useState(false);
   const { field } = useInput({
     source: "offcuts",
     defaultValue: [],
@@ -56,8 +61,26 @@ const Catalog = () => {
     setPaginationModel(paginationModel);
   };
 
+  const handleOffcutFormSubmitted = (data: any) => {
+    // field.onChange([
+    //   ...field.value,
+    //   { ...data, id: field.value.length, new: true },
+    // ]);
+    setAddOffcutModalOpen(false);
+  };
+
   return (
     <div>
+      <Dialog
+        open={addOffcutModalOpen}
+        onClose={() => setAddOffcutModalOpen(false)}
+        fullWidth
+      >
+        <DialogTitle>Ajout chute</DialogTitle>
+        <SimpleForm onSubmit={handleOffcutFormSubmitted}>
+          <OffcutFields />
+        </SimpleForm>
+      </Dialog>
       <DataGrid
         paginationModel={paginationModel}
         rowSelection={false}
@@ -113,7 +136,9 @@ const Catalog = () => {
             renderCell: (params) => {
               const onClick = (e: MouseEvent) => {
                 if (
-                  field.value.find((item: any) => item.offcut.id === params.row.id)
+                  field.value.find(
+                    (item: any) => item.offcut.id === params.row.id
+                  )
                 ) {
                   return;
                 }
@@ -141,12 +166,6 @@ const Catalog = () => {
     </div>
   );
 };
-
-interface CartItem {
-  id?: string;
-  offcut: any;
-  quantity: number;
-}
 
 const ValidationErrorSpecialFormatPrefix = "@@react-admin@@";
 
@@ -282,7 +301,7 @@ const Cart = () => {
   );
 };
 
-const OffcutStep = () => {
+const OffcutStep = ({ type }: { type: "entry" | "exit" }) => {
   return (
     <Card>
       <CardContent>
@@ -303,7 +322,9 @@ const OffcutStep = () => {
             </Button>
           </Box>
           <Box>
-            <Typography variant="body2">Panier</Typography>
+            <Typography variant="body2">
+              Chutes {type === "entry" ? "collectées" : "sorties"}
+            </Typography>
             <Cart />
           </Box>
         </Layout>

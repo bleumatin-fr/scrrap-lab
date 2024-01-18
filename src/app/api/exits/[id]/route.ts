@@ -9,6 +9,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   await connect();
+  
   const document = await Exit.findOne({
     _id: params.id,
   }).populate(populatePaths);

@@ -1,6 +1,7 @@
 import {
   Datagrid,
   DateField,
+  EditButton,
   List,
   NumberField,
   ReferenceField,
@@ -34,6 +35,7 @@ const TransportList = () => (
       />
       <TextField source="from.properties.name" label="Départ" />
       <TextField source="to.properties.name" label="Destination" />
+      <EditButton />
     </Datagrid>
   </List>
 );

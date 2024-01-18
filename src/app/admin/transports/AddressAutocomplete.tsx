@@ -1,4 +1,7 @@
-import { AutocompleteInputChangeReason } from "@mui/material";
+import {
+  AutocompleteInputChangeReason,
+  FormControl
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { get } from "lodash";
@@ -55,7 +58,7 @@ const AddressAutoComplete = ({ label, source }: AddressAutoCompleteProps) => {
 
   useEffect(() => {
     const fieldValue = get(record, source);
-    if(!fieldValue) return;
+    if (!fieldValue) return;
     setInputValue(fieldValue.properties.display_name);
     setOptions([fieldValue]);
     setValue(fieldValue);
@@ -78,29 +81,31 @@ const AddressAutoComplete = ({ label, source }: AddressAutoCompleteProps) => {
   };
 
   return (
-    <Autocomplete
-      options={options}
-      sx={{ width: 300 }}
-      filterOptions={(options) => options}
-      isOptionEqualToValue={(option, value) => {
-        return option.properties?.place_id === value.properties?.place_id;
-      }}
-      renderOption={(props, option) => {
-        return (
-          <li {...props} key={option.properties?.place_id}>
-            {option.properties?.display_name}
-          </li>
-        );
-      }}
-      getOptionLabel={(option) =>
-        typeof option === "string" ? "TEST" : option.properties?.display_name
-      }
-      inputValue={inputValue}
-      value={value}
-      onInputChange={handleInputChange}
-      onChange={handleChange}
-      renderInput={(params) => <TextField {...params} label={label} />}
-    />
+    <FormControl fullWidth sx={{ marginBottom: '24px' }}>
+      <Autocomplete
+        options={options}
+        sx={{ width: 300 }}
+        filterOptions={(options) => options}
+        isOptionEqualToValue={(option, value) => {
+          return option.properties?.place_id === value.properties?.place_id;
+        }}
+        renderOption={(props, option) => {
+          return (
+            <li {...props} key={option.properties?.place_id}>
+              {option.properties?.display_name}
+            </li>
+          );
+        }}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? "TEST" : option.properties?.display_name
+        }
+        inputValue={inputValue}
+        value={value}
+        onInputChange={handleInputChange}
+        onChange={handleChange}
+        renderInput={(params) => <TextField {...params} label={label} />}
+      />
+    </FormControl>
   );
 };
 

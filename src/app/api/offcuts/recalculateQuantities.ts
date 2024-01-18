@@ -16,7 +16,10 @@ const recalculateQuantities = async (offcutId: string) => {
     return acc + offcutQuantity.quantity;
   }, 0);
 
-  const exits = await Exit.find({ "offcuts.offcut": offcutId });
+  const exits = await Exit.find({
+    "offcuts.offcut": offcutId,
+    validatedAt: { $exists: true },
+  });
 
   const numberOfExits = exits.reduce((acc, exit) => {
     const offcutQuantity = exit.offcuts.find(

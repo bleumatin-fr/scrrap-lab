@@ -5,8 +5,10 @@ import {
   UpdateParams,
   fetchUtils,
 } from "react-admin";
-const endpoint = "/api";
-const baseDataProvider = jsonServerProvider("/api");
+
+export const endpoint = "/api";
+
+const baseDataProvider = jsonServerProvider(endpoint);
 
 type PostParams = {
   id: string;
@@ -41,13 +43,9 @@ const createOffcutsPostData = (
   params.data.matter && formData.append("matter", params.data.matter);
   params.data.material && formData.append("material", params.data.material);
   params.data.sizes &&
-    params.data.sizes.forEach((sizes) =>
-      formData.append(`sizes`, sizes)
-    );
+    params.data.sizes.forEach((sizes) => formData.append(`sizes`, sizes));
   params.data.colors &&
-    params.data.colors.forEach((colors) =>
-      formData.append(`colors`, colors)
-    );
+    params.data.colors.forEach((colors) => formData.append(`colors`, colors));
   params.data.quality && formData.append("quality", params.data.quality);
   params.data.reference && formData.append("reference", params.data.reference);
   params.data.audience && formData.append("audience", params.data.audience);

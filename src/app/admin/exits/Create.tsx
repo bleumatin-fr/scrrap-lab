@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
 import SaveIcon from "@mui/icons-material/Save";
 import { CreateBase, SaveButton, SimpleForm } from "react-admin";
+import OffcutStep from "../entries/OffcutStep";
 import GeneralInformationStep from "./GeneralInformationStep";
-import OffcutStep from "./OffcutStep";
-import TransportsStep from "./TransportsStep";
 
 const Container = styled.div`
   display: flex;
@@ -17,8 +16,7 @@ const CreateWizard = () => {
   return (
     <Container>
       <GeneralInformationStep />
-      <OffcutStep type="entry" />
-      <TransportsStep />
+      <OffcutStep type="exit" />
       <SaveButton
         label="Enregistrer"
         variant="contained"

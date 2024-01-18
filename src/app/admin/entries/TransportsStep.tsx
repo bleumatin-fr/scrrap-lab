@@ -1,3 +1,5 @@
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Button,
   Card,
@@ -6,8 +8,7 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@material-ui/core";
-import DeleteIcon from "@mui/icons-material/Delete";
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { MouseEvent, useState } from "react";
 import { ReferenceField, SimpleForm, TextField, useInput } from "react-admin";
@@ -46,7 +47,10 @@ const TransportStep = () => {
           <Typography variant="h6" component="div">
             Transports
           </Typography>
-          <Button onClick={() => setAddTransportModalOpen(true)}>
+          <Button
+            onClick={() => setAddTransportModalOpen(true)}
+            startIcon={<AddCircleOutlineIcon />}
+          >
             Ajouter un transport
           </Button>
           <DataGrid

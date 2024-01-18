@@ -6,7 +6,7 @@ const GeneralInformationStep = () => {
     <Card>
       <CardContent>
         <Typography variant="h5" component="div">
-          Entrée de chutes
+          Sortie de chutes
         </Typography>
         <DateInput
           label="Date"

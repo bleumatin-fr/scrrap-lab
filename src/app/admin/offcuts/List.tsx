@@ -4,6 +4,7 @@ import {
   Datagrid,
   DateField,
   DateInput,
+  EditButton,
   List,
   NumberField,
   RadioButtonGroupInput,
@@ -79,6 +80,7 @@ const OffcutList = () => (
       <ReferenceField source="quality" reference="qualities" label="Qualité" />
       <NumberField source="quantity" label="Quantité" />
       <DateField source="createdAt" label="Date d'ajout" />
+      <EditButton />
     </Datagrid>
   </List>
 );

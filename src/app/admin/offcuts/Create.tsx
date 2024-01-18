@@ -1,22 +1,29 @@
 import { RichTextInput } from "ra-input-rich-text";
 import {
+  AutocompleteInput,
   CheckboxGroupInput,
-  DateInput,
   Create,
+  ImageField,
+  ImageInput,
+  RadioButtonGroupInput,
+  ReferenceArrayInput,
+  ReferenceInput,
   SimpleForm,
   TextInput,
-  useResourceDefinition,
-  ReferenceInput,
-  AutocompleteInput,
-  NumberInput,
-  ReferenceArrayInput,
-  RadioButtonGroupInput,
-  ImageInput,
-  ImageField,
+  Validator,
+  required,
 } from "react-admin";
 import { useWatch } from "react-hook-form";
 
-export const MaterialInput = ({ source }: { source: string }) => {
+export const MaterialInput = ({
+  source,
+  validate,
+  alwaysOn,
+}: {
+  source: string;
+  validate?: Validator | Validator[];
+  alwaysOn?: boolean;
+}) => {
   const matter = useWatch<{ matter: string }>({ name: "matter" });
   return (
     <ReferenceInput
@@ -24,9 +31,71 @@ export const MaterialInput = ({ source }: { source: string }) => {
       reference="materials"
       filter={{ parent: matter || "none" }}
       label="Matériaux"
+      alwaysOn={alwaysOn}
     >
-      <AutocompleteInput optionText="value" label="Matériaux" />
+      <AutocompleteInput
+        optionText="value"
+        label="Matériaux"
+        validate={validate}
+      />
     </ReferenceInput>
+  );
+};
+
+export const Fields = () => {
+  return (
+    <>
+      <TextInput source="name" label="Nom" validate={required()} />
+      <TextInput source="reference" label="Référence" validate={required()} />
+      <RichTextInput
+        source="description"
+        label="Cartel"
+        sx={{
+          "& .ProseMirror": {
+            minHeight: 150,
+          },
+        }}
+      />
+      <RichTextInput
+        source="source"
+        label="Provenance"
+        sx={{
+          "& .ProseMirror": {
+            minHeight: 80,
+          },
+        }}
+      />
+      <ReferenceInput source="matter" reference="matters">
+        <AutocompleteInput
+          optionText="value"
+          label="Matière"
+          validate={required()}
+        />
+      </ReferenceInput>
+      <MaterialInput source="material" validate={required()} />
+      <ReferenceArrayInput source="sizes" reference="sizes">
+        <CheckboxGroupInput optionText="value" label="Taille" />
+      </ReferenceArrayInput>
+      <ReferenceArrayInput source="colors" reference="colors">
+        <CheckboxGroupInput optionText="value" label="Couleur" />
+      </ReferenceArrayInput>
+      <ReferenceInput source="quality" reference="qualities">
+        <RadioButtonGroupInput optionText="value" label="Qualité" />
+      </ReferenceInput>
+      <ReferenceInput source="audience" reference="audiences">
+        <RadioButtonGroupInput
+          optionText="value"
+          label="Destinataires"
+          validate={required()}
+        />
+      </ReferenceInput>
+      <ReferenceInput source="brandPolicy" reference="brandPolicies">
+        <RadioButtonGroupInput optionText="value" label="Utilisation marque" />
+      </ReferenceInput>
+      <ImageInput source="pictures" multiple accept="image/*">
+        <ImageField source="src" title="title" />
+      </ImageInput>
+    </>
   );
 };
 
@@ -34,51 +103,7 @@ const OffcutCreate = () => {
   return (
     <Create redirect="list">
       <SimpleForm>
-        <TextInput source="name" label="Nom" />
-        <TextInput source="reference" label="Référence" />
-        <RichTextInput
-          source="description"
-          label="Cartel"
-          sx={{
-            "& .ProseMirror": {
-              minHeight: 150,
-            },
-          }}
-        />
-        <RichTextInput
-          source="source"
-          label="Provenance"
-          sx={{
-            "& .ProseMirror": {
-              minHeight: 80,
-            },
-          }}
-        />
-        <ReferenceInput source="matter" reference="matters">
-          <AutocompleteInput optionText="value" label="Matière" />
-        </ReferenceInput>
-        <MaterialInput source="material" />
-        <ReferenceArrayInput source="sizes" reference="sizes">
-          <CheckboxGroupInput optionText="value" label="Taille" />
-        </ReferenceArrayInput>
-        <ReferenceArrayInput source="colors" reference="colors">
-          <CheckboxGroupInput optionText="value" label="Couleur" />
-        </ReferenceArrayInput>
-        <ReferenceInput source="quality" reference="qualities">
-          <RadioButtonGroupInput optionText="value" label="Qualité" />
-        </ReferenceInput>
-        <ReferenceInput source="audience" reference="audiences">
-          <RadioButtonGroupInput optionText="value" label="Destinataires" />
-        </ReferenceInput>
-        <ReferenceInput source="brandPolicy" reference="brandPolicies">
-          <RadioButtonGroupInput
-            optionText="value"
-            label="Utilisation marque"
-          />
-        </ReferenceInput>
-        <ImageInput source="pictures" multiple accept="image/*">
-          <ImageField source="src" title="title" />
-        </ImageInput>
+        <Fields />
       </SimpleForm>
     </Create>
   );

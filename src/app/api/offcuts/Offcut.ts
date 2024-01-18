@@ -12,33 +12,33 @@ export interface Picture {
 interface Offcut {
   name: string;
   reference: string;
-  description: string;
+  description?: string;
   quantity: number;
   matter: ExtractInterface<typeof List>;
   material: ExtractInterface<typeof List>;
-  sizes: ExtractInterface<typeof List>[];
-  colors: ExtractInterface<typeof List>[];
+  sizes?: ExtractInterface<typeof List>[];
+  colors?: ExtractInterface<typeof List>[];
   createdAt: Date;
   updatedAt: Date;
-  pictures: Picture[];
-  quality: ExtractInterface<typeof List>;
-  audience: ExtractInterface<typeof List>;
-  brandPolicy: ExtractInterface<typeof List>;
-  source: string;
+  pictures?: Picture[];
+  quality?: ExtractInterface<typeof List>;
+  audience: ExtractInterface<typeof List>[];
+  brandPolicy?: ExtractInterface<typeof List>;
+  source?: string;
 }
 
 export const offcutSchema = new Schema<Offcut>(
   {
-    name: { type: String, index: true },
-    reference: { type: String, index: true },
+    name: { type: String, index: true , required: true},
+    reference: { type: String, index: true, required: true },
     description: { type: String, index: true },
-    quantity: { type: Number, default: 0 },
-    matter: { type: Schema.Types.ObjectId, ref: "List" },
-    material: { type: Schema.Types.ObjectId, ref: "List" },
+    quantity: { type: Number, default: 0, required: true },
+    matter: { type: Schema.Types.ObjectId, ref: "List", required: true },
+    material: { type: Schema.Types.ObjectId, ref: "List", required: true },
     sizes: [{ type: Schema.Types.ObjectId, ref: "List" }],
     colors: [{ type: Schema.Types.ObjectId, ref: "List" }],
     quality: { type: Schema.Types.ObjectId, ref: "List" },
-    audience: { type: Schema.Types.ObjectId, ref: "List" },
+    audience: [{ type: Schema.Types.ObjectId, ref: "List", required: true }],
     brandPolicy: { type: Schema.Types.ObjectId, ref: "List" },
     source: { type: String },
     pictures: [

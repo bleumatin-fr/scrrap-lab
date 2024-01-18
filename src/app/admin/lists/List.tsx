@@ -1,4 +1,4 @@
-import { Datagrid, DateField, List, TextField } from "react-admin";
+import { Datagrid, DateField, EditButton, List, TextField } from "react-admin";
 
 const ListList = () => (
   <List>
@@ -7,6 +7,7 @@ const ListList = () => (
       <TextField source="value" />
       <DateField source="createdAt" />
       <DateField source="updatedAt" />
+      <EditButton />
     </Datagrid>
   </List>
 );

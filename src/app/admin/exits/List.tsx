@@ -1,15 +1,16 @@
 import {
   ArrayField,
+  BooleanField,
   Datagrid,
   DateField,
   EditButton,
   List,
   NumberField,
-  ReferenceArrayField,
-  ReferenceField,
   ReferenceInput,
   TextField,
 } from "react-admin";
+import ValidateButton from "./ValidateButton";
+import ValidatedField from "./ValidatedField";
 
 const filters = [
   <ReferenceInput
@@ -32,16 +33,9 @@ const EntriesList = () => (
           <NumberField source="quantity" label="Quantité" />
         </Datagrid>
       </ArrayField>
-      <ArrayField source="transports" label="Transports">
-        <Datagrid bulkActionButtons={false}>
-          <DateField source="date" label="Date" />
-          <TextField source="mode.value" label="Mode" />
-          <TextField source="reason.value" label="Raison" />
-          <TextField source="from.properties.name" label="Départ" />
-          <TextField source="to.properties.name" label="Destination" />
-          <EditButton />
-        </Datagrid>
-      </ArrayField>
+      <ValidatedField source="validatedAt" label="Validé" />
+      <EditButton />
+      <ValidateButton />
     </Datagrid>
   </List>
 );

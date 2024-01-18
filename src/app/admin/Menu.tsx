@@ -1,21 +1,23 @@
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SettingsIcon from "@mui/icons-material/Settings";
+import DefaultIcon from "@mui/icons-material/ViewList";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
+import { Box, Collapse } from "@mui/material";
+import { ReactElement, createElement, useEffect } from "react";
 import {
   Menu,
   MenuItemLink,
   useCreatePath,
   useGetResourceLabel,
-  useLocaleState,
   useResourceDefinitions,
   useStore,
 } from "react-admin";
-import LabelIcon from "@mui/icons-material/Label";
-import transports from "./transports";
-import offcuts from "./offcuts";
-import { Box, Collapse, styled } from "@material-ui/core";
-import { createElement, useState } from "react";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DefaultIcon from "@mui/icons-material/ViewList";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+
+const menuIcons = {
+  Administration: <SettingsIcon />,
+  Inventaire: <WarehouseIcon />,
+} as Record<string, ReactElement>;
 
 const SubMenuItem = ({ name }: { name: string }) => {
   const resources = useResourceDefinitions();
@@ -52,16 +54,40 @@ const SubMenuItem = ({ name }: { name: string }) => {
 };
 
 const CustomMenu = () => {
-  const [open, setOpen] = useStore("admin-open", false);
+  const [open, setOpen] = useStore<string[]>("admin-open", []);
   const resources = useResourceDefinitions();
+
+  // localstorage migration from bool to array of menu id
+  useEffect(() => {
+    if (!Array.isArray(open)) {
+      setOpen([]);
+    }
+  }, [open, setOpen]);
 
   const rootResources = Object.keys(resources).filter(
     (resource) => !resources[resource].options?.menu
   );
 
-  const adminResources = Object.keys(resources).filter(
-    (resource) => resources[resource].options?.menu === "Administration"
-  );
+  const resourcesByMenu = Object.keys(resources).reduce((acc, resource) => {
+    if (!resources[resource].options?.menu) return acc;
+
+    return {
+      ...acc,
+      [resources[resource].options?.menu]: [
+        ...(acc[resources[resource].options?.menu] || []),
+        resource,
+      ],
+    };
+  }, {} as Record<string, string[]>);
+
+  const toggleMenu = (menu: string) => {
+    if (open.includes(menu)) {
+      setOpen(open.filter((m) => m !== menu));
+    } else {
+      setOpen([...open, menu]);
+    }
+  };
+
 
   return (
     <Menu>
@@ -69,37 +95,43 @@ const CustomMenu = () => {
       {rootResources.map((resource) => (
         <Menu.ResourceItem key={resource} name={resource} />
       ))}
-      <MenuItemLink
-        primaryText={
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "space-between",
+      {Object.keys(resourcesByMenu).map((menu) => {
+        return [
+          <MenuItemLink
+            key={`menu-${menu}`}
+            primaryText={
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>{menu}</Box>
+                {open.includes(menu) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </Box>
+            }
+            leftIcon={menuIcons[menu] || <DefaultIcon />}
+            onClick={() => toggleMenu(menu)}
+            to={"#"}
+          />,
+          <Collapse
+            key={`menu-${menu}-collapse`}
+            in={open.includes(menu)}
+            timeout="auto"
+            unmountOnExit
+            style={{
+              paddingLeft: 16,
+              fontSize: "12px !important",
             }}
           >
-            <Box>Administration</Box>
-            {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </Box>
-        }
-        leftIcon={<SettingsIcon />}
-        onClick={() => setOpen(!open)}
-        to={"#"}
-      />
-      <Collapse
-        in={open}
-        timeout="auto"
-        unmountOnExit
-        style={{
-          paddingLeft: 16,
-          fontSize: "12px !important",
-        }}
-      >
-        {adminResources.map((resource) => (
-          <SubMenuItem key={resource} name={resource} />
-        ))}
-      </Collapse>
+            {resourcesByMenu[menu].map((resource) => (
+              <SubMenuItem key={resource} name={resource} />
+            ))}
+          </Collapse>,
+        ];
+      })}
     </Menu>
   );
 };

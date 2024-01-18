@@ -17,7 +17,7 @@ const CreateWizard = () => {
   return (
     <Container>
       <GeneralInformationStep />
-      <OffcutStep />
+      <OffcutStep type="entry" />
       <TransportsStep />
       <SaveButton
         label="Enregistrer"

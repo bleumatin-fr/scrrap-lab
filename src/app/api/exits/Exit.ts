@@ -23,6 +23,8 @@ OffCutQuantitySchema.plugin(normalize);
 interface Exit {
   date: Date;
   offcuts: OffCutQuantity[];
+  validatedAt?: Date;
+  validatedBy?: string;
 }
 
 export const exitSchema = new Schema<Exit>(
@@ -32,6 +34,12 @@ export const exitSchema = new Schema<Exit>(
       required: true,
     },
     offcuts: [OffCutQuantitySchema],
+    validatedAt: {
+      type: Date,
+    },
+    validatedBy: {
+      type: String,
+    },
   },
   {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },

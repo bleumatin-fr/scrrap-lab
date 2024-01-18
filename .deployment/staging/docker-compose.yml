@@ -1,8 +1,32 @@
 services:
+  talm_chutocalculator:
+    image: registry.bleumatin.fr/talm/chutocalculator:latest
+    volumes:
+      - ./.docker/chutocalculator/spreadsheets:/app/spreadsheets
+    environment:
+      - FRONT_API_URL=https://chutocalculator.talm.bleumatin.fr/api
+      - FRONT_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
+      - ADMIN_API_URL=https://chutocalculator.talm.bleumatin.fr/admin/api
+      - ADMIN_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
+      - ADMIN_DOCUMENTSERVER_URL=http://localhost:4000
+      - PORT=3000
+      - JWT_SECRET=XcG8Eqnt3j52BQsJe2DskNB9
+      - MONGO_URL=mongodb://root:r00tp4skalF10@salomon_mongo:27017/chutocalculator
+      - MAIL_URL=smtp://talm_mail:1025
+      - WHITELISTED_DOMAINS=https://chutocalculator.talm.bleumatin.fr
+      - FRONTEND_URL=https://chutocalculator.talm.bleumatin.fr
+      - DOCUMENTSERVER_API_URL=http://salomon:3000/admin/api
+      - DOCBUILDER_SPREADSHEET_FOLDER=/app/spreadsheets
+    links:
+      - talm_mongo
+      - talm_mail
+
   talm_chutocollector:
     image: registry.bleumatin.fr/talm/chutocollector:latest
     environment:
       - MONGO_URL=mongodb://root:r00tp4skalF10@talm_mongo:27017/admin
+    volumes:
+      - ./.docker/chutocollector/uploads:/app/public/uploads
     deploy:
       restart_policy:
         condition: on-failure
@@ -17,6 +41,9 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=r00tp4skalF10
+
+  talm_mail:
+    image: maildev/maildev
 
 networks:
   default:
