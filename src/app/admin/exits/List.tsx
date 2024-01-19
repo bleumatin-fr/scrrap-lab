@@ -1,15 +1,14 @@
 import {
   ArrayField,
-  BooleanField,
+  CheckboxGroupInput,
   Datagrid,
   DateField,
   EditButton,
   List,
   NumberField,
   ReferenceInput,
-  TextField,
+  TextField
 } from "react-admin";
-import ValidateButton from "./ValidateButton";
 import ValidatedField from "./ValidatedField";
 
 const filters = [
@@ -18,6 +17,17 @@ const filters = [
     source="type"
     reference="investmentTypes"
     label="Type"
+    alwaysOn
+  />,
+  <CheckboxGroupInput
+    key="to-validate"
+    source="to-validate"
+    label=""
+    choices={
+      [
+        { id: "true", name: "À valider" },
+      ] as any
+    }
     alwaysOn
   />,
 ];
@@ -35,7 +45,6 @@ const EntriesList = () => (
       </ArrayField>
       <ValidatedField source="validatedAt" label="Validé" />
       <EditButton />
-      <ValidateButton />
     </Datagrid>
   </List>
 );

@@ -19,6 +19,13 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  if(request.nextUrl.searchParams.has("to-validate")) {
+    filters = {
+      ...filters,
+      validatedAt: { $exists: false },
+    }
+  }
+
   if (request.nextUrl.searchParams.has("_sort")) {
     const sortProperty = request.nextUrl.searchParams.get("_sort") || "date";
     const order = request.nextUrl.searchParams.get("_order") || "ASC";
