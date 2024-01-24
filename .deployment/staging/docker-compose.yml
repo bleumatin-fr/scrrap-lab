@@ -2,29 +2,50 @@ services:
   talm_chutocalculator:
     image: registry.bleumatin.fr/talm/chutocalculator:latest
     volumes:
-      - ./.docker/chutocalculator/spreadsheets:/app/spreadsheets
+      - chutocalculator-spreadsheets:/app/spreadsheets
     environment:
+      - PORT=3000
+      - MONGO_URL=mongodb://root:r00tp4skalF10@talm_chutocalculator_mongo:27017/admin
+      - PASSWORD_SALT_ROUND=10
+      - JWT_SECRET=XcG8Eqnt3j52BQsJe2DskNB9
+      - JWT_EXPIRY=60 * 24
+      - REFRESH_TOKEN_SECRET=daiGixHvEq9UUjou7WWZ86hg
+      - REFRESH_TOKEN_EXPIRY=60 * 60 * 24 * 30
+      - COOKIE_SECRET=uqUB6o5X9jgCi6kyS2273DER
+      - RESET_PASSWORD_TOKEN_SECRET=wGeobRQpwMuWE7
+      - RESET_PASSWORD_TOKEN_EXPIRY=60 * 60 * 24 * 30
+      - INVITATION_TOKEN_EXPIRY=60 * 60 * 24 * 7
+      - WHITELISTED_DOMAINS=https://chutocalculator.talm.bleumatin.fr
+      - DOCBUILDER_SPREADSHEET_FOLDER=/app/spreadsheets
+      - DOCUMENTSERVER_API_URL=http://talm_chutocalculator:3000/admin/api
+      - MAIL_HOST=talm_mail
+      - MAIL_PORT=1025
+      - MAIL_FROM=no-reply@talm.org
+      - MAIL_TO=simulateur@talm.org
+      - FRONTEND_URL=https://chutocalculator.talm.bleumatin.fr
       - FRONT_API_URL=https://chutocalculator.talm.bleumatin.fr/api
       - FRONT_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
+      - ADMIN_AUTH_API_URL=https://chutocalculator.talm.bleumatin.fr/admin/api/authentication
       - ADMIN_API_URL=https://chutocalculator.talm.bleumatin.fr/admin/api
       - ADMIN_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
-      - ADMIN_DOCUMENTSERVER_URL=http://localhost:4000
-      - PORT=3000
-      - JWT_SECRET=XcG8Eqnt3j52BQsJe2DskNB9
-      - MONGO_URL=mongodb://root:r00tp4skalF10@salomon_mongo:27017/chutocalculator
-      - MAIL_URL=smtp://talm_mail:1025
-      - WHITELISTED_DOMAINS=https://chutocalculator.talm.bleumatin.fr
-      - FRONTEND_URL=https://chutocalculator.talm.bleumatin.fr
-      - DOCUMENTSERVER_API_URL=http://salomon:3000/admin/api
-      - DOCBUILDER_SPREADSHEET_FOLDER=/app/spreadsheets
+      - ADMIN_DOCUMENTSERVER_URL=https://docs.talm.bleumatin.fr
     links:
-      - talm_mongo
+      - talm_chutocalculator_mongo
       - talm_mail
+
+  talm_chutocalculator_mongo:
+    image: mongo:latest
+    command: mongod --storageEngine=wiredTiger
+    volumes:
+      - chutocalculator-mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=r00tp4skalF10
 
   talm_chutocollector:
     image: registry.bleumatin.fr/talm/chutocollector:latest
     environment:
-      - MONGO_URL=mongodb://root:r00tp4skalF10@talm_mongo:27017/admin
+      - MONGO_URL=mongodb://root:r00tp4skalF10@talm_chutocollector_mongo:27017/admin
       - HOSTNAME=0.0.0.0
     volumes:
       - chutocollector-uploads:/app/public/uploads
@@ -32,19 +53,27 @@ services:
       restart_policy:
         condition: on-failure
     links:
-      - talm_mongo
+      - talm_chutocollector_mongo
+      - talm_mail
 
-  talm_mongo:
+  talm_chutocollector_mongo:
     image: mongo:latest
     command: mongod --storageEngine=wiredTiger
     volumes:
-      - ./.docker/mongo/data:/data/db
+      - chutocollector-mongo:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=r00tp4skalF10
 
   talm_mail:
     image: maildev/maildev
+
+  talm_documentserver:
+    image: onlyoffice/documentserver
+    environment:
+      - JWT_ENABLED=true
+      - JWT_SECRET=XcG8Eqnt3j52BQsJe2DskNB9
+      - GENERATE_FONTS=true
 
 networks:
   default:
@@ -53,3 +82,6 @@ networks:
 
 volumes:
   chutocollector-uploads:
+  chutocalculator-spreadsheets:
+  chutocalculator-mongo:
+  chutocollector-mongo:
