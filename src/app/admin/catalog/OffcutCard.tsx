@@ -41,7 +41,6 @@ const CardWeightContainer = styled.div`
 `;
 
 const OffcutCard = ({ offcut }: { offcut: any }) => {
-  const redirect = useRedirect();
   const thumbnailsRef = useRef<ThumbnailsRef>(null);
   const [picturesOpen, setPicturesOpen] = useState(false);
   const [cart, setCart] = useStore<CartItem[]>("cart", []);
@@ -57,21 +56,23 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
 
   return (
     <>
-      <Lightbox
-        open={picturesOpen}
-        plugins={[Thumbnails, Counter]}
-        counter={{ container: { style: { top: "unset", bottom: 0 } } }}
-        thumbnails={{ ref: thumbnailsRef }}
-        on={{
-          click: () => {
-            (thumbnailsRef.current?.visible
-              ? thumbnailsRef.current?.hide
-              : thumbnailsRef.current?.show)?.();
-          },
-        }}
-        close={() => setPicturesOpen(false)}
-        slides={offcut.pictures}
-      />
+      {offcut.pictures && offcut.pictures.length > 0 && (
+        <Lightbox
+          open={picturesOpen}
+          plugins={[Thumbnails, Counter]}
+          counter={{ container: { style: { top: "unset", bottom: 0 } } }}
+          thumbnails={{ ref: thumbnailsRef }}
+          on={{
+            click: () => {
+              (thumbnailsRef.current?.visible
+                ? thumbnailsRef.current?.hide
+                : thumbnailsRef.current?.show)?.();
+            },
+          }}
+          close={() => setPicturesOpen(false)}
+          slides={offcut.pictures}
+        />
+      )}
       <Card
         key={offcut.id}
         sx={{
@@ -114,6 +115,23 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             />
           </CardMediaContainer>
         )}
+
+        {!offcut.pictures ||
+          (offcut.pictures.length === 0 && (
+            <CardMediaContainer
+            >
+              <img
+                loading="lazy"
+                src={'/image-placeholder.svg'}
+                alt=''
+                style={{
+                  width: "102%",
+                  marginLeft: "-1%",
+                  marginTop: "-1%",
+                }}
+              />
+            </CardMediaContainer>
+          ))}
 
         <CardContent
           sx={{

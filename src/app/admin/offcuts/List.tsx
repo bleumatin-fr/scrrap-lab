@@ -78,7 +78,11 @@ const OffcutList = () => (
       <ReferenceArrayField source="colors" reference="colors" label="Couleur" />
       <ReferenceArrayField source="sizes" reference="sizes" label="Taille" />
       <ReferenceField source="quality" reference="qualities" label="Qualité" />
-      <NumberField source="quantity" label="Quantité" />
+      <NumberField
+        source="quantity"
+        label="Poids"
+        options={{ style: "unit", unit: "gram" }}
+      />
       <DateField source="createdAt" label="Date d'ajout" />
       <EditButton />
     </Datagrid>

@@ -7,7 +7,7 @@ import {
   List,
   NumberField,
   ReferenceInput,
-  TextField
+  TextField,
 } from "react-admin";
 import ValidatedField from "./ValidatedField";
 
@@ -23,11 +23,7 @@ const filters = [
     key="to-validate"
     source="to-validate"
     label=""
-    choices={
-      [
-        { id: "true", name: "À valider" },
-      ] as any
-    }
+    choices={[{ id: "true", name: "À valider" }] as any}
     alwaysOn
   />,
 ];
@@ -40,7 +36,11 @@ const EntriesList = () => (
         <Datagrid bulkActionButtons={false}>
           <TextField source="offcut.reference" label="Référence" />
           <TextField source="offcut.name" label="Nom" />
-          <NumberField source="quantity" label="Quantité" />
+          <NumberField
+            source="quantity"
+            label="Poids"
+            options={{ style: "unit", unit: "gram" }}
+          />
         </Datagrid>
       </ArrayField>
       <ValidatedField source="validatedAt" label="Validé" />

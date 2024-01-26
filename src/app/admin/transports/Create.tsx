@@ -6,6 +6,7 @@ import {
   NumberInput,
   ReferenceInput,
   SimpleForm,
+  TextInput,
   required,
   useInput,
 } from "react-admin";
@@ -69,13 +70,30 @@ export const Fields = () => {
       </ReferenceInput>
       <AddressAutoComplete source="from" label="Départ" />
       <AddressAutoComplete source="to" label="Destination" />
-      <NumberInput source="distance" validate={required()} />
+      <NumberInput
+        source="distance"
+        className="number-input"
+        validate={required()}
+        InputProps={{
+          endAdornment: "km",
+        }}
+      />
       <NumberInput
         source="consumption"
         label="Consommation"
         validate={[required()]}
+        InputProps={{
+          endAdornment: "L/100km",
+        }}
       />
-      <NumberInput source="weight" label="Poids" validate={required()} />
+      <NumberInput
+        source="weight"
+        label="Poids"
+        validate={required()}
+        InputProps={{
+          endAdornment: "g",
+        }}
+      />
       <NumberInput
         source="passengers"
         label="Nombre de passagers"

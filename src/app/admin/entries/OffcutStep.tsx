@@ -19,6 +19,7 @@ import { SimpleForm, useGetList, useInput } from "react-admin";
 import Alert from "@mui/material/Alert";
 import { CartItem } from "./CartItem";
 import { Fields as OffcutFields } from "../offcuts/Create";
+import WeightField from "../WeightField";
 
 const Layout = styled.div`
   display: flex;
@@ -202,47 +203,49 @@ const Cart = () => {
             flex: 1,
             valueGetter: (params) => params.row.offcut.name,
           },
-          {
-            field: `offcut.matter`,
-            headerName: "Matière",
-            flex: 1,
-            valueGetter: (params) => params.row.offcut.material.value,
-          },
-          {
-            field: `offcut.material`,
-            headerName: "Matériaux",
-            flex: 1,
-            valueGetter: (params) => params.row.offcut.material.value,
-          },
-          {
-            field: `offcut.quality`,
-            headerName: "Qualité",
-            flex: 1,
-            valueGetter: (params) => params.row.offcut.quality.value,
-          },
-          {
-            field: `offcut.sizes`,
-            headerName: "Taille",
-            flex: 1,
-            valueGetter: (params) =>
-              params.row.offcut.sizes.map((size: any) => size.value).join(", "),
-          },
-          {
-            field: `offcut.colors`,
-            headerName: "Couleur",
-            flex: 1,
-            valueGetter: (params) =>
-              params.row.offcut.colors
-                .map((color: any) => color.value)
-                .join(", "),
-          },
+          // {
+          //   field: `offcut.matter`,
+          //   headerName: "Matière",
+          //   flex: 1,
+          //   valueGetter: (params) => params.row.offcut.material.value,
+          // },
+          // {
+          //   field: `offcut.material`,
+          //   headerName: "Matériaux",
+          //   flex: 1,
+          //   valueGetter: (params) => params.row.offcut.material.value,
+          // },
+          // {
+          //   field: `offcut.quality`,
+          //   headerName: "Qualité",
+          //   flex: 1,
+          //   valueGetter: (params) => params.row.offcut.quality?.value,
+          // },
+          // {
+          //   field: `offcut.sizes`,
+          //   headerName: "Taille",
+          //   flex: 1,
+          //   valueGetter: (params) =>
+          //     params.row.offcut.sizes
+          //       ?.map((size: any) => size.value)
+          //       .join(", "),
+          // },
+          // {
+          //   field: `offcut.colors`,
+          //   headerName: "Couleur",
+          //   flex: 1,
+          //   valueGetter: (params) =>
+          //     params.row.offcut.colors
+          //       ?.map((color: any) => color.value)
+          //       .join(", "),
+          // },
           {
             field: "quantity",
-            headerName: "Quantité",
+            headerName: "Poids",
             sortable: false,
+            width: 250,
             renderCell: (params) => {
-              const onChange = (e: ChangeEvent) => {
-                const value = parseInt((e.target as any).value);
+              const onChange = (value: number) => {
                 if (isNaN(value)) {
                   return;
                 }
@@ -260,7 +263,7 @@ const Cart = () => {
               };
 
               return (
-                <TextField
+                <WeightField
                   type="number"
                   onChange={onChange}
                   value={params.row.quantity}

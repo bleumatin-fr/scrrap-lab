@@ -56,15 +56,7 @@ export const Fields = () => {
           },
         }}
       />
-      <RichTextInput
-        source="source"
-        label="Provenance"
-        sx={{
-          "& .ProseMirror": {
-            minHeight: 80,
-          },
-        }}
-      />
+      <TextInput source="source" label="Provenance"  validate={required()} />
       <ReferenceInput source="matter" reference="matters">
         <AutocompleteInput
           optionText="value"

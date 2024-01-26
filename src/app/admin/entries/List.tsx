@@ -29,7 +29,11 @@ const EntriesList = () => (
         <Datagrid bulkActionButtons={false}>
           <TextField source="offcut.reference" label="Référence" />
           <TextField source="offcut.name" label="Nom" />
-          <NumberField source="quantity" label="Quantité" />
+          <NumberField
+            source="quantity"
+            label="Poids"
+            options={{ style: "unit", unit: "gram" }}
+          />
         </Datagrid>
       </ArrayField>
       <ArrayField source="transports" label="Transports">

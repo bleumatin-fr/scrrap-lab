@@ -25,7 +25,7 @@ services:
       - FRONTEND_URL=https://chutocalculator.talm.bleumatin.fr
       - FRONT_API_URL=https://chutocalculator.talm.bleumatin.fr/api
       - FRONT_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
-      - ADMIN_AUTH_API_URL=https://chutocalculator.talm.bleumatin.fr/admin/api/authentication
+      - ADMIN_AUTH_API_URL=https://chutocalculator.talm.bleumatin.fr/api/authentication
       - ADMIN_API_URL=https://chutocalculator.talm.bleumatin.fr/admin/api
       - ADMIN_FRONT_URL=https://chutocalculator.talm.bleumatin.fr
       - ADMIN_DOCUMENTSERVER_URL=https://docs.talm.bleumatin.fr

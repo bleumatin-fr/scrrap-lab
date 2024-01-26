@@ -26,7 +26,7 @@ const Dashboard = () => {
   
   return (
   <>
-    <Title title="Welcome to the administration" />
+    <Title title="Chutocollector" />
     <Container>
       <CardWithIcon
         to="/transports"

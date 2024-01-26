@@ -29,8 +29,16 @@ const TransportList = () => (
         reference="investmentConditions"
         label="Condition"
       />
-      <NumberField source="weight" label="Poids" />
-      <NumberField source="usagePeriod" label="Durée d'usage prévisionnelle" />
+      <NumberField
+        source="weight"
+        label="Poids"
+        options={{ style: "unit", unit: "gram" }}
+      />
+      <NumberField
+        source="usagePeriod"
+        label="Durée d'usage prévisionnelle"
+        options={{ style: "unit", unit: "year" }}
+      />
       <DateField source="usageStart" label="Date de début d'usage" />
       <NumberField source="quantity" label="Quantité" />
       <EditButton />
