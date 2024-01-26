@@ -5,7 +5,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Admin, Resource, TranslationMessages } from "react-admin";
 import { BrowserRouter } from "react-router-dom";
 import AppLayout from "./Layout";
-import Dashboard from "./dashboard";
 import dataProvider from "./dataProvider";
 import entries from "./entries";
 import exits from "./exits";
@@ -14,10 +13,10 @@ import listRessourceFactory from "./lists";
 import offcuts from "./offcuts";
 import theme from "./theme";
 import transports from "./transports";
+import metrics from "./metrics";
 import catalog from "./catalog";
 import frenchMessages from "ra-language-french";
 import polyglotI18nProvider from "ra-i18n-polyglot";
-
 
 const i18nProvider = polyglotI18nProvider((locale) => frenchMessages);
 
@@ -26,13 +25,18 @@ const AdminApp = () => (
     <BrowserRouter>
       <Admin
         i18nProvider={i18nProvider}
-        dashboard={Dashboard}
         dataProvider={dataProvider}
         layout={AppLayout}
         title="ChutoCollector"
         disableTelemetry
         theme={theme}
       >
+        <Resource
+          {...metrics}
+          options={{
+            label: "Métriques",
+          }}
+        />
         <Resource
           {...entries}
           options={{

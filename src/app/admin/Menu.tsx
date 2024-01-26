@@ -91,7 +91,6 @@ const CustomMenu = () => {
 
   return (
     <Menu>
-      <Menu.DashboardItem />
       {rootResources.map((resource) => (
         <Menu.ResourceItem key={resource} name={resource} />
       ))}
