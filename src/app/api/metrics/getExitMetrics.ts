@@ -44,7 +44,7 @@ const getExitMetrics = async (
 
   return data.map((item: any) => {
     return {
-      id: ` exits-${item.key}-weight`,
+      id: `exits-${item.key}-weight`,
       category: "exits",
       value: item.weight,
     };
