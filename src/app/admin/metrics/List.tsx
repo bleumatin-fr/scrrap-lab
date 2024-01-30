@@ -1,18 +1,48 @@
+import { Button } from "@mui/material";
 import {
   Datagrid,
-  DateField,
   DateInput,
-  EditButton,
   List,
-  ListGuesser,
   NumberField,
-  ReferenceField,
-  ReferenceInput,
   TextField,
+  useListContext,
 } from "react-admin";
+import ExportIcon from "@mui/icons-material/Link";
 
 const startOfYear = new Date(new Date().getFullYear(), 0, 1);
 const today = new Date();
+
+const Actions = () => {
+  const { data } = useListContext();
+
+  const handleClick = () => {
+    if (!process.env.NEXT_PUBLIC_CALCULATOR_URL) {
+      throw new Error(
+        "Environment variable NEXT_PUBLIC_CALCULATOR_URL is not set"
+      );
+    }
+    const url = data.reduce((url: URL, metric) => {
+      url.searchParams.append(metric.id, metric.value);
+      return url;
+    }, new URL(process.env.NEXT_PUBLIC_CALCULATOR_URL));
+
+    // window.open(url, "_blank");
+
+    console.log(url);
+  };
+
+  return (
+    <Button
+      startIcon={<ExportIcon />}
+      onClick={handleClick}
+      sx={{
+        whiteSpace: "nowrap",
+      }}
+    >
+      Créer nouveau calcul
+    </Button>
+  );
+};
 
 const filters = [
   <DateInput key="start" source="start" label="De" alwaysOn />,
@@ -29,8 +59,9 @@ const MetricsList = () => (
     }}
     pagination={false}
     perPage={1000}
+    actions={<Actions />}
   >
-    <Datagrid>
+    <Datagrid bulkActionButtons={false}>
       <TextField source="category" />
       <TextField source="id" />
       <NumberField source="value" />
