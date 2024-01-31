@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { Model, model, Schema } from "mongoose";
 import normalize from "normalize-mongoose";
 
 export const availableLists = [
@@ -47,18 +47,5 @@ export const listSchema = new Schema<List>(
 
 listSchema.plugin(normalize);
 
-type ListType = mongoose.Model<
-  List,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, List> &
-    List &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.List as unknown as ListType) ||
-  mongoose.model<List>("List", listSchema);
+export default (mongoose.models?.List as Model<List>) ||
+  model<List>("List", listSchema);

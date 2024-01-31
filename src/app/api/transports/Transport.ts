@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import { ExtractInterface } from "../db";
 import List from "../[listCategory]/List";
@@ -63,21 +63,7 @@ export const transportSchema = new Schema<Transport>(
   }
 );
 
-
 transportSchema.plugin(normalize);
 
-type TransportType = mongoose.Model<
-  Transport,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, Transport> &
-    Transport &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.Transport as unknown as TransportType) ||
-  mongoose.model<Transport>("Transport", transportSchema);
+export default (mongoose.models?.Transport as Model<Transport>) ||
+  model<Transport>("Transport", transportSchema);

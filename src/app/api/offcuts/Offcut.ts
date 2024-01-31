@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { Model, model, Schema } from "mongoose";
 import normalize from "normalize-mongoose";
 import List from "../[listCategory]/List";
 import { ExtractInterface } from "../db";
@@ -60,18 +60,5 @@ offcutSchema.index({
   description: "text",
 });
 
-type OffcutType = mongoose.Model<
-  Offcut,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, Offcut> &
-    Offcut &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.Offcut as unknown as OffcutType) ||
-  mongoose.model<Offcut>("Offcut", offcutSchema);
+export default (mongoose.models?.Offcut as Model<Offcut>) ||
+  model<Offcut>("Offcut", offcutSchema);

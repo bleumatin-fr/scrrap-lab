@@ -2,6 +2,7 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import Create from "./Create";
 import Edit from "./Edit";
 import List from "./List";
+import withPermissions from "../withPermissions";
 
 const offcuts = {
   name: "offcuts",
@@ -11,4 +12,4 @@ const offcuts = {
   icon: ExtensionIcon,
 };
 
-export default offcuts;
+export default withPermissions(offcuts);

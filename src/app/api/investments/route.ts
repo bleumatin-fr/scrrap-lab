@@ -2,9 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
 import Investment from "./Investment";
 import { FilterQuery, SortOrder } from "mongoose";
+import { handleErrors } from "../errorHandler";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
 
-export async function GET(request: NextRequest) {
+export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["investments.list"]);
+
   let filters: FilterQuery<typeof Investment> = {};
   let sort: { [key: string]: SortOrder } = {
     createdAt: "desc",
@@ -27,10 +33,13 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["investments.create"]);
+
   const {
     type,
     condition,
@@ -52,4 +61,4 @@ export async function POST(request: NextRequest) {
     meta,
   });
   return NextResponse.json(addedDocument);
-}
+});

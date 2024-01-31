@@ -2,6 +2,7 @@ import List from "./List";
 import Edit from "./Edit";
 import Create from "./Create";
 import OutputIcon from '@mui/icons-material/Output';
+import withPermissions from "../withPermissions";
 
 const entries = {
   name: "exits",
@@ -11,4 +12,4 @@ const entries = {
   icon: OutputIcon,
 };
 
-export default entries;
+export default withPermissions(entries);

@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import Offcut from "../offcuts/Offcut";
 
@@ -48,18 +48,5 @@ export const exitSchema = new Schema<Exit>(
 
 exitSchema.plugin(normalize);
 
-type ExitType = mongoose.Model<
-  Exit,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, Exit> &
-    Exit &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.Exit as unknown as ExitType) ||
-  mongoose.model<Exit>("Exit", exitSchema);
+export default (mongoose.models?.Exit as Model<Exit>) ||
+  model<Exit>("Exit", exitSchema);

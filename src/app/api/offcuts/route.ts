@@ -3,10 +3,11 @@ import { connect } from "../db";
 import Offcut from "./Offcut";
 import formDataToObject from "./formDataToObject";
 import { FilterQuery, SortOrder } from "mongoose";
+import { handleErrors } from "../errorHandler";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
 
-export async function GET(request: NextRequest) {
-  await connect();
-
+export const getOffcuts = async (request: NextRequest, audience? : string[]) => {
   let filters: FilterQuery<typeof Offcut> = {};
   let sort: { [key: string]: SortOrder } = {
     createdAt: "desc",
@@ -106,6 +107,15 @@ export async function GET(request: NextRequest) {
     };
   }
 
+  if(audience) {
+    filters = {
+      ...filters,
+      audiences: {
+        $in: audience,
+      },
+    };
+  }
+
   let populate: string[] = [];
   if (request.nextUrl.searchParams.has("meta.populate")) {
     populate = request.nextUrl.searchParams.getAll("meta.populate");
@@ -128,16 +138,29 @@ export async function GET(request: NextRequest) {
 
   const count = await Offcut.countDocuments(filters);
 
+  return { documents, count };
+}
+
+
+export const GET = handleErrors(async (request: NextRequest) => {
+  await connect();
+  await authenticate(request);
+  await allow(request, ["offcuts.list"]);
+
+  const { documents, count } = await getOffcuts(request);
+
   return NextResponse.json(documents, {
     headers: [["x-total-count", count.toString()]],
   });
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["offcuts.create"]);
 
   const formData = await request.formData();
   let modifications = await formDataToObject(formData);
   const createdDocument = await Offcut.create(modifications);
   return NextResponse.json(createdDocument);
-}
+});

@@ -2,6 +2,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Create from "./Create";
 import Edit from "./Edit";
 import List from "./List";
+import withPermissions from "../withPermissions";
 
 
 const transports = {
@@ -12,4 +13,4 @@ const transports = {
   icon: LocalShippingIcon,
 };
 
-export default transports;
+export default withPermissions(transports);

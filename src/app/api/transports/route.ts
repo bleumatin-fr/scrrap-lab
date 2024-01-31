@@ -2,9 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
 import Transport from "./Transport";
 import { FilterQuery, SortOrder } from "mongoose";
+import { handleErrors } from "../errorHandler";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
 
-export async function GET(request: NextRequest) {
+export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["transports.list"]);
+
   let filters: FilterQuery<typeof Transport> = {};
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
@@ -24,13 +30,17 @@ export async function GET(request: NextRequest) {
 
   const document = await Transport.find(filters).sort(sort);
   const count = await Transport.countDocuments(filters);
+
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["transports.edit"]);
+
   const {
     date,
     mode,
@@ -53,5 +63,6 @@ export async function POST(request: NextRequest) {
     from,
     to,
   });
+  
   return NextResponse.json(addedDocument);
-}
+});

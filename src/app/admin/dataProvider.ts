@@ -5,10 +5,11 @@ import {
   UpdateParams,
   fetchUtils,
 } from "react-admin";
+import httpClient from "./httpClient";
 
 export const endpoint = "/api";
 
-const baseDataProvider = jsonServerProvider(endpoint);
+const baseDataProvider = jsonServerProvider(endpoint, httpClient);
 
 type PostParams = {
   id: string;
@@ -49,7 +50,9 @@ const createOffcutsPostData = (
   params.data.quality && formData.append("quality", params.data.quality);
   params.data.reference && formData.append("reference", params.data.reference);
   params.data.audiences &&
-    params.data.audiences.forEach((audiences) => formData.append(`audiences`, audiences));
+    params.data.audiences.forEach((audiences) =>
+      formData.append(`audiences`, audiences)
+    );
   params.data.brandPolicy &&
     formData.append("brandPolicy", params.data.brandPolicy);
   params.data.source && formData.append("source", params.data.source);
@@ -69,8 +72,7 @@ export const dataProvider: DataProvider = {
   create: (resource, params) => {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
-      return fetchUtils
-        .fetchJson(`${endpoint}/${resource}`, {
+      return httpClient(`${endpoint}/${resource}`, {
           method: "POST",
           body: formData,
         })
@@ -83,8 +85,7 @@ export const dataProvider: DataProvider = {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
       formData.append("id", params.id);
-      return fetchUtils
-        .fetchJson(`${endpoint}/${resource}/${params.id}`, {
+      return httpClient(`${endpoint}/${resource}/${params.id}`, {
           method: "PUT",
           body: formData,
         })

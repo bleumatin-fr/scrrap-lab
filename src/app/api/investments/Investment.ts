@@ -1,7 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import { ExtractInterface } from "../db";
 import List from "../[listCategory]/List";
+import { Mode } from "fs";
 
 interface Investment {
   type: ExtractInterface<typeof List>;
@@ -57,18 +58,5 @@ export const investmentSchema = new Schema<Investment>(
 
 investmentSchema.plugin(normalize);
 
-type InvestmentType = mongoose.Model<
-  Investment,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, Investment> &
-    Investment &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.Investment as unknown as InvestmentType) ||
-  mongoose.model<Investment>("Investment", investmentSchema);
+export default (mongoose.models?.Investment as Model<Investment>) ||
+  model<Investment>("Investment", investmentSchema);

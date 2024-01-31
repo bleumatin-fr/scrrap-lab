@@ -7,9 +7,14 @@ import getInvestmentMetrics from "./getInvestmentMetrics";
 import getTransportMetrics from "./getTransportMetrics";
 import getExitMetrics from "./getExitMetrics";
 import getEntryMetrics from "./getEntryMetrics";
+import { handleErrors } from "../errorHandler";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
 
-export async function GET(request: NextRequest) {
+export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["metrics.list"]);
 
   const start = new Date(
     request.nextUrl.searchParams.get("start") || "2024-01-01"
@@ -26,4 +31,4 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(metrics, {
     headers: [["x-total-count", metrics.length.toString()]],
   });
-}
+});

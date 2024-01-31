@@ -1,26 +1,23 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import Offcut from "../offcuts/Offcut";
 import Transport from "../transports/Transport";
-
 
 interface OffCutQuantity {
   offcut: typeof Offcut;
   quantity: number;
 }
 
-const OffCutQuantitySchema = new Schema<OffCutQuantity>(
-  {
-    offcut: {
-      type: Schema.Types.ObjectId,
-      ref: "Offcut",
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-  }
-);
+const OffCutQuantitySchema = new Schema<OffCutQuantity>({
+  offcut: {
+    type: Schema.Types.ObjectId,
+    ref: "Offcut",
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
 
 OffCutQuantitySchema.plugin(normalize);
 
@@ -51,18 +48,5 @@ export const entrySchema = new Schema<Entry>(
 
 entrySchema.plugin(normalize);
 
-type EntryType = mongoose.Model<
-  Entry,
-  {},
-  {},
-  {},
-  mongoose.Document<unknown, {}, Entry> &
-    Entry &
-    Required<{
-      _id: Schema.Types.ObjectId;
-    }>,
-  any
->;
-
-export default (mongoose.models.Entry as unknown as EntryType) ||
-  mongoose.model<Entry>("Entry", entrySchema);
+export default (mongoose.models?.Entry as Model<Entry>) ||
+  model<Entry>("Entry", entrySchema);

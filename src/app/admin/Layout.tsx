@@ -4,7 +4,7 @@ import AppBar from "./AppBar";
 import Menu from "./Menu";
 
 const AppLayout = (props: LayoutProps) => (
-  <Layout {...props} menu={Menu} />
+  <Layout {...props} menu={Menu} appBar={AppBar} />
 );
 
 export default AppLayout;

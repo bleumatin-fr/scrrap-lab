@@ -4,26 +4,32 @@ import Exit from "./Exit";
 import { FilterQuery, SortOrder } from "mongoose";
 import populatePaths from "./populatePaths";
 import recalculateQuantities from "../offcuts/recalculateQuantities";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
+import { handleErrors } from "../errorHandler";
 
-export async function GET(request: NextRequest) {
+export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["exits.list"]);
+
   let filters: FilterQuery<typeof Exit> = {};
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
   };
 
-  if(request.nextUrl.searchParams.has("validated")) {
+  if (request.nextUrl.searchParams.has("validated")) {
     filters = {
       ...filters,
       validatedAt: { $exists: true },
-    }
+    };
   }
 
-  if(request.nextUrl.searchParams.has("to-validate")) {
+  if (request.nextUrl.searchParams.has("to-validate")) {
     filters = {
       ...filters,
       validatedAt: { $exists: false },
-    }
+    };
   }
 
   if (request.nextUrl.searchParams.has("_sort")) {
@@ -39,10 +45,13 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["exits.create"]);
+
   const { date, offcuts } = await request.json();
 
   const offcutIds = offcuts.map((offcut: any) => {
@@ -62,6 +71,6 @@ export async function POST(request: NextRequest) {
       await recalculateQuantities(offcut.offcut.id);
     })
   );
-  
+
   return NextResponse.json(addedDocument);
-}
+});

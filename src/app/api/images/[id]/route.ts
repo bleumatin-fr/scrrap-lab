@@ -1,21 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
+import { handleErrors } from "../../errorHandler";
+import { connect } from "../../db";
+import authenticate from "../../authentication/authenticate";
+import allow from "../../authentication/allow";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const filePath = `./public/uploads/${params.id}`;
-  const buffer = fs.readFileSync(filePath);
+export const GET = handleErrors(
+  async (request: NextRequest, { params }: { params: { id: string } }) => {
+    await connect();
+    await authenticate(request);
+    await allow(request, ["offcuts.list", "catalog.list"]);
 
-  const headers = new Headers();
-  headers.append(
-    "Content-Disposition",
-    `attachment; filename="${params.id}.jpg"`
-  );
-  headers.append("Content-Type", "image/jpeg");
+    const filePath = `./public/uploads/${params.id}`;
+    const buffer = fs.readFileSync(filePath);
 
-  return new Response(buffer, {
-    headers,
-  });
-}
+    const headers = new Headers();
+    headers.append(
+      "Content-Disposition",
+      `attachment; filename="${params.id}.jpg"`
+    );
+    headers.append("Content-Type", "image/jpeg");
+
+    return new Response(buffer, {
+      headers,
+    });
+  }
+);

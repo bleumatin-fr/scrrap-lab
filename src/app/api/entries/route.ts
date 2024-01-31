@@ -5,9 +5,15 @@ import { FilterQuery, SortOrder } from "mongoose";
 import Transport from "../transports/Transport";
 import populatePaths from "./populatePaths";
 import recalculateQuantities from "../offcuts/recalculateQuantities";
+import { handleErrors } from "../errorHandler";
+import authenticate from "../authentication/authenticate";
+import allow from "../authentication/allow";
 
-export async function GET(request: NextRequest) {
+export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["entries.list"]);
+
   let filters: FilterQuery<typeof Entry> = {};
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
@@ -26,10 +32,13 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
+  await authenticate(request);
+  await allow(request, ["entries.edit"]);
+
   const { date, transports, offcuts } = await request.json();
 
   const transportIds = await Promise.all(
@@ -59,4 +68,4 @@ export async function POST(request: NextRequest) {
   );
 
   return NextResponse.json(addedDocument);
-}
+});

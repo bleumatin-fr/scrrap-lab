@@ -1,5 +1,6 @@
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import List from "./List";
+import withPermissions from "../withPermissions";
 
 const offcuts = {
   name: "catalog",
@@ -7,4 +8,4 @@ const offcuts = {
   icon: AutoStoriesIcon,
 };
 
-export default offcuts;
+export default withPermissions(offcuts);

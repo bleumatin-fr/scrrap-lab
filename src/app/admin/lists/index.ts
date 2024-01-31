@@ -1,18 +1,16 @@
-import { EditGuesser, ListGuesser } from "react-admin";
-import List from "./List";
+import withPermissions from "../withPermissions";
 import Create from "./Create";
 import Edit from "./Edit";
+import List from "./List";
 
-const listRessourceFactory = (
-  category: string,
-) => {
-  return {
+const listRessourceFactory = (category: string) => {
+  return withPermissions({
     name: category,
     list: List,
     create: Create,
     edit: Edit,
-    recordRepresentation: (record : any) => `${record.value}`
-  };
+    recordRepresentation: (record: any) => `${record.value}`,
+  });
 };
 
 export default listRessourceFactory;

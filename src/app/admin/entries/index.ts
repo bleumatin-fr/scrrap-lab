@@ -1,7 +1,8 @@
 import List from "./List";
 import Edit from "./Edit";
 import Create from "./Create";
-import InputIcon from '@mui/icons-material/Input';
+import InputIcon from "@mui/icons-material/Input";
+import withPermissions from "../withPermissions";
 
 const entries = {
   name: "entries",
@@ -11,4 +12,4 @@ const entries = {
   icon: InputIcon,
 };
 
-export default entries;
+export default withPermissions(entries);

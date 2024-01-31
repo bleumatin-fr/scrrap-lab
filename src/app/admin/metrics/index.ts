@@ -1,5 +1,6 @@
-import List from "./List";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import withPermissions from "../withPermissions";
+import List from "./List";
 
 const investments = {
   name: "metrics",
@@ -7,4 +8,4 @@ const investments = {
   icon: QueryStatsIcon,
 };
 
-export default investments;
+export default withPermissions(investments);

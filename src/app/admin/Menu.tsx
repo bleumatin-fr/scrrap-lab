@@ -88,6 +88,10 @@ const CustomMenu = () => {
     }
   };
 
+  const totalResources = Object.keys(resources).length;
+  if (totalResources <= 1) {
+    return null;
+  }
 
   return (
     <Menu>

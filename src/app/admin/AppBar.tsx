@@ -1,20 +1,42 @@
-import * as React from 'react';
-import { AppBar, TitlePortal, Toolbar } from 'react-admin';
-import { Box, useMediaQuery, Theme } from '@mui/material';
+import { AppBar as BaseAppBar, Box, Toolbar } from "@mui/material";
+import {
+  AppBarClasses,
+  SidebarToggleButton,
+  TitlePortal,
+  UserMenu,
+  useResourceDefinitions,
+} from "react-admin";
 
-import Logo from './Logo';
+import Logo from "./Logo";
+import styled from "@emotion/styled";
+
+const AppBar = styled(BaseAppBar)``;
 
 const CustomAppBar = () => {
-    const isLargeEnough = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.up('sm')
-    );
-    return (
-        <AppBar color="secondary" toolbar={<Toolbar />}>
+  const resources = useResourceDefinitions();
+  const totalResources = Object.keys(resources).length;
+
+  return (
+    <AppBar color="primary">
+      <Toolbar
+        disableGutters
+        variant="dense"
+        sx={{
+          width: "100%",
+        }}
+      >
+        <Logo />
+        {totalResources > 1 && (
+          <>
+            <SidebarToggleButton className={AppBarClasses.menuButton} />
             <TitlePortal />
-            {isLargeEnough && <Logo />}
-            {isLargeEnough && <Box component="span" sx={{ flex: 1 }} />}
-        </AppBar>
-    );
+          </>
+        )}
+        <Box flex="1" />
+        <UserMenu />
+      </Toolbar>
+    </AppBar>
+  );
 };
 
 export default CustomAppBar;

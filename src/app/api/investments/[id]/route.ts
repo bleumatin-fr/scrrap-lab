@@ -1,23 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../db";
 import Investment from "../Investment";
+import { handleErrors } from "../../errorHandler";
+import authenticate from "../../authentication/authenticate";
+import allow from "../../authentication/allow";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  await connect();
-  const document = await Investment.findOne({
-    _id: params.id,
-  });
-  return NextResponse.json(document);
-}
+export const GET = handleErrors(
+  async (request: NextRequest, { params }: { params: { id: string } }) => {
+    await connect();
+    await authenticate(request);
+    await allow(request, ["investments.list"]);
+
+    const document = await Investment.findOne({
+      _id: params.id,
+    });
+    return NextResponse.json(document);
+  }
+);
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   await connect();
+  await authenticate(request);
+  await allow(request, ["investments.edit"]);
+
   const {
     type,
     condition,
@@ -28,6 +36,7 @@ export async function PUT(
     quantity,
     meta,
   } = await request.json();
+  
   const updatedDocument = await Investment.findOneAndUpdate(
     {
       _id: params.id,
@@ -54,6 +63,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   await connect();
+  await authenticate(request);
+  await allow(request, ["investments.delete"]);
+
   const deletedDocument = await Investment.findOneAndDelete({
     _id: params.id,
   });
