@@ -19,7 +19,7 @@ export const GET = handleErrors(
   }
 );
 
-export const POST = handleErrors(
+export const PUT = handleErrors(
   async (request: NextRequest, { params }: { params: { id: string } }) => {
     await connect();
     await authenticate(request);
