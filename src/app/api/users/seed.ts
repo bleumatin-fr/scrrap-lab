@@ -1,16 +1,6 @@
 import { connect } from "../db";
 import Role from "../roles/Role";
-import User, { User as UserType } from "./User";
-
-const adminData = {
-  email: "admin@bleumatin.fr",
-  firstName: "Administrateur",
-  lastName: "Bleu Matin",
-  company: "Bleu Matin",
-  // = password
-  hash: "$2b$10$Zq2Q6Chp53thAJnB0h0LJ.HQ6.7LmmpBSFVSUQMk1FCN8R.OXivyS",
-  role: "admin",
-};
+import User from "./User";
 
 const defaultUsers = [
   {
