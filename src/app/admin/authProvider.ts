@@ -25,7 +25,7 @@ const authProvider: AuthProvider = {
   checkAuth: () =>
     localStorage.getItem("auth") ? Promise.resolve() : Promise.reject(),
   checkError: (error) => {
-    if (error.status === 401) {
+    if (error?.status === 401) {
       localStorage.removeItem("auth");
       return Promise.reject();
     }
