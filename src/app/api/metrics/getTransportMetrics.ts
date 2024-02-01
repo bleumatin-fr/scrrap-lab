@@ -1,152 +1,73 @@
-import List from "../[listCategory]/List";
+import Transport from "../transports/Transport";
 import Metric from "./Metric";
-
-const getTransportMetricsByReason = async (
-  start: Date,
-  end: Date
-): Promise<Metric[]> => {
-  const data = await List.aggregate([
-    {
-      $match: {
-        category: "transportReasons",
-      },
-    },
-    {
-      $lookup: {
-        from: "transports",
-        localField: "_id",
-        foreignField: "reason",
-        as: "transports",
-      },
-    },
-    {
-      $unwind: "$transports",
-    },
-    {
-      $match: {
-        "transports.date": {
-          $gte: start,
-          $lte: end,
-        },
-      },
-    },
-    {
-      $addFields: {
-        passengerKm: {
-          $multiply: ["$transports.distance", "$transports.passengers"],
-        },
-        tonKm: {
-          $multiply: ["$transports.distance", "$transports.weight"],
-        },
-      },
-    },
-    {
-      $group: {
-        _id: "$_id",
-        key: { $first: "$key" },
-        passengerKm: { $sum: "$passengerKm" },
-        tonKm: { $sum: "$tonKm" },
-      },
-    },
-  ]);
-
-  return [
-    ...data.map((item: any) => {
-      return {
-        id: `transports-reason-${item.key}-passengerkm`,
-        category: "transports",
-        value: item.passengerKm,
-      };
-    }),
-    ...data.map((item: any) => {
-      return {
-        id: `transports-reason-${item.key}-tonkm`,
-        category: "transports",
-        value: item.tonKm,
-      };
-    }),
-  ];
-}
-
-const getTransportMetricsByMode = async (
-  start: Date,
-  end: Date
-): Promise<Metric[]> => {
-  const data = await List.aggregate([
-    {
-      $match: {
-        category: "transportModes",
-      },
-    },
-    {
-      $lookup: {
-        from: "transports",
-        localField: "_id",
-        foreignField: "mode",
-        as: "transports",
-      },
-    },
-    {
-      $unwind: "$transports",
-    },
-    {
-      $match: {
-        "transports.date": {
-          $gte: start,
-          $lte: end,
-        },
-      },
-    },
-    {
-      $addFields: {
-        passengerKm: {
-          $multiply: ["$transports.distance", "$transports.passengers"],
-        },
-        tonKm: {
-          $multiply: ["$transports.distance", "$transports.weight"],
-        },
-      },
-    },
-    {
-      $group: {
-        _id: "$_id",
-        key: { $first: "$key" },
-        passengerKm: { $sum: "$passengerKm" },
-        tonKm: { $sum: "$tonKm" },
-      },
-    },
-  ]);
-
-  return [
-    ...data.map((item: any) => {
-      return {
-        id: `transports-mode-${item.key}-passengerkm`,
-        category: "transports",
-        value: item.passengerKm,
-      };
-    }),
-    ...data.map((item: any) => {
-      return {
-        id: `transports-mode-${item.key}-tonkm`,
-        category: "transports",
-        value: item.tonKm,
-      };
-    }),
-  ];
-}
-
 
 const getTransportMetrics = async (
   start: Date,
   end: Date
 ): Promise<Metric[]> => {
-  const transportMetricsByReason = await getTransportMetricsByReason(start, end);
-  const transportMetricsByMode = await getTransportMetricsByMode(start, end);
+  const data = await Transport.aggregate([
+    {
+      $match: {
+        date: {
+          $gte: start,
+          $lte: end,
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "lists",
+        localField: "mode",
+        foreignField: "_id",
+        as: "mode",
+      },
+    },
+    {
+      $lookup: {
+        from: "lists",
+        localField: "reason",
+        foreignField: "_id",
+        as: "reason",
+      },
+    },
+    {
+      $group: {
+        _id: {
+          mode: "$mode.key",
+          reason: "$reason.key",
+        },
+        key: { $first: "$mode.key" },
+        passengerKm: {
+          $sum: {
+            $multiply: ["$distance", "$passengers"],
+          },
+        },
+        tonKm: {
+          $sum: {
+            $multiply: ["$distance", "$weight"],
+          },
+        },
+      },
+    },
+  ]);
 
-  return [
-    ...transportMetricsByReason,
-    ...transportMetricsByMode,
-  ];
+  return data
+    .filter((item: any) => !!item._id.reason[0] && !!item._id.mode[0])
+    .reduce((acc: any, item: any) => {
+      return [
+        ...acc,
+        {
+          id: `transports-${item._id.reason}-${item._id.mode}-passengerkm`,
+          category: "transports",
+          value: item.passengerKm,
+        },
+        {
+          id: `transports-${item._id.reason}-${item._id.mode}-tonkm`,
+          category: "transports",
+          value: item.tonKm,
+        },
+      ];
+    }, []);
 };
 
 export default getTransportMetrics;
