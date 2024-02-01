@@ -7,10 +7,15 @@ const authenticate = async (request: NextRequest) => {
   if (!process.env.JWT_SECRET) {
     throw new Error("Environment variable JWT_SECRET not set");
   }
+  let token = null;
   const authorization = request.headers.get("authorization");
   if (authorization) {
-    const [_, token] = authorization.split(" ");
+    token = authorization.split(" ")[1];
+  } else if (request.cookies.get("accessToken")) {
+    token = request.cookies.get("accessToken")?.value;
+  }
 
+  if (token) {
     try {
       const payload: any = jwt.verify(token, process.env.JWT_SECRET, {});
       if (!payload) {

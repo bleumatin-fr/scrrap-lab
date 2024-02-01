@@ -72,11 +72,12 @@ export const dataProvider: DataProvider = {
   create: (resource, params) => {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
+      console.log("formData", formData);
       return httpClient(`${endpoint}/${resource}`, {
-          method: "POST",
-          body: formData,
-        })
-        .then(({ json }) => ({ data: json }));
+        method: "POST",
+        body: formData,
+        headers: new Headers({}),
+      }).then(({ json }) => ({ data: json }));
     }
 
     return baseDataProvider.create(resource, params);
@@ -84,12 +85,13 @@ export const dataProvider: DataProvider = {
   update: (resource, params) => {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
+      console.log("formData", formData);
       formData.append("id", params.id);
       return httpClient(`${endpoint}/${resource}/${params.id}`, {
-          method: "PUT",
-          body: formData,
-        })
-        .then(({ json }) => ({ data: json }));
+        method: "PUT",
+        body: formData,
+        headers: new Headers({}),
+      }).then(({ json }) => ({ data: json }));
     }
 
     return baseDataProvider.update(resource, params);
