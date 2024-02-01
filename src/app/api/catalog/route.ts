@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { getOffcuts } from "../offcuts/route";
+import getOffcuts from "../offcuts/getOffcuts";
 import { HttpError, handleErrors } from "../errorHandler";
 import { connect } from "../db";
 import authenticate from "../authentication/authenticate";
