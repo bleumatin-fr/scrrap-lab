@@ -25,15 +25,15 @@ const filters = [
 const UserList = () => (
   <List filters={filters}>
     <Datagrid rowClick="edit">
-      <TextField source="firstName" />
-      <TextField source="lastName" />
-      <TextField source="company" />
-      <EmailField source="email" />
-      <ReferenceField source="role" reference="roles">
+      <TextField source="firstName" label="Prénom" />
+      <TextField source="lastName" label="Nom de famille"/>
+      <TextField source="company" label="Société"/>
+      <EmailField source="email" label="Email"/>
+      <ReferenceField source="role" reference="roles" label="Role">
         <TextField source="name" />
       </ReferenceField>
-      <DateField source="createdAt" />
-      <DateField source="updatedAt" />
+      <DateField source="createdAt" label="Date de création" />
+      <DateField source="updatedAt" label="Date de modification" />
       <EditButton />
     </Datagrid>
   </List>

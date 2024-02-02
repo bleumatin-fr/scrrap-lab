@@ -13,7 +13,7 @@ const MAX_ACTIONS_DISPLAYED = 18;
 const UserList = () => (
   <List sort={{ field: "name", order: "ASC" }}>
     <Datagrid rowClick="edit">
-      <TextField source="name" />
+      <TextField source="name" label="Nom" />
       <FunctionField
         label="Actions"
         render={(record: any) => {

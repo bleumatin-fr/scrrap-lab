@@ -19,7 +19,7 @@ import { SimpleForm, useGetList, useInput } from "react-admin";
 import Alert from "@mui/material/Alert";
 import { CartItem } from "./CartItem";
 import { Fields as OffcutFields } from "../offcuts/Create";
-import WeightField from "../WeightField";
+import WeightField from "../WeightInput";
 
 const Layout = styled.div`
   display: flex;
@@ -243,7 +243,7 @@ const Cart = () => {
             field: "quantity",
             headerName: "Poids",
             sortable: false,
-            width: 250,
+            width: 270,
             renderCell: (params) => {
               const onChange = (value: number) => {
                 if (isNaN(value)) {

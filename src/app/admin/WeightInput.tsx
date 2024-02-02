@@ -1,15 +1,16 @@
 import styled from "@emotion/styled";
-import { Button, ButtonGroup, TextField, TextFieldProps } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { Button, ButtonGroup, TextFieldProps } from "@mui/material";
+import { useState } from "react";
+import NumberInput from "./NumberInput";
 
-type WeightFieldProps = Omit<TextFieldProps, "onChange"> & {
+type WeightInputProps = Omit<TextFieldProps, "onChange"> & {
   onChange: (value: number) => void;
 };
 
 const Container = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  min-width: 270px;
 `;
 
 interface WeightUnit {
@@ -28,15 +29,16 @@ const weightUnits: WeightUnit[] = [
   },
 ];
 
-const WeightField = ({ onChange, ...rest }: WeightFieldProps) => {
+const WeightInput = ({ onChange, ...rest }: WeightInputProps) => {
+  const [value, setValue] = useState(rest.value as number);
   const [selectedUnit, setSelectedUnit] = useState<WeightUnit>({
     value: 1000,
     label: "kg",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(event.target.value);
-    onChange(value / selectedUnit.value);
+  const handleChange = (value: number) => {
+    setValue(value);
+    onChange(value);
   };
 
   const handleUnitChange = (unit: WeightUnit) => () => {
@@ -46,7 +48,7 @@ const WeightField = ({ onChange, ...rest }: WeightFieldProps) => {
 
   return (
     <Container>
-      <TextField {...rest} type="number" onChange={handleChange} />
+      <NumberInput {...rest} onChange={handleChange} value={value}/>
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
@@ -68,4 +70,4 @@ const WeightField = ({ onChange, ...rest }: WeightFieldProps) => {
   );
 };
 
-export default WeightField;
+export default WeightInput;

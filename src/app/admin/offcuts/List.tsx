@@ -27,7 +27,7 @@ const filters = [
   >
     <AutocompleteInput optionText="value" label="Matière" />
   </ReferenceInput>,
-  <MaterialInput key="material" source="material" />,
+  <MaterialInput key="material" source="material" label="Matériaux" />,
   <ReferenceArrayInput
     key="sizes"
     source="sizes"

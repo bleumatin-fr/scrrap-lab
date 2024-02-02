@@ -15,7 +15,7 @@ const TransportEdit = () => (
       reference="investmentTypes"
       label="Type d'investissement"
     />
-    <TextInput source="name" label="Identifiant" />
+    <TextInput source="name" label="Nom" />
     <ReferenceInput
       source="condition"
       reference="investmentConditions"

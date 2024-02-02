@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { TextField, Typography, TextFieldProps } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { NumberInput } from "react-admin";
-import WeightField from "../WeightField";
+import WeightField from "../WeightInput";
 
 const CartLineContainer = styled.div`
   display: flex;

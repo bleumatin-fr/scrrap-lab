@@ -8,11 +8,11 @@ const ListList = () => (
     }}
   >
     <Datagrid rowClick="edit">
-      <TextField source="order" />
-      <TextField source="value" />
-      <TextField source="key" />
-      <DateField source="createdAt" />
-      <DateField source="updatedAt" />
+      <TextField source="order" label="Ordre" />
+      <TextField source="value" label="Valeur" />
+      <TextField source="key" label="Clé" />
+      <DateField source="createdAt" label="Date de création" />
+      <DateField source="updatedAt" label="Date de modification" />
       <EditButton />
     </Datagrid>
   </List>

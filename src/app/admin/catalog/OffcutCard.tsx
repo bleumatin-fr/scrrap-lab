@@ -304,17 +304,6 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             Ajouter au panier
           </Button>
         </CardActions>
-        <CardActions
-          sx={{
-            justifyContent: "space-evenly",
-            "> *": {
-              flexGrow: 1,
-            },
-          }}
-        >
-          <ShowButton record={offcut} />
-          <EditButton record={offcut} />
-        </CardActions>
       </Card>
     </>
   );

@@ -52,6 +52,7 @@ export const Fields = () => {
       />
       <ReferenceInput source="reason" reference="transportReasons">
         <AutocompleteInput
+          optionText="value"
           label="Raison"
           validate={required()}
           sx={{
@@ -61,6 +62,7 @@ export const Fields = () => {
       </ReferenceInput>
       <ReferenceInput source="mode" reference="transportModes">
         <AutocompleteInput
+          optionText="value"
           validate={required()}
           label="Mode de transport"
           sx={{

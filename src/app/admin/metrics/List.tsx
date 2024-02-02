@@ -63,9 +63,9 @@ const MetricsList = () => (
     actions={<Actions />}
   >
     <Datagrid bulkActionButtons={false}>
-      <TextField source="category" />
-      <TextField source="id" />
-      <NumberField source="value" />
+      <TextField source="category" label="Catégorie" />
+      <TextField source="id" label="Identifiant" />
+      <NumberField source="value" label="Valeur" />
     </Datagrid>
   </List>
 );

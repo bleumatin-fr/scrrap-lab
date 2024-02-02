@@ -18,10 +18,12 @@ import { useWatch } from "react-hook-form";
 export const MaterialInput = ({
   source,
   validate,
+  label,
   alwaysOn,
 }: {
   source: string;
   validate?: Validator | Validator[];
+  label?: string;
   alwaysOn?: boolean;
 }) => {
   const matter = useWatch<{ matter: string }>({ name: "matter" });
@@ -30,12 +32,12 @@ export const MaterialInput = ({
       source={source}
       reference="materials"
       filter={{ parent: matter || "none" }}
-      label="Matériaux"
+      label={label}
       alwaysOn={alwaysOn}
     >
       <AutocompleteInput
         optionText="value"
-        label="Matériaux"
+        label={label}
         validate={validate}
       />
     </ReferenceInput>

@@ -12,7 +12,7 @@ import { useDebounce } from "usehooks-ts";
 export const geocode = async (q: string) => {
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
     q
-  )}&addressdetails=1&namedetails=1&format=geojson`;
+  )}&addressdetails=1&namedetails=1&format=geojson&layer=address`;
 
   const response = await fetch(url);
   if (response.status < 200 || response.status >= 300) {
