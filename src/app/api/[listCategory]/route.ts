@@ -44,7 +44,7 @@ export const GET = handleErrors(
         [sortProperty]: order === "ASC" ? 1 : -1,
       };
     }
-    
+
     let limit = 10;
     let skip = 0;
     if (request.nextUrl.searchParams.has("_start")) {
@@ -74,12 +74,19 @@ export const POST = handleErrors(
     await authenticate(request);
     await allow(request, [`${params.listCategory}.edit`]);
 
+    const maxOrder = await List.findOne(
+      { category: params.listCategory },
+      {},
+      { sort: { order: -1 } }
+    );
+
     const { key, value, parent } = await request.json();
     const createdDocument = await List.create({
       category: params.listCategory,
       key,
       value,
       parent,
+      order: maxOrder && maxOrder.order ? maxOrder.order + 1 : 0,
     });
     return NextResponse.json(createdDocument);
   }

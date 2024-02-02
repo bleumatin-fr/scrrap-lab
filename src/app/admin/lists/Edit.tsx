@@ -3,6 +3,7 @@ import {
   CheckboxGroupInput,
   DateInput,
   Edit,
+  NumberInput,
   ReferenceField,
   ReferenceInput,
   SimpleForm,
@@ -17,6 +18,7 @@ const ListEdit = () => {
       <SimpleForm>
         <TextInput source="key" />
         <TextInput source="value" />
+        <NumberInput source="order" />
         {Array.isArray(resource.options.availableTags) &&
           resource.options.availableTags.length > 0 && (
             <CheckboxGroupInput
