@@ -1,228 +1,70 @@
 import { connect } from "../db";
 import List from "./List";
+import matters from "./seeds/matters";
+import materials from "./seeds/materials";
+import audiences from "./seeds/audiences";
+import brandPolicies from "./seeds/brandPolicies";
+import colors from "./seeds/colors";
+import investmentConditions from "./seeds/investmentConditions";
+import investmentTypes from "./seeds/investmentTypes";
+import qualities from "./seeds/qualities";
+import sizes from "./seeds/sizes";
+import transportModes from "./seeds/transportModes";
+import transportReasons from "./seeds/transportReasons";
 
-const data = [
-  {
-    category: "matters",
-    key: "plastic",
-    value: "Plastique",
-  },
-  {
-    category: "matters",
-    key: "ceramic",
-    value: "Céramique",
-  },
-  {
-    category: "matters",
-    key: "metallic",
-    value: "Métallique",
-  },
-  {
-    category: "matters",
-    key: "organic",
-    value: "Organique",
-  },
-  {
-    category: "matters",
-    key: "composite",
-    value: "Composite",
-  },
-  // ...
-  {
-    category: "sizes",
-    key: "small",
-    value: "Petit",
-  },
-  {
-    category: "sizes",
-    key: "medium",
-    value: "Moyen",
-  },
-  {
-    category: "sizes",
-    key: "large",
-    value: "Grand",
-  },
-  // ...
-  {
-    category: "colors",
-    key: "white",
-    value: "Blanc",
-  },
-  {
-    category: "colors",
-    key: "black",
-    value: "Noir",
-  },
-  {
-    category: "colors",
-    key: "multicolor",
-    value: "Multicolore",
-  },
-  // ...
-  {
-    category: "qualities",
-    key: "new",
-    value: "Neuf",
-    tags: ["new"],
-  },
-  {
-    category: "qualities",
-    key: "good",
-    value: "Bon état",
-    tags: ["second-hand"],
-  },
-  {
-    category: "qualities",
-    key: "medium",
-    value: "État moyen",
-    tags: ["second-hand"],
-  },
-  {
-    category: "qualities",
-    key: "bad",
-    value: "Mauvais état",
-    tags: ["second-hand"],
-  },
-  //...
-  {
-    category: "audiences",
-    key: "internal",
-    value: "Interne",
-  },
-  {
-    category: "audiences",
-    key: "public",
-    value: "Public",
-  },
-  // ...
-  {
-    category: "brandPolicies",
-    key: "yes",
-    value: "Oui",
-  },
-  {
-    category: "brandPolicies",
-    key: "no",
-    value: "Non",
-  },
-  {
-    category: "brandPolicies",
-    key: "notReadable",
-    value: "Non lisible",
-  },
-  //...
-  {
-    category: "transportModes",
-    key: "car",
-    value: "Voiture",
-  },
-  {
-    category: "transportModes",
-    key: "van",
-    value: "Camionnette",
-  },
-  {
-    category: "transportModes",
-    key: "cargo-bike",
-    value: "Vélo cargo",
-  },
-  {
-    category: "transportModes",
-    key: "feet",
-    value: "À pied",
-  },
-  {
-    category: "transportModes",
-    key: "public-transportation",
-    value: "Transports publics",
-  },
-  //...
-  {
-    category: "transportReasons",
-    key: "prospecting",
-    value: "Prospection",
-  },
-  {
-    category: "transportReasons",
-    key: "collection",
-    value: "Collecte / Transport matériaux",
-  },
-  {
-    category: "transportReasons",
-    key: "public-lecture",
-    value: "Cours publique",
-  },
-  {
-    category: "transportReasons",
-    key: "workshop",
-    value: "Atelier",
-  },
-  {
-    category: "transportReasons",
-    key: "open-house",
-    value: "Magasin ouvert au public",
-  },
-  {
-    category: "transportReasons",
-    key: "internal-event",
-    value: "Événement interne",
-  },
-  // ...
-  {
-    category: "investmentTypes",
-    key: "vehicule",
-    value: "Véhicule",
-  },
-  {
-    category: "investmentTypes",
-    key: "machine",
-    value: "Machine",
-  },
-  {
-    category: "investmentTypes",
-    key: "tablet",
-    value: "Tablette",
-  },
-  {
-    category: "investmentTypes",
-    key: "computer",
-    value: "Ordinateur",
-  },
-  {
-    category: "investmentTypes",
-    key: "screen",
-    value: "Écran",
-  },
-  {
-    category: "investmentTypes",
-    key: "furniture",
-    value: "Mobilier",
-  },
-  //... 
-  {
-    category: "investmentConditions",
-    key: "new",
-    value: "Neuf",
-  },
-  {
-    category: "investmentConditions",
-    key: "second-hand",
-    value: "Occasion",
-  },
+const data: {
+  category: string;
+  key: string;
+  value: string;
+  parent?: any;
+  tags?: string[];
+  order?: number;
+}[] = [
+  ...matters,
+  ...materials,
+  ...audiences,
+  ...brandPolicies,
+  ...colors,
+  ...investmentConditions,
+  ...investmentTypes,
+  ...qualities,
+  ...sizes,
+  ...transportModes,
+  ...transportReasons,
 ];
 
 const seed = async () => {
   await connect();
-  return Promise.all(
-    data.map(async (item) => {
-      if (await List.findOne({ category: item.category, key: item.key })) {
-        return;
+  let lastCategory = "";
+  let i = 0;
+  for (const item of data) {
+    if(item.category !== lastCategory) {
+      i = 0;
+    }
+    if (item.parent) {
+      const parent = await List.findOne(item.parent);
+      if (!parent) {
+        throw new Error(
+          `Parent not found: ${item.parent.category} - ${item.parent.key}`
+        );
       }
-      const list = new List(item);
-      await list.save();
-    })
-  );
+      item.parent = parent._id;
+    }
+    const existing = await List.findOne({
+      category: item.category,
+      key: item.key,
+    });
+    item.order = i;
+    lastCategory = item.category;
+    i++;
+    if (existing) {
+      existing.$set(item);
+      await existing.save();
+      continue;
+    }
+    const list = new List(item);
+    await list.save();
+  }
 };
 
 export default seed;

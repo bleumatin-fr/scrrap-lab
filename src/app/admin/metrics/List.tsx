@@ -7,7 +7,7 @@ import {
   TextField,
   useListContext,
 } from "react-admin";
-import ExportIcon from "@mui/icons-material/Link";
+import AddLinkIcon from "@mui/icons-material/AddLink";
 
 const startOfYear = new Date(new Date().getFullYear(), 0, 1);
 const today = new Date();
@@ -33,10 +33,11 @@ const Actions = () => {
 
   return (
     <Button
-      startIcon={<ExportIcon />}
+      startIcon={<AddLinkIcon />}
       onClick={handleClick}
       sx={{
         whiteSpace: "nowrap",
+        flexShrink: 0,
       }}
     >
       Créer nouveau calcul

@@ -28,7 +28,19 @@ export const GET = handleErrors(async (request: NextRequest) => {
     };
   }
 
-  const document = await Transport.find(filters).sort(sort);
+  let limit = 10;
+  let skip = 0;
+  if (request.nextUrl.searchParams.has("_start")) {
+    skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");
+  }
+  if (request.nextUrl.searchParams.has("_end")) {
+    limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
+  }
+
+  const document = await Transport.find(filters)
+    .sort(sort)
+    .limit(limit)
+    .skip(skip);
   const count = await Transport.countDocuments(filters);
 
   return NextResponse.json(document, {
@@ -63,6 +75,6 @@ export const POST = handleErrors(async (request: NextRequest) => {
     from,
     to,
   });
-  
+
   return NextResponse.json(addedDocument);
 });

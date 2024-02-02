@@ -24,6 +24,7 @@ interface List {
   value: string;
   parent?: List;
   tags: string[];
+  order?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +40,7 @@ export const listSchema = new Schema<List>(
     key: { type: String },
     value: { type: String },
     tags: [{ type: String }],
+    order: { type: Number },
   },
   {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },

@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, SortOrder } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
 import List, { availableLists } from "./List";
@@ -14,7 +14,7 @@ export const GET = handleErrors(
     await connect();
     await authenticate(request);
     await allow(request, [`${params.listCategory}.list`]);
-    
+
     let filters: FilterQuery<typeof List> = {
       category: params.listCategory,
     };
@@ -33,7 +33,31 @@ export const GET = handleErrors(
       }
     }
 
-    const documents = await List.find(filters);
+    let sort: { [key: string]: SortOrder } = {
+      order: "asc",
+    };
+
+    if (request.nextUrl.searchParams.has("_sort")) {
+      const sortProperty = request.nextUrl.searchParams.get("_sort") || "date";
+      const order = request.nextUrl.searchParams.get("_order") || "ASC";
+      sort = {
+        [sortProperty]: order === "ASC" ? 1 : -1,
+      };
+    }
+    
+    let limit = 10;
+    let skip = 0;
+    if (request.nextUrl.searchParams.has("_start")) {
+      skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");
+    }
+    if (request.nextUrl.searchParams.has("_end")) {
+      limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
+    }
+
+    const documents = await List.find(filters)
+      .sort(sort)
+      .limit(limit)
+      .skip(skip);
     const count = await List.countDocuments(filters);
     return NextResponse.json(documents, {
       headers: [["x-total-count", count.toString()]],

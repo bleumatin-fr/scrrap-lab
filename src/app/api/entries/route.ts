@@ -27,7 +27,20 @@ export const GET = handleErrors(async (request: NextRequest) => {
     };
   }
 
-  const document = await Entry.find(filters).sort(sort).populate(populatePaths);
+  let limit = 10;
+  let skip = 0;
+  if (request.nextUrl.searchParams.has("_start")) {
+    skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");
+  }
+  if (request.nextUrl.searchParams.has("_end")) {
+    limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
+  }
+  
+  const document = await Entry.find(filters)
+    .sort(sort)
+    .limit(limit)
+    .skip(skip)
+    .populate(populatePaths);
   const count = await Entry.countDocuments(filters);
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
