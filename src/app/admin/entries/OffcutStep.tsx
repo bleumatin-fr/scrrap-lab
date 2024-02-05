@@ -19,7 +19,7 @@ import { SimpleForm, useGetList, useInput } from "react-admin";
 import Alert from "@mui/material/Alert";
 import { CartItem } from "./CartItem";
 import { Fields as OffcutFields } from "../offcuts/Create";
-import WeightField from "../WeightInput";
+import WeightField from "../WeightField";
 
 const Layout = styled.div`
   display: flex;
@@ -40,13 +40,13 @@ const Catalog = () => {
   });
 
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 1,
+    page: 0,
     pageSize: 10,
   });
 
   const { data, total, isLoading, error, refetch } = useGetList("offcuts", {
     pagination: {
-      page: paginationModel.page,
+      page: paginationModel.page + 1,
       perPage: paginationModel.pageSize,
     },
     filter: {
@@ -179,7 +179,7 @@ const Cart = () => {
       }
     },
   });
-  const value: CartItem[] = field.value;
+  const value: CartItem[] = field.value.filter((item: any) => !!item.id);
 
   return (
     <div>
@@ -243,7 +243,7 @@ const Cart = () => {
             field: "quantity",
             headerName: "Poids",
             sortable: false,
-            width: 270,
+            width: 290,
             renderCell: (params) => {
               const onChange = (value: number) => {
                 if (isNaN(value)) {

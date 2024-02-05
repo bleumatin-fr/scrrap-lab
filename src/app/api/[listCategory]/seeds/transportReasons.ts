@@ -28,12 +28,7 @@ const data = [
     category: "transportReasons",
     key: "internal",
     value: "Déplacements équipe interne",
-  },
-  {
-    category: "transportReasons",
-    key: "internal",
-    value: "Déplacements équipe interne",
-  },
+  }
 ];
 
 export default data;

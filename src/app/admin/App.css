@@ -10,3 +10,7 @@ body {
 .MuiInputBase-root > input {
   padding-right: 12px;
 }
+
+.RaList-actions {
+  margin-bottom: 1rem;
+}

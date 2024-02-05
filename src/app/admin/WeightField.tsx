@@ -1,36 +1,17 @@
 import styled from "@emotion/styled";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, TextFieldProps } from "@mui/material";
 import { useState } from "react";
-import {
-  NumberInput,
-  NumberInputProps,
-  TextInput,
-  useInput,
-} from "react-admin";
 import NumberField from "./NumberField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-type WeightInputProps = NumberInputProps & {};
+type WeightFieldProps = Omit<TextFieldProps, "onChange"> & {
+  onChange: (value: number) => void;
+};
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   min-width: 290px;
-  gap: 8px;
-  margin-bottom: 24px;
-
-  > div:first-of-type {
-    order: 0;
-  }
-  > div:nth-of-type(2) {
-    order: 1;
-  }
-  > button:first-of-type {
-    order: 2;
-  }
-  > button:nth-of-type(2) {
-    order: 3;
-  }
 `;
 
 interface WeightUnit {
@@ -49,40 +30,26 @@ const weightUnits: WeightUnit[] = [
   },
 ];
 
-const WeightInput = ({ source, ...rest }: WeightInputProps) => {
-  const { field, fieldState } = useInput({
-    source,
-    validate: (value: number) => {
-      if (value < 0) {
-        return "La quantité ne peut pas être négative";
-      }
-    },
-  });
-
-  const [value, setValue] = useState((field.value as number) / 1000);
+const WeightField = ({ onChange, ...rest }: WeightFieldProps) => {
+  const [value, setValue] = useState((rest.value as number) / 1000);
   const [selectedUnit, setSelectedUnit] = useState<WeightUnit>({
     value: 1000,
     label: "kg",
   });
 
-  const handleChange = (value: number) => {
-    setValue(value);
-    field.onChange(value * selectedUnit.value);
+  const handleChange = (newValue: number) => {
+    setValue(newValue);
+    onChange(newValue * selectedUnit.value);
   };
 
   const handleUnitChange = (unit: WeightUnit) => () => {
     setSelectedUnit(unit);
-    field.onChange(value * selectedUnit.value);
+    onChange(value * unit.value);
   };
 
   return (
     <Container>
-      <NumberField
-        {...rest}
-        variant="filled"
-        onChange={handleChange}
-        value={value}
-      />
+      <NumberField {...rest} onChange={handleChange} value={value} />
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
@@ -109,4 +76,4 @@ const WeightInput = ({ source, ...rest }: WeightInputProps) => {
   );
 };
 
-export default WeightInput;
+export default WeightField;

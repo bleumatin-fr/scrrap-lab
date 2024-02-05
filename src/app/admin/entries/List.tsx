@@ -32,7 +32,8 @@ const EntriesList = () => (
           <NumberField
             source="quantity"
             label="Poids"
-            options={{ style: "unit", unit: "gram" }}
+            transform={(value) => value / 1000}
+            options={{ style: "unit", unit: "kilogram" }}
           />
         </Datagrid>
       </ArrayField>

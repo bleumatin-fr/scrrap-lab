@@ -72,7 +72,6 @@ export const dataProvider: DataProvider = {
   create: (resource, params) => {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
-      console.log("formData", formData);
       return httpClient(`${endpoint}/${resource}`, {
         method: "POST",
         body: formData,
@@ -85,7 +84,6 @@ export const dataProvider: DataProvider = {
   update: (resource, params) => {
     if (resource === "offcuts") {
       const formData = createOffcutsPostData(params);
-      console.log("formData", formData);
       formData.append("id", params.id);
       return httpClient(`${endpoint}/${resource}/${params.id}`, {
         method: "PUT",

@@ -26,9 +26,7 @@ export const GET = handleErrors(
 
     if (request.nextUrl.searchParams.has("parent")) {
       const parent = request.nextUrl.searchParams.get("parent");
-      if (parent === "none") {
-        filters = { ...filters, parent: null };
-      } else {
+      if (parent !== "none") {
         filters = { ...filters, parent };
       }
     }

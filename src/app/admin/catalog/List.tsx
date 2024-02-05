@@ -16,7 +16,13 @@ import OffcutCard from "./OffcutCard";
 import Cart from "./Cart";
 
 const filters = [
-  <TextInput key="q" label="Recherche" source="q" alwaysOn />,
+  <TextInput
+    key="q"
+    label="Rechercher par nom, référence ou mot clé dans le cartel..."
+    source="q"
+    alwaysOn
+    fullWidth
+  />,
   <ReferenceInput
     key="matter"
     source="matter"
@@ -24,9 +30,9 @@ const filters = [
     label="Matière"
     alwaysOn
   >
-    <AutocompleteInput optionText="value" label="Matière" />
+    <AutocompleteInput optionText="value" label="Matière" fullWidth />
   </ReferenceInput>,
-  <MaterialInput key="material" source="material" alwaysOn />,
+  <MaterialInput key="material" source="material" alwaysOn label="Matériaux" />,
   <ReferenceArrayInput
     key="sizes"
     source="sizes"
@@ -34,7 +40,7 @@ const filters = [
     label="Taille"
     alwaysOn
   >
-    <CheckboxGroupInput optionText="value" label="Taille" />
+    <AutocompleteInput optionText="value" label="Taille" fullWidth />
   </ReferenceArrayInput>,
   <ReferenceArrayInput
     key="colors"
@@ -43,7 +49,7 @@ const filters = [
     label="Couleur"
     alwaysOn
   >
-    <CheckboxGroupInput optionText="value" label="Couleur" />
+    <AutocompleteInput optionText="value" label="Couleur" fullWidth />
   </ReferenceArrayInput>,
   <ReferenceInput
     key="quality"
@@ -52,7 +58,7 @@ const filters = [
     label="Qualité"
     alwaysOn
   >
-    <RadioButtonGroupInput optionText="value" label="Qualité" />
+    <AutocompleteInput optionText="value" label="Qualité" fullWidth />
   </ReferenceInput>,
 ];
 
@@ -83,6 +89,14 @@ const OffcutList = () => (
     component={"div"}
     aside={<Cart />}
     actions={false}
+    sx={{
+      "[data-source]": {
+        flexGrow: 1,
+      },
+      "[data-source=q]": {
+        width: "100%",
+      },
+    }}
   >
     <OffcutGridList />
   </List>

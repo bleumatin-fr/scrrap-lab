@@ -39,6 +39,7 @@ export const MaterialInput = ({
         optionText="value"
         label={label}
         validate={validate}
+        fullWidth
       />
     </ReferenceInput>
   );

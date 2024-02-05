@@ -39,14 +39,6 @@ const AdminApp = () => (
       >
         {(permissions: string[]) => (
           <>
-            {permissions.includes("metrics.list") && (
-              <Resource
-                {...metrics(permissions)}
-                options={{
-                  label: "Métriques",
-                }}
-              />
-            )}
             {permissions.includes("entries.list") && (
               <Resource
                 {...entries(permissions)}
@@ -72,132 +64,141 @@ const AdminApp = () => (
               />
             )}
             {permissions.includes("offcuts.list") && (
-            <Resource
-              {...offcuts(permissions)}
-              options={{
-                label: "Chutes",
-                menu: "Inventaire",
-              }}
-            />
+              <Resource
+                {...offcuts(permissions)}
+                options={{
+                  label: "Chutes",
+                  menu: "Inventaire",
+                }}
+              />
             )}
             {permissions.includes("transports.list") && (
-            <Resource
-              {...transports(permissions)}
-              options={{
-                label: "Transports",
-                menu: "Inventaire",
-              }}
-            />
+              <Resource
+                {...transports(permissions)}
+                options={{
+                  label: "Transports",
+                  menu: "Inventaire",
+                }}
+              />
             )}
             {permissions.includes("investments.list") && (
-            <Resource
-              {...investments(permissions)}
-              options={{
-                label: "Investissements",
-                menu: "Inventaire",
-              }}
-            />
+              <Resource
+                {...investments(permissions)}
+                options={{
+                  label: "Investissements",
+                  menu: "Inventaire",
+                }}
+              />
+            )}
+            {permissions.includes("metrics.list") && (
+              <Resource
+                {...metrics(permissions)}
+                options={{
+                  label: "Métriques",
+                  menu: "Administration",
+                }}
+              />
             )}
             {permissions.includes("users.list") && (
-            <Resource
-              {...users(permissions)}
-              options={{ label: "Utilisateurs", menu: "Administration" }}
-            />
+              <Resource
+                {...users(permissions)}
+                options={{ label: "Utilisateurs", menu: "Administration" }}
+              />
             )}
             {permissions.includes("roles.list") && (
-            <Resource
-              {...roles(permissions)}
-              options={{ label: "Roles", menu: "Administration" }}
-            />
+              <Resource
+                {...roles(permissions)}
+                options={{ label: "Roles", menu: "Administration" }}
+              />
             )}
             {permissions.includes("matters.edit") && (
-            <Resource
-              {...listRessourceFactory("matters")(permissions)}
-              options={{ label: "Matières", menu: "Administration" }}
-            />
+              <Resource
+                {...listRessourceFactory("matters")(permissions)}
+                options={{ label: "Matières", menu: "Administration" }}
+              />
             )}
             {permissions.includes("materials.edit") && (
-            <Resource
-              {...listRessourceFactory("materials")(permissions)}
-              options={{
-                label: "Matériaux",
-                menu: "Administration",
-                linkedTo: "matters",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("materials")(permissions)}
+                options={{
+                  label: "Matériaux",
+                  menu: "Administration",
+                  linkedTo: "matters",
+                }}
+              />
             )}
             {permissions.includes("sizes.edit") && (
-            <Resource
-              {...listRessourceFactory("sizes")(permissions)}
-              options={{ label: "Tailles", menu: "Administration" }}
-            />
+              <Resource
+                {...listRessourceFactory("sizes")(permissions)}
+                options={{ label: "Tailles", menu: "Administration" }}
+              />
             )}
             {permissions.includes("colors.edit") && (
-            <Resource
-              {...listRessourceFactory("colors")(permissions)}
-              options={{ label: "Couleurs", menu: "Administration" }}
-            />
+              <Resource
+                {...listRessourceFactory("colors")(permissions)}
+                options={{ label: "Couleurs", menu: "Administration" }}
+              />
             )}
             {permissions.includes("qualities.edit") && (
-            <Resource
-              {...listRessourceFactory("qualities")(permissions)}
-              options={{
-                label: "Qualités",
-                menu: "Administration",
-                availableTags: ["new", "second-hand"],
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("qualities")(permissions)}
+                options={{
+                  label: "Qualités",
+                  menu: "Administration",
+                  availableTags: ["new", "second-hand"],
+                }}
+              />
             )}
             {permissions.includes("audiences.edit") && (
-            <Resource
-              {...listRessourceFactory("audiences")(permissions)}
-              options={{ label: "Publics cibles", menu: "Administration" }}
-            />
+              <Resource
+                {...listRessourceFactory("audiences")(permissions)}
+                options={{ label: "Publics cibles", menu: "Administration" }}
+              />
             )}
             {permissions.includes("brandPolicies.edit") && (
-            <Resource
-              {...listRessourceFactory("brandPolicies")(permissions)}
-              options={{
-                label: "Utilisation marque",
-                menu: "Administration",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("brandPolicies")(permissions)}
+                options={{
+                  label: "Utilisation marque",
+                  menu: "Administration",
+                }}
+              />
             )}
             {permissions.includes("transportModes.edit") && (
-            <Resource
-              {...listRessourceFactory("transportModes")(permissions)}
-              options={{
-                label: "Modes de transport",
-                menu: "Administration",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("transportModes")(permissions)}
+                options={{
+                  label: "Modes de transport",
+                  menu: "Administration",
+                }}
+              />
             )}
             {permissions.includes("transportReasons.edit") && (
-            <Resource
-              {...listRessourceFactory("transportReasons")(permissions)}
-              options={{
-                label: "Raisons de transport",
-                menu: "Administration",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("transportReasons")(permissions)}
+                options={{
+                  label: "Raisons de transport",
+                  menu: "Administration",
+                }}
+              />
             )}
             {permissions.includes("investmentTypes.edit") && (
-            <Resource
-              {...listRessourceFactory("investmentTypes")(permissions)}
-              options={{
-                label: "Types d'investissement",
-                menu: "Administration",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("investmentTypes")(permissions)}
+                options={{
+                  label: "Types d'investissement",
+                  menu: "Administration",
+                }}
+              />
             )}
             {permissions.includes("investmentConditions.edit") && (
-            <Resource
-              {...listRessourceFactory("investmentConditions")(permissions)}
-              options={{
-                label: "Condition des investissements",
-                menu: "Administration",
-              }}
-            />
+              <Resource
+                {...listRessourceFactory("investmentConditions")(permissions)}
+                options={{
+                  label: "Condition des investissements",
+                  menu: "Administration",
+                }}
+              />
             )}
           </>
         )}

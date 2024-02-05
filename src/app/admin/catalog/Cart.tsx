@@ -24,12 +24,12 @@ const Cart = () => {
     },
     {
       onSuccess: () => {
-        notify(`Commande passée`, { type: "success" });
+        notify(`Enregistrement réussi`, { type: "success" });
         setCart([]);
         refresh();
       },
       onError: (e) => {
-        notify(`Erreur lors de la commande`, { type: "error" });
+        notify(`Erreur lors de l'enregistrement`, { type: "error" });
         console.log("ERROR", e);
       },
     }
@@ -95,7 +95,7 @@ const Cart = () => {
             fullWidth
             loading={isLoading}
           >
-            Commander
+            Enregistrer
           </LoadingButton>
           <Button
             onClick={handleResetClicked}

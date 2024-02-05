@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { TextField, Typography, TextFieldProps } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { NumberInput } from "react-admin";
-import WeightField from "../WeightInput";
+import WeightField from "../WeightField";
 
 const CartLineContainer = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const CartLineContainer = styled.div`
     gap: 1rem;
 
     &:nth-of-type(2) {
-      margin-left: 60px;
+      margin-left: 40px;
     }
   }
 `;

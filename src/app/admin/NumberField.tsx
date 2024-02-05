@@ -3,16 +3,16 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { IconButton, TextField, TextFieldProps } from "@mui/material";
 
-const NumberInputContainer = styled.div`
+const NumberFieldContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-type NumberInputProps = Omit<TextFieldProps, "onChange"> & {
+type NumberFieldProps = Omit<TextFieldProps, "onChange"> & {
   onChange: (value: number) => void;
 };
 
-const NumberInput = (props: NumberInputProps) => {
+const NumberField = (props: NumberFieldProps) => {
   const { onChange, value, ...rest } = props;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,24 +28,24 @@ const NumberInput = (props: NumberInputProps) => {
   };
 
   return (
-    <NumberInputContainer>
+    <>
       <IconButton size="small" color="primary" onClick={handleMinusClicked}>
         <RemoveIcon />
       </IconButton>
       <TextField
+        variant="outlined"
+        sx={{ width: 100 }}
         {...props}
         type="text"
-        variant="outlined"
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
-        sx={{ width: 100 }}
         inputProps={{ style: { textAlign: "center" } }}
       />
       <IconButton size="small" color="primary" onClick={handlePlusClicked}>
         <AddIcon />
       </IconButton>
-    </NumberInputContainer>
+    </>
   );
 };
 
-export default NumberInput;
+export default NumberField;

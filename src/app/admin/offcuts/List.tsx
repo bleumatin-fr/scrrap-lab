@@ -34,7 +34,7 @@ const filters = [
     reference="sizes"
     label="Taille"
   >
-    <CheckboxGroupInput optionText="value" label="Taille" />
+    <AutocompleteInput optionText="value" label="Taille" />
   </ReferenceArrayInput>,
   <ReferenceArrayInput
     key="colors"
@@ -42,7 +42,7 @@ const filters = [
     reference="colors"
     label="Couleur"
   >
-    <CheckboxGroupInput optionText="value" label="Couleur" />
+    <AutocompleteInput optionText="value" label="Couleur" />
   </ReferenceArrayInput>,
   <ReferenceInput
     key="quality"
@@ -50,7 +50,7 @@ const filters = [
     reference="qualities"
     label="Qualité"
   >
-    <RadioButtonGroupInput optionText="value" label="Qualité" />
+    <AutocompleteInput optionText="value" label="Qualité" />
   </ReferenceInput>,
   <ReferenceArrayInput
     key="audiences"
@@ -58,7 +58,7 @@ const filters = [
     reference="audiences"
     label="Destinataires"
   >
-    <CheckboxGroupInput optionText="value" label="Destinataires" />
+    <AutocompleteInput optionText="value" label="Destinataires" />
   </ReferenceArrayInput>,
   <DateInput key="date" source="createdBefore" label="Ajouté avant le" />,
   <DateInput key="date" source="createdAfter" label="Ajouté après le" />,
