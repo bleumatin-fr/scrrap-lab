@@ -10,7 +10,7 @@ const recalculateQuantities = async (offcutId: string) => {
 
   const numberOfEntries = entries.reduce((acc, entry) => {
     const offcutQuantity = entry.offcuts.find(
-      (offcutQuantity) => offcutQuantity.offcut.toString() === offcutId
+      (offcutQuantity) => offcutQuantity.offcut.toString() === offcutId.toString()
     );
     if (!offcutQuantity) return acc;
     return acc + offcutQuantity.quantity;
@@ -23,7 +23,7 @@ const recalculateQuantities = async (offcutId: string) => {
 
   const numberOfExits = exits.reduce((acc, exit) => {
     const offcutQuantity = exit.offcuts.find(
-      (offcutQuantity) => offcutQuantity.offcut.toString() === offcutId
+      (offcutQuantity) => offcutQuantity.offcut.toString() === offcutId.toString()
     );
     if (!offcutQuantity) return acc;
     return acc + offcutQuantity.quantity;
