@@ -14,8 +14,14 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
-import { ChangeEvent, MouseEvent, useState } from "react";
-import { SimpleForm, useGetList, useInput } from "react-admin";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import {
+  SimpleForm,
+  useCreate,
+  useGetList,
+  useInput,
+  useNotify,
+} from "react-admin";
 import Alert from "@mui/material/Alert";
 import { CartItem } from "./CartItem";
 import { Fields as OffcutFields } from "../offcuts/Create";
@@ -33,7 +39,6 @@ const Layout = styled.div`
 `;
 
 const Catalog = () => {
-  const [addOffcutModalOpen, setAddOffcutModalOpen] = useState(false);
   const { field } = useInput({
     source: "offcuts",
     defaultValue: [],
@@ -62,109 +67,89 @@ const Catalog = () => {
     setPaginationModel(paginationModel);
   };
 
-  const handleOffcutFormSubmitted = (data: any) => {
-    // field.onChange([
-    //   ...field.value,
-    //   { ...data, id: field.value.length, new: true },
-    // ]);
-    setAddOffcutModalOpen(false);
-  };
-
   return (
-    <div>
-      <Dialog
-        open={addOffcutModalOpen}
-        onClose={() => setAddOffcutModalOpen(false)}
-        fullWidth
-      >
-        <DialogTitle>Ajout chute</DialogTitle>
-        <SimpleForm onSubmit={handleOffcutFormSubmitted}>
-          <OffcutFields />
-        </SimpleForm>
-      </Dialog>
-      <DataGrid
-        paginationModel={paginationModel}
-        rowSelection={false}
-        rowCount={total || 0}
-        loading={isLoading}
-        onPaginationModelChange={handlePaginationModelChange}
-        disableColumnFilter
-        disableColumnMenu
-        disableRowSelectionOnClick
-        columns={[
-          {
-            field: `reference`,
-            headerName: "Référence",
-            flex: 1,
-          },
-          { field: `name`, headerName: "Nom", flex: 1 },
-          {
-            field: `matter`,
-            headerName: "Matière",
-            flex: 1,
-            valueGetter: (params) => params.row.matter?.value,
-          },
-          {
-            field: `material`,
-            headerName: "Matériaux",
-            flex: 1,
-            valueGetter: (params) => params.row.material?.value,
-          },
-          {
-            field: `quality`,
-            headerName: "Qualité",
-            flex: 1,
-            valueGetter: (params) => params.row.quality?.value,
-          },
-          {
-            field: `sizes`,
-            headerName: "Taille",
-            flex: 1,
-            valueGetter: (params) =>
-              params.row.sizes?.map((size: any) => size.value).join(", "),
-          },
-          {
-            field: `colors`,
-            headerName: "Couleur",
-            flex: 1,
-            valueGetter: (params) =>
-              params.row.colors?.map((color: any) => color.value).join(", "),
-          },
-          {
-            field: "action",
-            headerName: "Action",
-            sortable: false,
-            renderCell: (params) => {
-              const onClick = (e: MouseEvent) => {
-                if (
-                  field.value.find(
-                    (item: any) => item.offcut.id === params.row.id
-                  )
-                ) {
-                  return;
-                }
-                field.onChange([
-                  ...field.value,
-                  {
-                    id: params.row.id,
-                    offcut: params.row,
-                    quantity: 1,
-                  },
-                ]);
-              };
+    <DataGrid
+      paginationModel={paginationModel}
+      rowSelection={false}
+      rowCount={total || 0}
+      loading={isLoading}
+      onPaginationModelChange={handlePaginationModelChange}
+      disableColumnFilter
+      disableColumnMenu
+      disableRowSelectionOnClick
+      columns={[
+        {
+          field: `reference`,
+          headerName: "Référence",
+          flex: 1,
+        },
+        { field: `name`, headerName: "Nom", flex: 1 },
+        {
+          field: `matter`,
+          headerName: "Matière",
+          flex: 1,
+          valueGetter: (params) => params.row.matter?.value,
+        },
+        {
+          field: `material`,
+          headerName: "Matériaux",
+          flex: 1,
+          valueGetter: (params) => params.row.material?.value,
+        },
+        {
+          field: `quality`,
+          headerName: "Qualité",
+          flex: 1,
+          valueGetter: (params) => params.row.quality?.value,
+        },
+        {
+          field: `sizes`,
+          headerName: "Taille",
+          flex: 1,
+          valueGetter: (params) =>
+            params.row.sizes?.map((size: any) => size.value).join(", "),
+        },
+        {
+          field: `colors`,
+          headerName: "Couleur",
+          flex: 1,
+          valueGetter: (params) =>
+            params.row.colors?.map((color: any) => color.value).join(", "),
+        },
+        {
+          field: "action",
+          headerName: "Action",
+          sortable: false,
+          renderCell: (params) => {
+            const onClick = (e: MouseEvent) => {
+              if (
+                field.value.find(
+                  (item: any) => item.offcut.id === params.row.id
+                )
+              ) {
+                return;
+              }
+              field.onChange([
+                ...field.value,
+                {
+                  id: params.row.id,
+                  offcut: params.row,
+                  quantity: 1000,
+                },
+              ]);
+            };
 
-              return (
-                <IconButton onClick={onClick}>
-                  <AddShoppingCartIcon />
-                </IconButton>
-              );
-            },
+            return (
+              <IconButton onClick={onClick}>
+                <AddShoppingCartIcon />
+              </IconButton>
+            );
           },
-        ]}
-        autoHeight
-        rows={data || []}
-      />
-    </div>
+        },
+      ]}
+      autoHeight
+      rows={data || []}
+    />
   );
 };
 
@@ -203,42 +188,6 @@ const Cart = () => {
             flex: 1,
             valueGetter: (params) => params.row.offcut.name,
           },
-          // {
-          //   field: `offcut.matter`,
-          //   headerName: "Matière",
-          //   flex: 1,
-          //   valueGetter: (params) => params.row.offcut.material.value,
-          // },
-          // {
-          //   field: `offcut.material`,
-          //   headerName: "Matériaux",
-          //   flex: 1,
-          //   valueGetter: (params) => params.row.offcut.material.value,
-          // },
-          // {
-          //   field: `offcut.quality`,
-          //   headerName: "Qualité",
-          //   flex: 1,
-          //   valueGetter: (params) => params.row.offcut.quality?.value,
-          // },
-          // {
-          //   field: `offcut.sizes`,
-          //   headerName: "Taille",
-          //   flex: 1,
-          //   valueGetter: (params) =>
-          //     params.row.offcut.sizes
-          //       ?.map((size: any) => size.value)
-          //       .join(", "),
-          // },
-          // {
-          //   field: `offcut.colors`,
-          //   headerName: "Couleur",
-          //   flex: 1,
-          //   valueGetter: (params) =>
-          //     params.row.offcut.colors
-          //       ?.map((color: any) => color.value)
-          //       .join(", "),
-          // },
           {
             field: "quantity",
             headerName: "Poids",
@@ -305,34 +254,85 @@ const Cart = () => {
 };
 
 const OffcutStep = ({ type }: { type: "entry" | "exit" }) => {
+  const [addOffcutModalOpen, setAddOffcutModalOpen] = useState(false);
+  const notify = useNotify();
+  const [create, { data, error }] = useCreate(
+    "offcuts",
+    {},
+    {
+      returnPromise: true,
+    }
+  );
+  const { field } = useInput({
+    source: "offcuts",
+    defaultValue: [],
+  });
+
+  const handleTransportFormSubmitted = async (data: any) => {
+    try {
+      const result = await create("offcuts", { data });
+      console.log(field.value, result);
+      field.onChange([
+        ...field.value,
+        {
+          id: result.id,
+          offcut: result,
+          quantity: 1000,
+        },
+      ]);
+    } catch (error) {
+      console.error(error);
+      notify("Une erreur est survenue", {
+        type: "error",
+      });
+    }
+  };
+
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h6" component="div">
-          Chutes
-        </Typography>
-        <Layout>
-          <Box>
-            <Typography variant="body2">Catalogue</Typography>
-            <Catalog />
-            <Button
-              variant="text"
-              onClick={() => {}}
-              startIcon={<AddCircleOutlineIcon />}
-              fullWidth
-            >
-              Ajouter une nouvelle chute
-            </Button>
-          </Box>
-          <Box>
-            <Typography variant="body2">
-              Chutes {type === "entry" ? "collectées" : "sorties"}
-            </Typography>
-            <Cart />
-          </Box>
-        </Layout>
-      </CardContent>
-    </Card>
+    <>
+      <Dialog
+        open={addOffcutModalOpen}
+        onClose={() => setAddOffcutModalOpen(false)}
+        fullWidth
+      >
+        <DialogTitle>Ajout chute</DialogTitle>
+
+        <SimpleForm onSubmit={handleTransportFormSubmitted}>
+          <OffcutFields />
+        </SimpleForm>
+      </Dialog>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" component="div">
+            Chutes
+          </Typography>
+          <Layout>
+            <Box>
+              <Typography variant="body2">Catalogue</Typography>
+              <Catalog />
+              {type === "entry" && (
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    setAddOffcutModalOpen(true);
+                  }}
+                  startIcon={<AddCircleOutlineIcon />}
+                  fullWidth
+                >
+                  Ajouter une nouvelle chute
+                </Button>
+              )}
+            </Box>
+            <Box>
+              <Typography variant="body2">
+                Chutes {type === "entry" ? "collectées" : "sorties"}
+              </Typography>
+              <Cart />
+            </Box>
+          </Layout>
+        </CardContent>
+      </Card>
+    </>
   );
 };
 

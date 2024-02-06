@@ -46,7 +46,8 @@ const TransportList = () => (
       <NumberField
         source="weight"
         label="Poids"
-        options={{ style: "unit", unit: "gram" }}
+        transform={(value) => value / 1000}
+        options={{ style: "unit", unit: "kilogram" }}
       />
       <NumberField source="passengers" label="Nombre de passagers" />
       <ReferenceField
