@@ -14,3 +14,12 @@ body {
 .RaList-actions {
   margin-bottom: 1rem;
 }
+
+.list-page{
+  flex-grow: 1;
+}
+
+.RaRichTextInput-editorContent p {
+  word-wrap: break-word;
+  word-break: break-all;
+}

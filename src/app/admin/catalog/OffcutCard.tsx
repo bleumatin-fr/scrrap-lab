@@ -32,6 +32,15 @@ const CardMediaContainer = styled.div`
   max-height: 200px;
   overflow: hidden;
   cursor: pointer;
+  & img {
+    transition: transform 0.5s;
+  }
+
+  &:hover {
+    & img {
+      transform: scale(1.1);
+    }
+  }
 `;
 
 const CardWeightContainer = styled.div`
@@ -118,12 +127,11 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
 
         {!offcut.pictures ||
           (offcut.pictures.length === 0 && (
-            <CardMediaContainer
-            >
+            <CardMediaContainer>
               <img
                 loading="lazy"
-                src={'/image-placeholder.svg'}
-                alt=''
+                src={"/image-placeholder.svg"}
+                alt=""
                 style={{
                   width: "102%",
                   marginLeft: "-1%",
@@ -277,10 +285,24 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
               <Typography
                 variant="body2"
                 color="text.secondary"
+                component={"div"}
+                title={offcut.description.replace(/(<([^>]+)>)/gi, "")}
                 sx={{
+                  width: "313px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "initial",
+                  display: "-webkit-box",
+                  lineClamp: 3,
+                  WebkitLineClamp: 3,
+                  wordWrap: "break-word",
+                  WebkitBoxOrient: "vertical",
                   "> p": {
-                    marginTop: 0,
-                    marginBottom: 0,
+                    display: "contents"
+                  },
+                  "> p:after": {
+                    content: "'\A'",
+                    whiteSpace: "pre",
                   },
                 }}
                 dangerouslySetInnerHTML={{
