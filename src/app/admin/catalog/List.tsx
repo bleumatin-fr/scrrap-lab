@@ -4,6 +4,8 @@ import {
   AutocompleteInput,
   CheckboxGroupInput,
   DateInput,
+  Filter,
+  FilterProps,
   List,
   RadioButtonGroupInput,
   ReferenceArrayInput,
@@ -14,53 +16,136 @@ import {
 import { MaterialInput } from "../offcuts/Create";
 import OffcutCard from "./OffcutCard";
 import Cart from "./Cart";
+import DeleteFiltersButton from "../DeleteFiltersButton";
 
-const filters = [
-  <TextInput
-    key="q"
-    label="Rechercher par nom, référence ou mot clé dans le cartel..."
-    source="q"
-    alwaysOn
-    fullWidth
-  />,
-  <ReferenceInput
-    key="matter"
-    source="matter"
-    reference="matters"
-    label="Matière"
-    alwaysOn
-  >
-    <AutocompleteInput optionText="value" label="Matière" fullWidth />
-  </ReferenceInput>,
-  <MaterialInput key="material" source="material" alwaysOn label="Matériaux" />,
-  <ReferenceArrayInput
-    key="sizes"
-    source="sizes"
-    reference="sizes"
-    label="Taille"
-    alwaysOn
-  >
-    <AutocompleteInput optionText="value" label="Taille" fullWidth />
-  </ReferenceArrayInput>,
-  <ReferenceArrayInput
-    key="colors"
-    source="colors"
-    reference="colors"
-    label="Couleur"
-    alwaysOn
-  >
-    <AutocompleteInput optionText="value" label="Couleur" fullWidth />
-  </ReferenceArrayInput>,
-  <ReferenceInput
-    key="quality"
-    source="quality"
-    reference="qualities"
-    label="Qualité"
-    alwaysOn
-  >
-    <AutocompleteInput optionText="value" label="Qualité" fullWidth />
-  </ReferenceInput>,
-];
+const FiltersContainer = styled.div`
+  width: 100%;
+  position: sticky;
+`;
+
+const DeleteFilterButtonContainer = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+`;
+
+const Filters = (props: any) => {
+  return (
+    <FiltersContainer>
+      <Filter {...props}>
+        <TextInput
+          key="q"
+          label="Rechercher par nom, référence ou mot clé dans le cartel..."
+          source="q"
+          alwaysOn
+          fullWidth
+        />
+        <ReferenceInput
+          key="matter"
+          source="matter"
+          reference="matters"
+          label="Matière"
+          alwaysOn
+        >
+          <AutocompleteInput optionText="value" label="Matière" fullWidth />
+        </ReferenceInput>
+        <MaterialInput
+          key="material"
+          source="material"
+          alwaysOn
+          label="Matériaux"
+        />
+        <ReferenceArrayInput
+          key="sizes"
+          source="sizes"
+          reference="sizes"
+          label="Taille"
+          alwaysOn
+        >
+          <AutocompleteInput optionText="value" label="Taille" fullWidth />
+        </ReferenceArrayInput>
+        <ReferenceArrayInput
+          key="colors"
+          source="colors"
+          reference="colors"
+          label="Couleur"
+          alwaysOn
+        >
+          <AutocompleteInput optionText="value" label="Couleur" fullWidth />
+        </ReferenceArrayInput>
+        <ReferenceInput
+          key="quality"
+          source="quality"
+          reference="qualities"
+          label="Qualité"
+          alwaysOn
+        >
+          <AutocompleteInput
+            optionText="value"
+            label="Qualité"
+            fullWidth
+            sx={{
+              marginRight: "50px",
+            }}
+          />
+        </ReferenceInput>
+      </Filter>
+      <DeleteFilterButtonContainer>
+        <DeleteFiltersButton />
+      </DeleteFilterButtonContainer>
+    </FiltersContainer>
+  );
+};
+
+// const filters = [
+//   <TextInput
+//     key="q"
+//     label="Rechercher par nom, référence ou mot clé dans le cartel..."
+//     source="q"
+//     alwaysOn
+//     fullWidth
+//   />,
+//   <ReferenceInput
+//     key="matter"
+//     source="matter"
+//     reference="matters"
+//     label="Matière"
+//     alwaysOn
+//   >
+//     <AutocompleteInput optionText="value" label="Matière" fullWidth />
+//   </ReferenceInput>,
+//   <MaterialInput key="material" source="material" alwaysOn label="Matériaux" />,
+//   <ReferenceArrayInput
+//     key="sizes"
+//     source="sizes"
+//     reference="sizes"
+//     label="Taille"
+//     alwaysOn
+//   >
+//     <AutocompleteInput optionText="value" label="Taille" fullWidth />
+//   </ReferenceArrayInput>,
+//   <ReferenceArrayInput
+//     key="colors"
+//     source="colors"
+//     reference="colors"
+//     label="Couleur"
+//     alwaysOn
+//   >
+//     <AutocompleteInput optionText="value" label="Couleur" fullWidth />
+//   </ReferenceArrayInput>,
+//   <ReferenceInput
+//     key="quality"
+//     source="quality"
+//     reference="qualities"
+//     label="Qualité"
+//     alwaysOn
+//   >
+//     <AutocompleteInput optionText="value" label="Qualité" fullWidth />
+//   </ReferenceInput>,
+//   <DeleteFiltersButton key="delete-filters">
+//     Supprimer les filtres
+//   </DeleteFiltersButton>,
+// ];
 
 const OffcutGridListContainer = styled.div`
   display: grid;
@@ -84,7 +169,7 @@ const OffcutGridList = () => {
 
 const OffcutList = () => (
   <List
-    filters={filters}
+    filters={<Filters />}
     sort={{ field: "createdAt", order: "DESC" }}
     component={"div"}
     aside={<Cart />}
