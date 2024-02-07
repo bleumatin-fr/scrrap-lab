@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connect } from "../db";
 import Exit from "./Exit";
 import { FilterQuery, SortOrder } from "mongoose";
@@ -48,7 +48,7 @@ export const GET = handleErrors(async (request: NextRequest) => {
   if (request.nextUrl.searchParams.has("_end")) {
     limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
   }
-  
+
   const document = await Exit.find(filters)
     .sort(sort)
     .limit(limit)
@@ -78,6 +78,7 @@ export const POST = handleErrors(async (request: NextRequest) => {
   const addedDocument = await Exit.create({
     date,
     offcuts: offcutIds,
+    createdBy: request.user._id,
   });
 
   await Promise.all(

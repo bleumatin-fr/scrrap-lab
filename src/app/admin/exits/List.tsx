@@ -6,6 +6,7 @@ import {
   EditButton,
   List,
   NumberField,
+  ReferenceField,
   ReferenceInput,
   TextField,
 } from "react-admin";
@@ -32,6 +33,11 @@ const EntriesList = () => (
   <List filters={filters} sort={{ field: "date", order: "DESC" }}>
     <Datagrid rowClick="edit">
       <DateField source="date" label="Date" />
+      <ReferenceField
+        source="createdBy.id"
+        reference="users"
+        label="Utilisateur"
+      />
       <ArrayField source="offcuts" label="Chutes">
         <Datagrid bulkActionButtons={false}>
           <TextField source="offcut.reference" label="Référence" />

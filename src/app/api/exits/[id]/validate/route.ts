@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connect } from "../../../db";
 import recalculateQuantities from "../../../offcuts/recalculateQuantities";
 import Exit from "../../Exit";
@@ -19,7 +19,7 @@ export const POST = handleErrors(
       {
         $set: {
           validatedAt: new Date(),
-          validatedBy: "USER",
+          validatedBy: request.user._id,
         },
       },
       { new: true }

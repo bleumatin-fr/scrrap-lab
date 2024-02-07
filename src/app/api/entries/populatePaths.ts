@@ -47,6 +47,10 @@ const populatePaths = [
       },
     ],
   },
+  {
+    path: "createdBy",
+    model: "User",
+  },
 ];
 
 export default populatePaths;

@@ -4,8 +4,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import frenchMessages from "ra-language-french";
-import { Admin, Resource } from "react-admin";
-import { BrowserRouter } from "react-router-dom";
+import { Admin, CustomRoutes, Resource } from "react-admin";
+import { BrowserRouter, Route } from "react-router-dom";
+import "./App.css";
 import AppLayout from "./Layout";
 import authProvider from "./authProvider";
 import catalog from "./catalog";
@@ -19,9 +20,14 @@ import offcuts from "./offcuts";
 import roles from "./roles";
 import theme from "./theme";
 import transports from "./transports";
+import mails from "./mails";
 import users from "./users";
+import LoginPage from "./authentication/Login";
+import Recover from "./authentication/Recover";
+import Reset from "./authentication/Reset";
+import Activate from "./authentication/Activate";
 
-import "./App.css";
+frenchMessages.ra.auth.username = "Adresse email";
 
 const i18nProvider = polyglotI18nProvider(() => frenchMessages);
 
@@ -30,6 +36,7 @@ const AdminApp = () => (
     <BrowserRouter>
       <Admin
         i18nProvider={i18nProvider}
+        loginPage={LoginPage}
         authProvider={authProvider}
         dataProvider={dataProvider}
         layout={AppLayout}
@@ -39,7 +46,12 @@ const AdminApp = () => (
       >
         {(permissions: string[]) => (
           <>
-            {permissions.includes("entries.list") && (
+            <CustomRoutes noLayout>
+              <Route path="/recover" element={<Recover />} />
+              <Route path="/reset/:token" element={<Reset />} />
+              <Route path="/activate/:token" element={<Activate />} />
+            </CustomRoutes>
+            {permissions?.includes("entries.list") && (
               <Resource
                 {...entries(permissions)}
                 options={{
@@ -47,7 +59,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("exits.list") && (
+            {permissions?.includes("exits.list") && (
               <Resource
                 {...exits(permissions)}
                 options={{
@@ -55,7 +67,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("catalog.list") && (
+            {permissions?.includes("catalog.list") && (
               <Resource
                 {...catalog(permissions)}
                 options={{
@@ -63,7 +75,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("offcuts.list") && (
+            {permissions?.includes("offcuts.list") && (
               <Resource
                 {...offcuts(permissions)}
                 options={{
@@ -72,7 +84,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("transports.list") && (
+            {permissions?.includes("transports.list") && (
               <Resource
                 {...transports(permissions)}
                 options={{
@@ -81,7 +93,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("investments.list") && (
+            {permissions?.includes("investments.list") && (
               <Resource
                 {...investments(permissions)}
                 options={{
@@ -90,7 +102,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("metrics.list") && (
+            {permissions?.includes("metrics.list") && (
               <Resource
                 {...metrics(permissions)}
                 options={{
@@ -99,25 +111,34 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("users.list") && (
+            {permissions?.includes("users.list") && (
               <Resource
                 {...users(permissions)}
                 options={{ label: "Utilisateurs", menu: "Administration" }}
               />
             )}
-            {permissions.includes("roles.list") && (
+            {permissions?.includes("roles.list") && (
               <Resource
                 {...roles(permissions)}
                 options={{ label: "Roles", menu: "Administration" }}
               />
             )}
-            {permissions.includes("matters.edit") && (
+            {permissions?.includes("mails.list") && (
+              <Resource
+                {...mails(permissions)}
+                options={{
+                  label: "Templates de mail",
+                  menu: "Administration",
+                }}
+              />
+            )}
+            {permissions?.includes("matters.edit") && (
               <Resource
                 {...listRessourceFactory("matters")(permissions)}
                 options={{ label: "Matières", menu: "Administration" }}
               />
             )}
-            {permissions.includes("materials.edit") && (
+            {permissions?.includes("materials.edit") && (
               <Resource
                 {...listRessourceFactory("materials")(permissions)}
                 options={{
@@ -127,19 +148,19 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("sizes.edit") && (
+            {permissions?.includes("sizes.edit") && (
               <Resource
                 {...listRessourceFactory("sizes")(permissions)}
                 options={{ label: "Tailles", menu: "Administration" }}
               />
             )}
-            {permissions.includes("colors.edit") && (
+            {permissions?.includes("colors.edit") && (
               <Resource
                 {...listRessourceFactory("colors")(permissions)}
                 options={{ label: "Couleurs", menu: "Administration" }}
               />
             )}
-            {permissions.includes("qualities.edit") && (
+            {permissions?.includes("qualities.edit") && (
               <Resource
                 {...listRessourceFactory("qualities")(permissions)}
                 options={{
@@ -149,13 +170,13 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("audiences.edit") && (
+            {permissions?.includes("audiences.edit") && (
               <Resource
                 {...listRessourceFactory("audiences")(permissions)}
                 options={{ label: "Publics cibles", menu: "Administration" }}
               />
             )}
-            {permissions.includes("brandPolicies.edit") && (
+            {permissions?.includes("brandPolicies.edit") && (
               <Resource
                 {...listRessourceFactory("brandPolicies")(permissions)}
                 options={{
@@ -164,7 +185,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("transportModes.edit") && (
+            {permissions?.includes("transportModes.edit") && (
               <Resource
                 {...listRessourceFactory("transportModes")(permissions)}
                 options={{
@@ -173,7 +194,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("transportReasons.edit") && (
+            {permissions?.includes("transportReasons.edit") && (
               <Resource
                 {...listRessourceFactory("transportReasons")(permissions)}
                 options={{
@@ -182,7 +203,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("investmentTypes.edit") && (
+            {permissions?.includes("investmentTypes.edit") && (
               <Resource
                 {...listRessourceFactory("investmentTypes")(permissions)}
                 options={{
@@ -191,7 +212,7 @@ const AdminApp = () => (
                 }}
               />
             )}
-            {permissions.includes("investmentConditions.edit") && (
+            {permissions?.includes("investmentConditions.edit") && (
               <Resource
                 {...listRessourceFactory("investmentConditions")(permissions)}
                 options={{

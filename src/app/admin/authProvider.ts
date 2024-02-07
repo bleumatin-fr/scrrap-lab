@@ -1,5 +1,4 @@
 import { AuthProvider } from "react-admin";
-import httpClient from "./httpClient";
 
 const AUTH_API_URL = "/api/authentication";
 

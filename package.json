@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "maildev &",
     "dev": "next dev",
+    "postdev": "killall maildev",
     "build": "next build",
     "build-image": "docker build --no-cache --tag registry.bleumatin.fr/talm/chutocollector:latest .",
     "deploy": "docker push registry.bleumatin.fr/talm/chutocollector:latest",
@@ -21,9 +23,12 @@
     "geojson": "^0.5.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "maildev": "^2.1.0",
     "mongoose": "^8.0.2",
+    "mustache": "^4.2.0",
     "nanoid": "^5.0.4",
     "next": "14.1.0",
+    "nodemailer": "^6.9.9",
     "normalize-mongoose": "^1.0.0",
     "ra-data-json-server": "^4.16.1",
     "ra-input-rich-text": "^4.16.4",
@@ -31,6 +36,7 @@
     "react": "^18",
     "react-admin": "^4.16.1",
     "react-dom": "^18",
+    "react-password-strength-bar": "^0.4.1",
     "react-query": "^3.39.3",
     "sharp": "^0.33.1",
     "usehooks-ts": "^2.9.1",
@@ -41,11 +47,18 @@
     "@types/geojson": "^7946.0.13",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/lodash": "^4.14.202",
+    "@types/mustache": "^4.2.5",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "typescript": "^5"
+  },
+  "resolve": {
+    "alias": {
+      "handlebars": "handlebars/dist/handlebars.js"
+    }
   }
 }

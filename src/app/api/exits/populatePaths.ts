@@ -33,6 +33,14 @@ const populatePaths = [
       },
     ],
   },
+  {
+    path: "createdBy",
+    model: "User",
+  },
+  {
+    path: "validatedBy",
+    model: "User",
+  }
 ];
 
 export default populatePaths;

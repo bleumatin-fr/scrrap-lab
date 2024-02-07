@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       process.env.RESET_PASSWORD_TOKEN_SECRET
     );
 
-    if (payload._id !== user._id.toString()) {
+    if (payload.id !== user._id.toString()) {
       throw new HttpError(401, "Invalid token");
     }
 

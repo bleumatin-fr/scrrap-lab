@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
+
+import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../db";
-import Entry from "./Entry";
+import Mail from "./Mail";
 import { FilterQuery, SortOrder } from "mongoose";
-import Transport from "../transports/Transport";
-import populatePaths from "./populatePaths";
-import recalculateQuantities from "../offcuts/recalculateQuantities";
 import { handleErrors } from "../errorHandler";
 import authenticate from "../authentication/authenticate";
 import allow from "../authentication/allow";
@@ -12,9 +11,9 @@ import allow from "../authentication/allow";
 export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
   await authenticate(request);
-  await allow(request, ["entries.list"]);
+  await allow(request, ["mails.list"]);
 
-  let filters: FilterQuery<typeof Entry> = {};
+  let filters: FilterQuery<typeof Mail> = {};
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
   };
@@ -36,12 +35,9 @@ export const GET = handleErrors(async (request: NextRequest) => {
     limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
   }
 
-  const document = await Entry.find(filters)
-    .sort(sort)
-    .limit(limit)
-    .skip(skip)
-    .populate(populatePaths);
-  const count = await Entry.countDocuments(filters);
+  const document = await Mail.find(filters).sort(sort).limit(limit).skip(skip);
+  const count = await Mail.countDocuments(filters);
+
   return NextResponse.json(document, {
     headers: [["x-total-count", count.toString()]],
   });
@@ -50,36 +46,13 @@ export const GET = handleErrors(async (request: NextRequest) => {
 export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
   await authenticate(request);
-  await allow(request, ["entries.edit"]);
+  await allow(request, ["mails.edit"]);
 
-  const { date, transports, offcuts } = await request.json();
-
-  const transportIds = await Promise.all(
-    transports.map(async (transport: any) => {
-      const createdTransport = await Transport.create(transport);
-      return createdTransport._id;
-    })
-  );
-
-  const offcutIds = offcuts.map((offcut: any) => {
-    return {
-      offcut: offcut.offcut.id,
-      quantity: offcut.quantity,
-    };
+  const { name, actions } = await request.json();
+  const addedDocument = await Mail.create({
+    name,
+    actions,
   });
-
-  const addedDocument = await Entry.create({
-    date,
-    transports: transportIds,
-    offcuts: offcutIds,
-    createdBy: request.user._id,
-  });
-
-  await Promise.all(
-    offcuts.map(async (offcut: any) => {
-      await recalculateQuantities(offcut.offcut.id);
-    })
-  );
 
   return NextResponse.json(addedDocument);
 });

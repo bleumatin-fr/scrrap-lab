@@ -1,6 +1,7 @@
 import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import Offcut from "../offcuts/Offcut";
+import { User } from "../users/User";
 
 interface OffCutQuantity {
   offcut: typeof Offcut;
@@ -24,7 +25,8 @@ interface Exit {
   date: Date;
   offcuts: OffCutQuantity[];
   validatedAt?: Date;
-  validatedBy?: string;
+  validatedBy?: User;
+  createdBy: User;
 }
 
 export const exitSchema = new Schema<Exit>(
@@ -38,7 +40,12 @@ export const exitSchema = new Schema<Exit>(
       type: Date,
     },
     validatedBy: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {

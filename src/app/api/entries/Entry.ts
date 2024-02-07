@@ -2,7 +2,7 @@ import mongoose, { Model, Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
 import Offcut from "../offcuts/Offcut";
 import Transport from "../transports/Transport";
-
+import { User } from "../users/User";
 interface OffCutQuantity {
   offcut: typeof Offcut;
   quantity: number;
@@ -25,6 +25,7 @@ interface Entry {
   date: Date;
   transports: (typeof Transport)[];
   offcuts: OffCutQuantity[];
+  createdBy: User;
 }
 
 export const entrySchema = new Schema<Entry>(
@@ -40,6 +41,10 @@ export const entrySchema = new Schema<Entry>(
       },
     ],
     offcuts: [OffCutQuantitySchema],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },

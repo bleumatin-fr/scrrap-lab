@@ -80,6 +80,7 @@ export const userSchema = new Schema<User>(
 userSchema.set("toJSON", {
   transform: function (doc, ret, options) {
     delete ret.hash;
+    delete ret.resetPasswordToken;
     return ret;
   },
 });
