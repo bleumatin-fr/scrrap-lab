@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import allow from "../../authentication/allow";
 import authenticate from "../../authentication/authenticate";
 import { connect } from "../../db";
-import { handleErrors } from "../../errorHandler";
+import { HttpError, handleErrors } from "../../errorHandler";
 import User from "../User";
+import bcrypt from "bcrypt";
 
 export const GET = handleErrors(
   async (request: NextRequest, { params }: { params: { id: string } }) => {
@@ -23,22 +24,57 @@ export const PUT = handleErrors(
   async (request: NextRequest, { params }: { params: { id: string } }) => {
     await connect();
     await authenticate(request);
-    await allow(request, ["users.edit"]);
+    try {
+      // if has rights
+      await allow(request, ["users.edit"]);
+    } catch (error) {
+      // or if is the user itself
+      if (!request.user || params.id !== request.user._id) {
+        throw error;
+      }
+    }
 
-    const { firstName, lastName, company, email, role } = await request.json();
+    const {
+      firstName,
+      lastName,
+      company,
+      email,
+      role,
+      currentPassword,
+      newPassword,
+    } = await request.json();
+
+    let modifications: any = {
+      firstName,
+      lastName,
+      company,
+      email,
+      role,
+    };
+
+    if (currentPassword && newPassword) {
+      let user = await User.findById(params.id).populate("role");
+      if (!user || !user.hash) {
+        throw new HttpError(401, "Unauthorized");
+      }
+
+      let verifiedPassword = await bcrypt.compare(currentPassword, user.hash);
+      if (!verifiedPassword) {
+        throw new HttpError(401, "Unauthorized");
+      }
+
+      const salt = await bcrypt.genSalt(
+        Number(process.env.PASSWORD_SALT_ROUND) || 10
+      );
+      modifications.hash = await bcrypt.hash(newPassword, salt);
+    }
 
     const updatedDocument = await User.findOneAndUpdate(
       {
         _id: params.id,
       },
       {
-        $set: {
-          firstName,
-          lastName,
-          company,
-          email,
-          role,
-        },
+        $set: modifications,
       },
       { new: true }
     );

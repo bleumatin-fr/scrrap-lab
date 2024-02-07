@@ -24,7 +24,7 @@ const filters = [
 const EntriesList = () => (
   <List filters={filters} sort={{ field: "date", order: "DESC" }}>
     <Datagrid rowClick="edit">
-      <DateField source="date" label="Date" />
+      <DateField source="date" label="Date" showTime />
       <ReferenceField
         source="createdBy.id"
         reference="users"
@@ -49,9 +49,9 @@ const EntriesList = () => (
           <TextField source="reason.value" label="Raison" />
           <TextField source="from.properties.name" label="Départ" />
           <TextField source="to.properties.name" label="Destination" />
-          <EditButton />
         </Datagrid>
       </ArrayField>
+      <EditButton />
     </Datagrid>
   </List>
 );

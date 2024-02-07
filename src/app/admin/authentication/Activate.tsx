@@ -114,8 +114,10 @@ const Reset = (props: ResetProps) => {
               password={password}
               minLength={8}
               shortScoreWord="Trop court"
-              scoreWords={[<>&nbsp;</>, "Faible", "Moyen", "Bon", "Très bon"]}
-              onChangeScore={(score) => setScore(score)}
+              scoreWords={["Faible", "Faible", "Moyen", "Bon", "Très bon"]}
+              onChangeScore={(score, feedback) => {
+                setScore(score);
+              }}
             />
             <LoadingButton
               variant="contained"

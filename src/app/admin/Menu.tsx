@@ -11,6 +11,7 @@ import {
   useCreatePath,
   useGetResourceLabel,
   useResourceDefinitions,
+  useSidebarState,
   useStore,
 } from "react-admin";
 
@@ -55,7 +56,11 @@ const SubMenuItem = ({ name }: { name: string }) => {
 
 const CustomMenu = () => {
   const [open, setOpen] = useStore<string[]>("admin-open", []);
+  const [sidebarOpen, setSidebarOpen] = useSidebarState();
   const resources = useResourceDefinitions();
+  const totalResources = Object.keys(resources).filter(
+    (resource) => resources[resource].hasList
+  ).length;
 
   // localstorage migration from bool to array of menu id
   useEffect(() => {
@@ -64,21 +69,27 @@ const CustomMenu = () => {
     }
   }, [open, setOpen]);
 
-  const rootResources = Object.keys(resources).filter(
-    (resource) => !resources[resource].options?.menu
-  );
+  useEffect(() => {
+    setSidebarOpen(totalResources > 1);
+  }, [setSidebarOpen, totalResources]);
 
-  const resourcesByMenu = Object.keys(resources).reduce((acc, resource) => {
-    if (!resources[resource].options?.menu) return acc;
+  const rootResources = Object.keys(resources)
+    .filter((resource) => resources[resource].hasList)
+    .filter((resource) => !resources[resource].options?.menu);
 
-    return {
-      ...acc,
-      [resources[resource].options?.menu]: [
-        ...(acc[resources[resource].options?.menu] || []),
-        resource,
-      ],
-    };
-  }, {} as Record<string, string[]>);
+  const resourcesByMenu = Object.keys(resources)
+    .filter((resource) => resources[resource].hasList)
+    .reduce((acc, resource) => {
+      if (!resources[resource].options?.menu) return acc;
+
+      return {
+        ...acc,
+        [resources[resource].options?.menu]: [
+          ...(acc[resources[resource].options?.menu] || []),
+          resource,
+        ],
+      };
+    }, {} as Record<string, string[]>);
 
   const toggleMenu = (menu: string) => {
     if (open.includes(menu)) {
@@ -88,7 +99,6 @@ const CustomMenu = () => {
     }
   };
 
-  const totalResources = Object.keys(resources).length;
   if (totalResources <= 1) {
     return null;
   }

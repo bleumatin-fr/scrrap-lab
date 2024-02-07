@@ -8,7 +8,11 @@ const withPermissions =
         case "list":
         case "create":
         case "edit":
-          if (permissions.includes(`${component.name}.${key}`)) {
+          if (
+            permissions.includes(
+              `${component.name}.${component.options?.permissionKey || key}`
+            )
+          ) {
             acc[key] = component[key];
           }
           return acc;

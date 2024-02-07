@@ -32,7 +32,7 @@ const filters = [
 const EntriesList = () => (
   <List filters={filters} sort={{ field: "date", order: "DESC" }}>
     <Datagrid rowClick="edit">
-      <DateField source="date" label="Date" />
+      <DateField source="date" label="Date" showTime />
       <ReferenceField
         source="createdBy.id"
         reference="users"

@@ -52,7 +52,10 @@ export async function POST(request: NextRequest) {
       success: true,
       token: accessToken,
       id: user._id,
-      fullName: `${user.firstName} ${user.lastName}`,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      company: user.company,
       permissions: user.role.actions,
     },
     {}

@@ -10,6 +10,9 @@ const listRessourceFactory = (category: string) => {
     create: Create,
     edit: Edit,
     recordRepresentation: (record: any) => `${record.value}`,
+    options: {
+      permissionKey: "edit",
+    },
   });
 };
 

@@ -3,9 +3,9 @@ import User from "../../users/User";
 import { connect } from "../../db";
 import bcrypt from "bcrypt";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { HttpError } from "../../errorHandler";
+import { HttpError, handleErrors } from "../../errorHandler";
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
 
   const { token: resetPasswordToken, password } = await request.json();
@@ -45,4 +45,4 @@ export async function POST(request: NextRequest) {
     }
     throw error;
   }
-}
+});

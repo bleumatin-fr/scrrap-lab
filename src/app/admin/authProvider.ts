@@ -21,8 +21,9 @@ const authProvider: AuthProvider = {
     localStorage.removeItem("auth");
     return Promise.resolve();
   },
-  checkAuth: () =>
-    localStorage.getItem("auth") ? Promise.resolve() : Promise.reject(),
+  checkAuth: () => {
+    return localStorage.getItem("auth") ? Promise.resolve() : Promise.reject();
+  },
   checkError: (error) => {
     if (error?.status === 401) {
       localStorage.removeItem("auth");
@@ -33,14 +34,21 @@ const authProvider: AuthProvider = {
   getIdentity: async () => {
     const auth = JSON.parse(localStorage.getItem("auth") || "null");
     if (!auth) {
-      return Promise.reject();
+      return Promise.reject({
+        status: 401,
+      });
     }
-    return Promise.resolve({ id: auth.id, fullName: auth.fullName });
+    return Promise.resolve({
+      ...auth,
+      fullName: `${auth.firstName} ${auth.lastName}`,
+    });
   },
   getPermissions: () => {
     const auth = JSON.parse(localStorage.getItem("auth") || "null");
     if (!auth) {
-      return Promise.reject();
+      return Promise.reject({
+        status: 401,
+      });
     }
     return Promise.resolve(auth.permissions);
   },
