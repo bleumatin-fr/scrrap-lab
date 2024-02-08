@@ -12,7 +12,7 @@ const authProvider: AuthProvider = {
     });
     const response = await fetch(request);
     if (response.status < 200 || response.status >= 300) {
-      throw new Error(response.statusText);
+      throw new Error("Utilisateur ou mot de passe incorrect");
     }
     const auth = await response.json();
     localStorage.setItem("auth", JSON.stringify(auth));

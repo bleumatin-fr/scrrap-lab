@@ -6,9 +6,9 @@ import getAccessToken from "../getAccessToken";
 import getRefreshToken from "../getRefreshToken";
 import { cookies } from "next/headers";
 import COOKIE_OPTIONS from "../COOKIE_OPTIONS";
-import { HttpError } from "../../errorHandler";
+import { HttpError, handleErrors } from "../../errorHandler";
 
-export async function POST(request: NextRequest) {
+export const POST = handleErrors(async (request: NextRequest) => {
   await connect();
 
   const { email, password } = await request.json();
@@ -60,4 +60,4 @@ export async function POST(request: NextRequest) {
     },
     {}
   );
-}
+});
