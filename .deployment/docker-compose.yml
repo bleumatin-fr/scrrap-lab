@@ -1,0 +1,35 @@
+services:
+
+  scrrap-lab:
+    image: ghcr.io/bleumatin-fr/scrrap-lab:latest
+    environment:
+      - MONGO_URL=mongodb://[USER]:[PASSWORD]@mongo:27017/admin
+      - HOSTNAME=0.0.0.0
+      - BASE_URL=https://chuto.talm.fr/scrrap-lab
+      - MAIL_HOST=
+      - MAIL_AUTH_USERNAME=
+      - MAIL_AUTH_PASSWORD=
+      - MAIL_PORT=1025
+      - MAIL_FROM=no-reply@talm.org
+      - NEXT_PUBLIC_CALCULATOR_URL=https://chuto.talm.fr/scrrap-lab
+      - NEXT_PUBLIC_CALCULATOR_PROJECT_TYPE=activity
+    volumes:
+      - uploads:/app/public/uploads
+    deploy:
+      restart_policy:
+        condition: on-failure
+    links:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    command: mongod --storageEngine=wiredTiger
+    volumes:
+      - mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=[USER]
+      - MONGO_INITDB_ROOT_PASSWORD=[PASSWORD]
+
+volumes:
+  uploads:
+  mongo:

@@ -1,0 +1,28 @@
+name: Publish on Staging
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Logging in to Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: registry.bleumatin.fr
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Building
+        run: docker build --no-cache --tag registry.bleumatin.fr/talm/scrrap-lab:latest --tag registry.bleumatin.fr/talm/scrrap-lab:${GITHUB_SHA} .
+
+      - name: Deploying
+        run: docker push --all-tags registry.bleumatin.fr/talm/scrrap-lab
+
+      - name: Restarting
+        run: curl -X POST ${{ secrets.RESTART_WEBHOOK }}
