@@ -2,6 +2,7 @@
 const nextConfig = {
   output: "standalone",
   basePath: process.env.BASE_PATH || "",
+  assetPrefix: process.env.BASE_PATH || "",
   experimental: {
     instrumentationHook: true,
   },
