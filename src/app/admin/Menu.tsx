@@ -28,6 +28,8 @@ const SubMenuItem = ({ name }: { name: string }) => {
   if (!resources || !resources[name]) return null;
   return (
     <MenuItemLink
+      onPointerEnterCapture={() => {}}
+      onPointerLeaveCapture={() => {}}
       to={createPath({
         resource: name,
         type: "list",
@@ -60,7 +62,7 @@ const CustomMenu = () => {
   const [, setSidebarOpen] = useSidebarState();
   const { permissions } = usePermissions();
   const resources = useResourceDefinitions();
-  
+
   const displayableResources = Object.keys(resources)
     .filter((resource) => resources[resource].hasList)
     .filter((resource) => permissions?.includes(`${resource}.menu`));
@@ -114,6 +116,8 @@ const CustomMenu = () => {
       {Object.keys(resourcesByMenu).map((menu) => {
         return [
           <MenuItemLink
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
             key={`menu-${menu}`}
             primaryText={
               <Box
