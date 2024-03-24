@@ -19,12 +19,13 @@ import { useState } from "react";
 import {
   UrlFieldProps,
   sanitizeFieldRestProps,
+  useDataProvider,
   useNotify,
   useRecordContext,
 } from "react-admin";
 // @ts-ignore
 import FileUpload, { ExtendedFileProps } from "react-mui-fileuploader";
-import { endpoint } from "../dataProvider";
+import { DataProvider } from "../dataProvider";
 import httpClient from "../httpClient";
 
 const RowErrorModal = ({
@@ -72,6 +73,7 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
   );
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
+  const dataProvider = useDataProvider<DataProvider>();
 
   const handleFileUploadError = (error: any) => {
     console.error(error);
@@ -98,7 +100,7 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
     formData.append("file", fileToUpload);
 
     try {
-      const response = await httpClient(`${endpoint}/users/import`, {
+      const response = await httpClient(`${dataProvider.endpoint}/users/import`, {
         method: "POST",
         headers: new Headers({}),
         body: formData,

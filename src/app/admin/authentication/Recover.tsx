@@ -13,6 +13,7 @@ import {
 import { HtmlHTMLAttributes, useState } from "react";
 import { Link, useNotify } from "react-admin";
 import Root from "./Root";
+import { env } from "next-runtime-env";
 
 interface ResetProps extends HtmlHTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -28,15 +29,18 @@ const Reset = (props: ResetProps) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("/api/authentication/recover", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: event.target.elements.email.value,
-        }),
-      });
+      const response = await fetch(
+        `${env("NEXT_PUBLIC_API_URL") || "/api"}/authentication/recover`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: event.target.elements.email.value,
+          }),
+        }
+      );
 
       if (response.ok) {
         notify("Un email a été envoyé à l'adresse indiquée.", {

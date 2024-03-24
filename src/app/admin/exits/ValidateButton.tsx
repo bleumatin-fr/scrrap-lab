@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import { endpoint } from "../dataProvider";
+import { DataProvider } from "../dataProvider";
 import {
   Identifier,
+  useDataProvider,
   useNotify,
   useRecordContext,
   useRefresh,
@@ -11,19 +12,23 @@ import { useMutation } from "react-query";
 import { MouseEvent } from "react";
 import httpClient from "../httpClient";
 
-const validateExit = async (exitId: Identifier) => {
-  return httpClient(`${endpoint}/exits/${exitId}/validate`, {
-    method: "POST",
-    body: "",
-  });
-};
+const validateExit =
+  (endpoint: string | undefined) => async (exitId: Identifier) => {
+    return httpClient(`${endpoint}/exits/${exitId}/validate`, {
+      method: "POST",
+      body: "",
+    });
+  };
 
 const ValidateButton = () => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
+  const dataProvider = useDataProvider<DataProvider>();
 
-  const { mutateAsync, isLoading } = useMutation(() => validateExit(record.id));
+  const { mutateAsync, isLoading } = useMutation(() =>
+    validateExit(dataProvider.endpoint)(record.id)
+  );
 
   if (!record) return null;
   if (record.validatedAt) return null;

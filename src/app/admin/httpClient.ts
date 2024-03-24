@@ -1,9 +1,9 @@
 import { fetchUtils, HttpError } from "react-admin";
 import { PREFIX } from "./authProvider";
-
-const AUTH_API_URL = "/api/authentication";
+import { env } from "next-runtime-env";
 
 const refreshToken = async () => {
+  const AUTH_API_URL = `${env("NEXT_PUBLIC_API_URL") || "/api"}/authentication`;
   const response = await fetchUtils.fetchJson(`${AUTH_API_URL}/refresh`, {
     method: "POST",
     credentials: "include",

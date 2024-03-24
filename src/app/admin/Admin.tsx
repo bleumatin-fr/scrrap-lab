@@ -26,6 +26,7 @@ import roles from "./roles";
 import theme from "./theme";
 import transports from "./transports";
 import users from "./users";
+import { env } from "next-runtime-env";
 
 frenchMessages.ra.auth.username = "Adresse email";
 
@@ -34,12 +35,12 @@ const i18nProvider = polyglotI18nProvider(() => frenchMessages);
 const AdminApp = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <BrowserRouter>
+      <BrowserRouter basename={env("NEXT_PUBLIC_BASE_PATH")}>
         <Admin
           i18nProvider={i18nProvider}
           loginPage={LoginPage}
-          authProvider={authProvider}
-          dataProvider={dataProvider}
+          authProvider={authProvider(env("NEXT_PUBLIC_API_URL") || "/api")}
+          dataProvider={dataProvider(env("NEXT_PUBLIC_API_URL") || "/api")}
           layout={AppLayout}
           title="SCRRAP-LAB - Administration"
           disableTelemetry

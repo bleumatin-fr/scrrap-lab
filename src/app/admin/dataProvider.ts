@@ -1,15 +1,15 @@
 import jsonServerProvider from "ra-data-json-server";
 import {
   CreateParams,
-  DataProvider,
+  DataProvider as BaseDataProvider,
   UpdateParams,
   fetchUtils,
 } from "react-admin";
 import httpClient from "./httpClient";
 
-export const endpoint = "/api";
-
-const baseDataProvider = jsonServerProvider(endpoint, httpClient);
+export interface DataProvider extends BaseDataProvider {
+  endpoint: string | undefined;
+}
 
 type PostParams = {
   id: string;
@@ -70,33 +70,39 @@ const createOffcutsPostData = (
   return formData;
 };
 
-export const dataProvider: DataProvider = {
-  ...baseDataProvider,
-  create: (resource, params) => {
-    if (resource === "offcuts") {
-      const formData = createOffcutsPostData(params);
-      return httpClient(`${endpoint}/${resource}`, {
-        method: "POST",
-        body: formData,
-        headers: new Headers({}),
-      }).then(({ json }) => ({ data: json }));
-    }
+export const dataProviderFactory: (
+  endpoint: string | undefined
+) => DataProvider = (endpoint: string | undefined) => {
+  const baseDataProvider = jsonServerProvider(endpoint, httpClient);
+  return {
+    ...baseDataProvider,
+    endpoint,
+    create: (resource, params) => {
+      if (resource === "offcuts") {
+        const formData = createOffcutsPostData(params);
+        return httpClient(`${endpoint}/${resource}`, {
+          method: "POST",
+          body: formData,
+          headers: new Headers({}),
+        }).then(({ json }) => ({ data: json }));
+      }
 
-    return baseDataProvider.create(resource, params);
-  },
-  update: (resource, params) => {
-    if (resource === "offcuts") {
-      const formData = createOffcutsPostData(params);
-      formData.append("id", params.id);
-      return httpClient(`${endpoint}/${resource}/${params.id}`, {
-        method: "PUT",
-        body: formData,
-        headers: new Headers({}),
-      }).then(({ json }) => ({ data: json }));
-    }
+      return baseDataProvider.create(resource, params);
+    },
+    update: (resource, params) => {
+      if (resource === "offcuts") {
+        const formData = createOffcutsPostData(params);
+        formData.append("id", params.id);
+        return httpClient(`${endpoint}/${resource}/${params.id}`, {
+          method: "PUT",
+          body: formData,
+          headers: new Headers({}),
+        }).then(({ json }) => ({ data: json }));
+      }
 
-    return baseDataProvider.update(resource, params);
-  },
+      return baseDataProvider.update(resource, params);
+    },
+  };
 };
 
-export default dataProvider;
+export default dataProviderFactory;

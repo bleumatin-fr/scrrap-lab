@@ -86,11 +86,17 @@ Address where the app is hosted.
 
 Example: `https://chuto.talm.fr/collector`
 
-#### BASE_PATH
+#### NEXT_PUBLIC_BASE_PATH
 
 Subpath where the app is hosted, leave blank if it's hosted on root domain.
 
 Example: `/collector`
+
+#### NEXT_PUBLIC_API_URL
+
+Subpath where the api is hosted, leave blank if it's hosted on root domain.
+
+Example: `/collector/api`
 
 #### MAIL_HOST
 

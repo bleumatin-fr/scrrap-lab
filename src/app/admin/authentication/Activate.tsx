@@ -15,6 +15,7 @@ import { Link, useLogin, useNotify } from "react-admin";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { useParams } from "react-router-dom";
 import Root from "./Root";
+import { env } from "next-runtime-env";
 
 interface ResetProps extends HtmlHTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -40,16 +41,19 @@ const Reset = (props: ResetProps) => {
     }
     setLoading(true);
     try {
-      const response = await fetch("/api/authentication/reset", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          password: event.target.password.value,
-        }),
-      });
+      const response = await fetch(
+        `${env("NEXT_PUBLIC_API_URL") || "/api"}/authentication/reset`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+            password: event.target.password.value,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
