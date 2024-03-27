@@ -4,18 +4,24 @@ import Mail from "./mails/Mail";
 import Mustache from "mustache";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
+
 let extra = {} as SMTPTransport.Options;
 if (process.env.MAIL_AUTH_USERNAME) {
-  extra = {
-    auth: {
-      user: process.env.MAIL_AUTH_USERNAME,
-      pass: process.env.MAIL_AUTH_PASSWORD,
-    },
+  extra.auth = {
+    user: process.env.MAIL_AUTH_USERNAME,
+    pass: process.env.MAIL_AUTH_PASSWORD,
   };
-}else{
-  extra = {
-    secure: false,
+}
+
+if (process.env.MAIL_TLS_REJECT_UNAUTHORIZED === 'false') {
+  extra.tls = {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false,
   };
+}
+
+if (process.env.MAIL_SECURE === 'false') {
+  extra.secure = false;
 }
 
 
