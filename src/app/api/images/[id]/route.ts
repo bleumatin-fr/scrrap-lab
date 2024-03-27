@@ -1,15 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import { handleErrors } from "../../errorHandler";
-import { connect } from "../../db";
-import authenticate from "../../authentication/authenticate";
 import allow from "../../authentication/allow";
+import authenticate from "../../authentication/authenticate";
+import { connect } from "../../db";
+import { handleErrors } from "../../errorHandler";
 
 export const GET = handleErrors(
   async (request: NextRequest, { params }: { params: { id: string } }) => {
     await connect();
     await authenticate(request);
-    await allow(request, ["offcuts.list", "catalog.list"]);
+    // await allow(request, ["offcuts.list", "catalog.list"]);
 
     const filePath = `./public/uploads/${params.id}`;
     const buffer = fs.readFileSync(filePath);

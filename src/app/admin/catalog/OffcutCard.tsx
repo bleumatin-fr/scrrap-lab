@@ -109,7 +109,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           >
             <img
               loading="lazy"
-              src={offcut.pictures[0].src}
+              src={`/scrrap-lab${offcut.pictures[0].src}`}
               alt={offcut.name}
               style={{
                 objectFit: "cover",
