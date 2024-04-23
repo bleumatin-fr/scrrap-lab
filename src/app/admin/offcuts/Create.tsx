@@ -19,7 +19,7 @@ import {
   useGetList,
   useGetOne,
   useInput,
-  useRecordContext
+  useRecordContext,
 } from "react-admin";
 import { useWatch } from "react-hook-form";
 import RemoveChoiceButton from "./RemoveChoiceButton";
@@ -74,10 +74,35 @@ const BrandPolicyContainer = styled.div`
   width: 100%;
 `;
 
-const OffcutReferenceInput = ({ source: fieldSource }: { source: string }) => {
+const OffcutReferenceInputWrapper = ({
+  source: fieldSource,
+}: {
+  source: string;
+}) => {
   const [source, materialId] = useWatch<{ source: string; material: string }>({
     name: ["source", "material"],
   });
+
+  if (!source || !materialId) return null;
+
+  return (
+    <OffcutReferenceInput
+      fieldSource={fieldSource}
+      source={source}
+      materialId={materialId}
+    />
+  );
+};
+
+const OffcutReferenceInput = ({
+  fieldSource,
+  source,
+  materialId,
+}: {
+  fieldSource: string;
+  source: string;
+  materialId: string;
+}) => {
   const { data: material } = useGetOne("materials", { id: materialId });
   const record = useRecordContext();
   const {
@@ -210,7 +235,7 @@ export const Fields = () => {
         />
       </ReferenceInput>
       <MaterialInput source="material" label="Matériau" validate={required()} />
-      <OffcutReferenceInput source="reference" />
+      <OffcutReferenceInputWrapper source="reference" />
       <RichTextInput
         source="description"
         label="Cartel"
