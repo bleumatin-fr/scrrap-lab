@@ -173,10 +173,6 @@ const OffcutReferenceInput = ({
     setReferenceDigits(nextReference());
   }, [nextReference]);
 
-  useEffect(() => {
-    field.onChange(referenceDigits + referenceEnd());
-  }, [referenceEnd, referenceDigits, field]);
-
   const handleOnBlur = () => {
     const value = parseInt(referenceDigits).toString().padStart(3, "0");
     setReferenceDigits(value);
