@@ -196,7 +196,7 @@ const data = [
     },
     {
       category: "materials",
-      key: "wood",
+      key: "wood-composite",
       value: "Composites bois",
       parent: {
         key: "composite",
