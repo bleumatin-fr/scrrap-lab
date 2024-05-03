@@ -28,7 +28,7 @@ const getOffcuts = async (request: NextRequest, audience?: string[]) => {
     filters = { ...filters, _id: { $in: ids } };
   }
 
-  if(request.nextUrl.searchParams.has("reference")) {
+  if (request.nextUrl.searchParams.has("reference")) {
     const reference = request.nextUrl.searchParams.get("reference");
     filters = { ...filters, reference };
   }
