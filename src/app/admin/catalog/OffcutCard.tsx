@@ -15,7 +15,7 @@ import {
   ReferenceField,
   TextField,
   usePermissions,
-  useStore
+  useStore,
 } from "react-admin";
 import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
 import { Counter, Thumbnails } from "yet-another-react-lightbox/plugins";
@@ -88,7 +88,10 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             },
           }}
           close={() => setPicturesOpen(false)}
-          slides={offcut.pictures}
+          slides={offcut.pictures.map((picture: any) => ({
+            ...picture,
+            src: `/scrrap-lab${picture.src}`,
+          }))}
         />
       )}
       <Card
@@ -138,7 +141,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             <CardMediaContainer>
               <img
                 loading="lazy"
-                src={"/image-placeholder.svg"}
+                src={"/scrrap-lab/image-placeholder.svg"}
                 alt=""
                 style={{
                   width: "102%",
