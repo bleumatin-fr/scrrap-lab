@@ -44,7 +44,10 @@ const OffcutReferenceInput = ({
       const sameNameOffcut = await dataProvider.getList("offcuts", {
         pagination: { page: 1, perPage: 1 },
         sort: { field: "reference", order: "DESC" },
-        filter: { reference: value },
+        filter: {
+            reference: value,
+            notId: record?.id,
+        },
       });
 
       if (sameNameOffcut && sameNameOffcut.data && sameNameOffcut.data.length) {
