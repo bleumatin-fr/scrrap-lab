@@ -5,13 +5,14 @@ import {
   CheckboxGroupInput,
   Create,
   ImageField,
-  ImageInput, RadioButtonGroupInput,
+  ImageInput,
+  RadioButtonGroupInput,
   ReferenceArrayInput,
   ReferenceInput,
   SimpleForm,
   TextInput,
   Validator,
-  required
+  required,
 } from "react-admin";
 import { useWatch } from "react-hook-form";
 import RemoveChoiceButton from "./RemoveChoiceButton";
@@ -54,7 +55,6 @@ const BrandPolicyContainer = styled.div`
   align-items: center;
   width: 100%;
 `;
-
 
 export const Fields = () => {
   return (
@@ -111,9 +111,21 @@ export const Fields = () => {
   );
 };
 
+export const addBasePathToOffcutPictures = (data: any) => {
+  return {
+    ...data,
+    pictures: data.pictures.map((picture: any) => {
+      return {
+        ...picture,
+        src: `/scrrap-lab${picture.src}`,
+      };
+    }),
+  };
+};
+
 const OffcutCreate = () => {
   return (
-    <Create redirect="list">
+    <Create redirect="list" transform={addBasePathToOffcutPictures}>
       <SimpleForm>
         <Fields />
       </SimpleForm>
