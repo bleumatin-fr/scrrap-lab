@@ -4,7 +4,6 @@ import {
   AutocompleteInput,
   CheckboxGroupInput,
   Create,
-  ImageField,
   ImageInput,
   RadioButtonGroupInput,
   ReferenceArrayInput,
@@ -17,6 +16,7 @@ import {
 import { useWatch } from "react-hook-form";
 import RemoveChoiceButton from "./RemoveChoiceButton";
 import OffcutReferenceInput from "./OffcutReferenceInput";
+import { ImageField } from "./ImageField";
 
 export const MaterialInput = ({
   source,
@@ -111,21 +111,9 @@ export const Fields = () => {
   );
 };
 
-export const addBasePathToOffcutPictures = (data: any) => {
-  return {
-    ...data,
-    pictures: data.pictures.map((picture: any) => {
-      return {
-        ...picture,
-        src: `/scrrap-lab${picture.src}`,
-      };
-    }),
-  };
-};
-
 const OffcutCreate = () => {
   return (
-    <Create redirect="list" transform={addBasePathToOffcutPictures}>
+    <Create redirect="list">
       <SimpleForm>
         <Fields />
       </SimpleForm>
