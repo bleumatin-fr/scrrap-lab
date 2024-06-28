@@ -140,7 +140,7 @@ const getOffcuts = async (request: NextRequest, audience?: string[]) => {
     skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");
   }
   if (request.nextUrl.searchParams.has("_end")) {
-    limit = parseInt(request.nextUrl.searchParams.get("_end") || "10");
+    limit = parseInt(request.nextUrl.searchParams.get("_end") || "10") - skip;
   }
 
   const documents = await Offcut.find(filters)
