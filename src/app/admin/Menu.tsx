@@ -28,8 +28,6 @@ const SubMenuItem = ({ name }: { name: string }) => {
   if (!resources || !resources[name]) return null;
   return (
     <MenuItemLink
-      onPointerEnterCapture={() => {}}
-      onPointerLeaveCapture={() => {}}
       to={createPath({
         resource: name,
         type: "list",
@@ -116,8 +114,6 @@ const CustomMenu = () => {
       {Object.keys(resourcesByMenu).map((menu) => {
         return [
           <MenuItemLink
-            onPointerEnterCapture={() => {}}
-            onPointerLeaveCapture={() => {}}
             key={`menu-${menu}`}
             primaryText={
               <Box
