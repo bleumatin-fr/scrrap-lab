@@ -71,6 +71,7 @@ const Catalog = () => {
 
   return (
     <DataGrid
+      paginationMode="server"
       paginationModel={paginationModel}
       rowSelection={false}
       rowCount={total || 0}
