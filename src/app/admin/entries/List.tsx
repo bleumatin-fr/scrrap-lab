@@ -62,7 +62,7 @@ const EntriesList = () => (
           <NumberField
             source="quantity"
             label="Poids"
-            transform={(value) => value / 1000}
+            transform={(value: any) => value / 1000}
             options={{ style: "unit", unit: "kilogram" }}
           />
         </OffcutDatagrid>
@@ -89,13 +89,9 @@ const EntriesList = () => (
                     {record.to?.properties.name || "Inconnu"}
                   </div>
                 )}
-                {record.distance && (
-                  <div>{record.distance} km</div>
-                )}
+                {record.distance && <div>{record.distance} km</div>}
                 {record.weight && <div>{record.weight} kg</div>}
-                {record.passengers && (
-                  <div>{record.passengers} passagers</div>
-                )}
+                {record.passengers && <div>{record.passengers} passagers</div>}
               </>
             )}
           />
