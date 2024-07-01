@@ -28,7 +28,7 @@ const getOffcuts = async (request: NextRequest, audience?: string[]) => {
     filters = { ...filters, _id: { $in: ids } };
   }
 
-  if(request.nextUrl.searchParams.has("notId")) {
+  if (request.nextUrl.searchParams.has("notId")) {
     const notIds = request.nextUrl.searchParams.getAll("notId");
     filters = { ...filters, _id: { $nin: notIds } };
   }
@@ -117,6 +117,7 @@ const getOffcuts = async (request: NextRequest, audience?: string[]) => {
     const order = request.nextUrl.searchParams.get("_order") || "ASC";
     sort = {
       [sortProperty]: order === "ASC" ? 1 : -1,
+      _id: -1,
     };
   }
 

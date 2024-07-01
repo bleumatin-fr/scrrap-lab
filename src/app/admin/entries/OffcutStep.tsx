@@ -27,6 +27,7 @@ import { CartItem } from "./CartItem";
 import { Fields as OffcutFields } from "../offcuts/Create";
 import WeightField from "../catalog/WeightField";
 import ShoppingCart from "../ui/ShoppingCart";
+import { useDebounce } from "usehooks-ts";
 
 const Layout = styled.div`
   display: flex;
@@ -40,6 +41,8 @@ const Layout = styled.div`
 `;
 
 const Catalog = () => {
+  const [q, setQ] = useState("");
+  const debouncedQ = useDebounce(q, 500);
   const { field } = useInput({
     source: "offcuts",
     defaultValue: [],
@@ -56,10 +59,14 @@ const Catalog = () => {
       perPage: paginationModel.pageSize,
     },
     filter: {
+      q: debouncedQ,
       meta: {
         populate: ["matter", "material", "sizes", "colors", "qualities"],
       },
-      _sort: "createdAt",
+    },
+    sort: {
+      field: "name",
+      order: "ASC",
     },
   });
 
@@ -70,92 +77,102 @@ const Catalog = () => {
   };
 
   return (
-    <DataGrid
-      paginationMode="server"
-      paginationModel={paginationModel}
-      rowSelection={false}
-      rowCount={total || 0}
-      loading={isLoading}
-      onPaginationModelChange={handlePaginationModelChange}
-      disableColumnFilter
-      disableColumnMenu
-      disableRowSelectionOnClick
-      columns={[
-        {
-          field: `reference`,
-          headerName: "Référence",
-          flex: 1,
-        },
-        { field: `name`, headerName: "Nom", flex: 1 },
-        {
-          field: `matter`,
-          headerName: "Matière",
-          flex: 1,
-          valueGetter: (params) => params.row.matter?.value,
-        },
-        {
-          field: `material`,
-          headerName: "Matériau",
-          flex: 1,
-          valueGetter: (params) => params.row.material?.value,
-        },
-        {
-          field: `qualities`,
-          headerName: "Qualité",
-          flex: 1,
-          valueGetter: (params) =>
-            params.row.qualities
-              ?.map((quality: any) => quality.value)
-              .join(", "),
-        },
-        {
-          field: `sizes`,
-          headerName: "Taille",
-          flex: 1,
-          valueGetter: (params) =>
-            params.row.sizes?.map((size: any) => size.value).join(", "),
-        },
-        {
-          field: `colors`,
-          headerName: "Couleur",
-          flex: 1,
-          valueGetter: (params) =>
-            params.row.colors?.map((color: any) => color.value).join(", "),
-        },
-        {
-          field: "action",
-          headerName: "Action",
-          sortable: false,
-          renderCell: (params) => {
-            const onClick = (e: MouseEvent) => {
-              if (
-                field.value.find(
-                  (item: any) => item.offcut.id === params.row.id
-                )
-              ) {
-                return;
-              }
-              field.onChange([
-                ...field.value,
-                {
-                  id: params.row.id,
-                  offcut: params.row,
-                  quantity: 1000,
-                },
-              ]);
-            };
-
-            return (
-              <IconButton onClick={onClick}>
-                <ShoppingCart />
-              </IconButton>
-            );
+    <>
+      <TextField
+        label="Recherche"
+        variant="outlined"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setQ(e.target.value);
+        }}
+        style={{ width: "100%", marginTop: "1rem" }}
+      />
+      <DataGrid
+        paginationMode="server"
+        paginationModel={paginationModel}
+        rowSelection={false}
+        rowCount={total || 0}
+        loading={isLoading}
+        onPaginationModelChange={handlePaginationModelChange}
+        disableColumnFilter
+        disableColumnMenu
+        disableRowSelectionOnClick
+        columns={[
+          {
+            field: `reference`,
+            headerName: "Référence",
+            flex: 1,
           },
-        },
-      ]}
-      autoHeight
-      rows={data || []}
-    />
+          { field: `name`, headerName: "Nom", flex: 1 },
+          {
+            field: `matter`,
+            headerName: "Matière",
+            flex: 1,
+            valueGetter: (params) => params.row.matter?.value,
+          },
+          {
+            field: `material`,
+            headerName: "Matériau",
+            flex: 1,
+            valueGetter: (params) => params.row.material?.value,
+          },
+          {
+            field: `qualities`,
+            headerName: "Qualité",
+            flex: 1,
+            valueGetter: (params) =>
+              params.row.qualities
+                ?.map((quality: any) => quality.value)
+                .join(", "),
+          },
+          {
+            field: `sizes`,
+            headerName: "Taille",
+            flex: 1,
+            valueGetter: (params) =>
+              params.row.sizes?.map((size: any) => size.value).join(", "),
+          },
+          {
+            field: `colors`,
+            headerName: "Couleur",
+            flex: 1,
+            valueGetter: (params) =>
+              params.row.colors?.map((color: any) => color.value).join(", "),
+          },
+          {
+            field: "action",
+            headerName: "Action",
+            sortable: false,
+            renderCell: (params) => {
+              const onClick = (e: MouseEvent) => {
+                if (
+                  field.value.find(
+                    (item: any) => item.offcut.id === params.row.id
+                  )
+                ) {
+                  return;
+                }
+                field.onChange([
+                  ...field.value,
+                  {
+                    id: params.row.id,
+                    offcut: params.row,
+                    quantity: 1000,
+                  },
+                ]);
+              };
+
+              return (
+                <IconButton onClick={onClick}>
+                  <ShoppingCart />
+                </IconButton>
+              );
+            },
+          },
+        ]}
+        autoHeight
+        rows={data || []}
+      />
+    </>
   );
 };
 
@@ -173,7 +190,11 @@ const Cart = () => {
   const value: CartItem[] = field.value.filter((item: any) => !!item.id);
 
   return (
-    <div>
+    <div
+      style={{
+        marginTop: "1rem",
+      }}
+    >
       <DataGrid
         pagination={undefined}
         rowCount={value.length || 0}
