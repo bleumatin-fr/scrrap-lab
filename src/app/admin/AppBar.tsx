@@ -18,6 +18,7 @@ import {
   useResourceDefinitions,
 } from "react-admin";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import styled from "@emotion/styled";
 import Logo from "./Logo";
 import ChangePasswordMenuItem from "./authentication/ChangePasswordMenuItem";
@@ -28,16 +29,28 @@ const AppBar = styled(BaseAppBar)``;
 const ExitHistoryButton = () => {
   const redirect = useRedirect();
   return (
-    <MenuItem
-      onClick={() => {
-        redirect("list", "exits");
-      }}
-    >
-      <ListItemIcon>
-        <ListAltIcon fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>Historique de mes sorties</ListItemText>
-    </MenuItem>
+    <>
+      <MenuItem
+        onClick={() => {
+          redirect("list", "catalog");
+        }}
+      >
+        <ListItemIcon>
+          <AutoStoriesIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>Catalogue</ListItemText>
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          redirect("list", "exits");
+        }}
+      >
+        <ListItemIcon>
+          <ListAltIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>Historique de mes sorties</ListItemText>
+      </MenuItem>
+    </>
   );
 };
 
