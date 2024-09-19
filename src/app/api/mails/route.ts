@@ -48,10 +48,12 @@ export const POST = handleErrors(async (request: NextRequest) => {
   await authenticate(request);
   await allow(request, ["mails.edit"]);
 
-  const { name, actions } = await request.json();
+  const { key, subject, html, text } = await request.json();
   const addedDocument = await Mail.create({
-    name,
-    actions,
+    key,
+    subject,
+    html,
+    text,
   });
 
   return NextResponse.json(addedDocument);

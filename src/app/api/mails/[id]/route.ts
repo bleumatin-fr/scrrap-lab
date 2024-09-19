@@ -25,7 +25,7 @@ export const PUT = handleErrors(
     await authenticate(request);
     await allow(request, ["mails.edit"]);
 
-    const { name, actions } = await request.json();
+    const { key, subject, html, text } = await request.json();
 
     const updatedDocument = await Mail.findOneAndUpdate(
       {
@@ -33,8 +33,10 @@ export const PUT = handleErrors(
       },
       {
         $set: {
-          name,
-          actions,
+          key,
+          subject,
+          html,
+          text,
         },
       },
       { new: true }
