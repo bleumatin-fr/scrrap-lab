@@ -53,7 +53,6 @@ const NumberField = (props: NumberFieldProps) => {
     if (/^[-+]?[0-9]+(\.[0-9]+)?$/.test(event.target.value)) {
       const numberValue = parseFloat(event.target.value);
       onChange && onChange(numberValue);
-      setTextValue(numberValue.toString());
     }
   };
 
