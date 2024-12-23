@@ -4,11 +4,13 @@ import {
   DataProvider as BaseDataProvider,
   UpdateParams,
   fetchUtils,
+  Identifier,
 } from "react-admin";
 import httpClient from "./httpClient";
 
 export interface DataProvider extends BaseDataProvider {
-  endpoint: string | undefined;
+  validateExit: (exitId: Identifier) => Promise<any>;
+  importUsers: (formData: FormData) => Promise<any>;
 }
 
 type PostParams = {
@@ -76,7 +78,6 @@ export const dataProviderFactory: (
   const baseDataProvider = jsonServerProvider(endpoint, httpClient);
   return {
     ...baseDataProvider,
-    endpoint,
     create: (resource, params) => {
       if (resource === "offcuts") {
         const formData = createOffcutsPostData(params);
@@ -101,6 +102,19 @@ export const dataProviderFactory: (
       }
 
       return baseDataProvider.update(resource, params);
+    },
+    validateExit: (exitId: Identifier) => {
+      return httpClient(`${endpoint}/exits/${exitId}/validate`, {
+        method: "POST",
+        body: "",
+      });
+    },
+    importUsers: (formData: FormData) => {
+      return httpClient(`${endpoint}/users/import`, {
+        method: "POST",
+        headers: new Headers({}),
+        body: formData,
+      });
     },
   };
 };
