@@ -13,6 +13,7 @@ import { MouseEvent, useRef, useState } from "react";
 import {
   ReferenceArrayField,
   ReferenceField,
+  SingleFieldList,
   TextField,
   usePermissions,
   useStore,
@@ -58,6 +59,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
   const [picturesOpen, setPicturesOpen] = useState(false);
   const [cart, setCart] = useStore<CartItem[]>("cart", []);
   const { permissions } = usePermissions();
+  console.table(permissions);
 
   const handleAddToCartClicked = (offcut: any) => (event: MouseEvent) => {
     event.stopPropagation();
@@ -205,6 +207,9 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                       reference="matters"
                       label="Matière"
                       record={offcut}
+                      link={
+                        permissions.includes("matters.edit") ? "edit" : false
+                      }
                     />
                   }
                   size="small"
@@ -218,6 +223,9 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                       reference="materials"
                       label="Matériau"
                       record={offcut}
+                      link={
+                        permissions.includes("materials.edit") ? "edit" : false
+                      }
                     />
                   }
                   size="small"
@@ -258,7 +266,13 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Couleur"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={
+                    permissions.includes("colors.edit") ? "edit" : false
+                  }
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.sizes && offcut.sizes.length > 0 && (
@@ -279,7 +293,11 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Taille"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={permissions.includes("sizes.edit") ? "edit" : false}
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.qualities && offcut.qualities.length > 0 && (
@@ -300,7 +318,13 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Qualité"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={
+                    permissions.includes("qualities.edit") ? "edit" : false
+                  }
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.brandPolicy && (
@@ -322,6 +346,11 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                     reference="brandPolicies"
                     label="Exploitation"
                     record={offcut}
+                    link={
+                      permissions.includes("brandPolicies.edit")
+                        ? "edit"
+                        : false
+                    }
                   />
                 }
                 size="small"
