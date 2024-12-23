@@ -90,7 +90,9 @@ const EntriesList = () => (
                   </div>
                 )}
                 {record.distance && <div>{record.distance} km</div>}
-                {record.weight && <div>{record.weight} kg</div>}
+                {record.weight && (
+                  <div>{(record.weight / 1000).toFixed(3)} kg</div>
+                )}
                 {record.passengers && <div>{record.passengers} passagers</div>}
               </>
             )}
