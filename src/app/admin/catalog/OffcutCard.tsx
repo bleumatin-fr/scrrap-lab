@@ -178,7 +178,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
               <Chip
                 label={
                   <Typography variant="caption">
-                    {offcut.quantity / 1000} kg
+                    {(offcut.quantity / 1000).toFixed(3)} kg
                   </Typography>
                 }
                 size="small"
