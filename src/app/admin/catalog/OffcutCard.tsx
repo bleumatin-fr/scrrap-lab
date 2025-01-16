@@ -59,7 +59,6 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
   const [picturesOpen, setPicturesOpen] = useState(false);
   const [cart, setCart] = useStore<CartItem[]>("cart", []);
   const { permissions } = usePermissions();
-  console.table(permissions);
 
   const handleAddToCartClicked = (offcut: any) => (event: MouseEvent) => {
     event.stopPropagation();
@@ -92,7 +91,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           close={() => setPicturesOpen(false)}
           slides={offcut.pictures.map((picture: any) => ({
             ...picture,
-            src: `/scrrap-lab${picture.src}`,
+            src: `${picture.src}`,
           }))}
         />
       )}
@@ -114,7 +113,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           >
             <img
               loading="lazy"
-              src={`/scrrap-lab${offcut.pictures[0].src}`}
+              src={`${offcut.pictures[0].src}`}
               alt={offcut.name}
               style={{
                 objectFit: "cover",
@@ -143,7 +142,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             <CardMediaContainer>
               <img
                 loading="lazy"
-                src={"/scrrap-lab/image-placeholder.svg"}
+                src={"./image-placeholder.svg"}
                 alt=""
                 style={{
                   width: "102%",
