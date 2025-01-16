@@ -11,11 +11,14 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { MouseEvent, useState } from "react";
+
 import { ReferenceField, SimpleForm, TextField, useInput } from "react-admin";
+import { useWatch } from "react-hook-form";
 import { Fields as TransportFields } from "../transports/Create";
 
 const TransportStep = () => {
   const [addTransportModalOpen, setAddTransportModalOpen] = useState(false);
+
   const { field } = useInput({
     source: "transports",
     defaultValue: [],
@@ -28,6 +31,7 @@ const TransportStep = () => {
     ]);
     setAddTransportModalOpen(false);
   };
+  const date = useWatch({ name: "date" });
 
   return (
     <>
@@ -38,7 +42,12 @@ const TransportStep = () => {
       >
         <DialogTitle>Ajout transport</DialogTitle>
 
-        <SimpleForm onSubmit={handleTransportFormSubmitted}>
+        <SimpleForm
+          onSubmit={handleTransportFormSubmitted}
+          defaultValues={{
+            date,
+          }}
+        >
           <TransportFields />
         </SimpleForm>
       </Dialog>

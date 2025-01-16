@@ -6,7 +6,6 @@ import {
   NumberInput,
   ReferenceInput,
   SimpleForm,
-  TextInput,
   required,
   useInput,
 } from "react-admin";
