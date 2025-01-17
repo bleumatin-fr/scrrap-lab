@@ -30,7 +30,7 @@ export const GET = handleErrors(async (request: NextRequest) => {
     };
   }
 
-  let limit = 10;
+  let limit = 0;
   let skip = 0;
   if (request.nextUrl.searchParams.has("_start")) {
     skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");
