@@ -91,7 +91,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           close={() => setPicturesOpen(false)}
           slides={offcut.pictures.map((picture: any) => ({
             ...picture,
-            src: `${picture.src}`,
+            src: `scrrap-lab${picture.src}`,
           }))}
         />
       )}
@@ -113,7 +113,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           >
             <img
               loading="lazy"
-              src={`${offcut.pictures[0].src}`}
+              src={`scrrap-lab${offcut.pictures[0].src}`}
               alt={offcut.name}
               style={{
                 objectFit: "cover",
@@ -142,7 +142,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             <CardMediaContainer>
               <img
                 loading="lazy"
-                src={"./image-placeholder.svg"}
+                src={"scrrap-lab/image-placeholder.svg"}
                 alt=""
                 style={{
                   width: "102%",
