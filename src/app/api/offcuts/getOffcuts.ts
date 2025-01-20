@@ -17,7 +17,7 @@ const getOffcuts = async (request: NextRequest, audience?: string[]) => {
           { name: new RegExp(q, "i") },
           { reference: new RegExp(q, "i") },
           { description: new RegExp(q, "i") },
-          { $text: { $search: q } },
+          { $text: { $search: `"${q}"` } },
         ],
       };
     }
