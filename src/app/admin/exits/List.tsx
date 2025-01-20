@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import {
   ArrayField,
+  AutocompleteInput,
   CheckboxGroupInput,
   Datagrid,
   DateField,
@@ -8,7 +9,9 @@ import {
   List,
   NumberField,
   ReferenceField,
+  ReferenceInput,
   TextField,
+  TextInput,
   usePermissions,
   useRecordContext,
 } from "react-admin";
@@ -49,11 +52,31 @@ const EditButtonGuard = ({ children }: EditButtonGuardProps) => {
   return children;
 };
 
+const filters = [
+  <TextInput
+    key="reference-input"
+    source="offcuts.reference"
+    alwaysOn
+    label="Référence de chute"
+  />,
+  <ReferenceInput
+    key="user-input"
+    source="createdBy.id"
+    reference="users"
+    alwaysOn
+  >
+    <AutocompleteInput
+      label="Créé par"
+      optionText={(choice: any) => `${choice.firstName} ${choice.lastName}`}
+    />
+  </ReferenceInput>,
+];
+
 const ExitsList = () => {
   const { permissions } = usePermissions();
 
   return (
-    <List sort={{ field: "date", order: "DESC" }}>
+    <List filters={filters} sort={{ field: "date", order: "DESC" }}>
       <Datagrid rowClick={false}>
         <DateField source="date" label="Date" showTime />
         {permissions.includes("users.list") && (

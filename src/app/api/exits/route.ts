@@ -1,12 +1,14 @@
-import { NextResponse } from "next/server";
-import { connect } from "../db";
-import Exit from "./Exit";
 import { FilterQuery, SortOrder } from "mongoose";
-import populatePaths from "./populatePaths";
-import recalculateQuantities from "../offcuts/recalculateQuantities";
-import authenticate from "../authentication/authenticate";
+import { NextResponse } from "next/server";
 import allow from "../authentication/allow";
+import authenticate from "../authentication/authenticate";
+import { connect } from "../db";
 import { handleErrors } from "../errorHandler";
+import Offcut from "../offcuts/Offcut";
+import recalculateQuantities from "../offcuts/recalculateQuantities";
+import User from "../users/User";
+import Exit from "./Exit";
+import populatePaths from "./populatePaths";
 
 export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
@@ -18,6 +20,32 @@ export const GET = handleErrors(async (request: NextRequest) => {
     date: "desc",
   };
 
+  const offcutReference = request.nextUrl.searchParams.get("offcuts.reference");
+  const userId = request.nextUrl.searchParams.get("createdBy.id");
+
+  if (offcutReference) {
+    const filteredOffcut = await Offcut.findOne({
+      reference: offcutReference,
+    }).exec();
+
+    if (filteredOffcut) {
+      filters.offcuts = {
+        $elemMatch: {
+          offcut: filteredOffcut._id,
+        },
+      };
+    }
+  }
+
+  if (userId) {
+    const user = await User.findOne({
+      _id: userId,
+    }).exec();
+
+    filters.createdBy = {
+      $eq: user?._id,
+    };
+  }
   if (request.nextUrl.searchParams.has("validated")) {
     filters = {
       ...filters,
