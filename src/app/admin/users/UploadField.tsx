@@ -21,12 +21,11 @@ import {
   sanitizeFieldRestProps,
   useDataProvider,
   useNotify,
-  useRecordContext,
 } from "react-admin";
 // @ts-ignore
 import FileUpload, { ExtendedFileProps } from "react-mui-fileuploader";
+import { useMutation, useQueryClient } from "react-query";
 import { DataProvider } from "../dataProvider";
-import httpClient from "../httpClient";
 
 const RowErrorModal = ({
   open,
@@ -75,6 +74,19 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
   const [loading, setLoading] = useState(false);
   const dataProvider = useDataProvider<DataProvider>();
 
+  const queryClient = useQueryClient();
+  const { mutateAsync, isLoading } = useMutation(
+    (formData: FormData) => {
+      return dataProvider.importUsers(formData);
+    },
+    {
+      onSuccess: () => {
+        // invalidate users
+        queryClient.invalidateQueries("users");
+      },
+    }
+  );
+
   const handleFileUploadError = (error: any) => {
     console.error(error);
   };
@@ -100,12 +112,7 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
     formData.append("file", fileToUpload);
 
     try {
-      const response = await httpClient(`${dataProvider.endpoint}/users/import`, {
-        method: "POST",
-        headers: new Headers({}),
-        body: formData,
-      });
-
+      const response = await mutateAsync(formData);
       const data = response.json;
 
       if (response.status === 200) {
@@ -132,6 +139,7 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
       });
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   };
 

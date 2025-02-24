@@ -1,20 +1,49 @@
-import { NextResponse } from "next/server";
-import { connect } from "../db";
-import Entry from "./Entry";
 import { FilterQuery, SortOrder } from "mongoose";
-import Transport from "../transports/Transport";
-import populatePaths from "./populatePaths";
-import recalculateQuantities from "../offcuts/recalculateQuantities";
-import { handleErrors } from "../errorHandler";
-import authenticate from "../authentication/authenticate";
+import { NextResponse } from "next/server";
 import allow from "../authentication/allow";
+import authenticate from "../authentication/authenticate";
+import { connect } from "../db";
+import { handleErrors } from "../errorHandler";
+import Offcut from "../offcuts/Offcut";
+import recalculateQuantities from "../offcuts/recalculateQuantities";
+import Transport from "../transports/Transport";
+import User from "../users/User";
+import Entry from "./Entry";
+import populatePaths from "./populatePaths";
 
 export const GET = handleErrors(async (request: NextRequest) => {
   await connect();
   await authenticate(request);
   await allow(request, ["entries.list"]);
 
+  const offcutReference = request.nextUrl.searchParams.get("offcuts.reference");
+  const userId = request.nextUrl.searchParams.get("createdBy.id");
+
   let filters: FilterQuery<typeof Entry> = {};
+  if (offcutReference) {
+    const filteredOffcut = await Offcut.findOne({
+      reference: offcutReference,
+    }).exec();
+
+    if (filteredOffcut) {
+      filters.offcuts = {
+        $elemMatch: {
+          offcut: filteredOffcut._id,
+        },
+      };
+    }
+  }
+
+  if (userId) {
+    const user = await User.findOne({
+      _id: userId,
+    }).exec();
+
+    filters.createdBy = {
+      $eq: user?._id,
+    };
+  }
+
   let sort: { [key: string]: SortOrder } = {
     date: "desc",
   };
@@ -27,7 +56,7 @@ export const GET = handleErrors(async (request: NextRequest) => {
     };
   }
 
-  let limit = 10;
+  let limit = 0;
   let skip = 0;
   if (request.nextUrl.searchParams.has("_start")) {
     skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");

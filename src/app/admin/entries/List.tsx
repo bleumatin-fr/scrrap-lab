@@ -1,20 +1,38 @@
 import styled from "@emotion/styled";
-import { ReactElement } from "react";
 import {
   ArrayField,
+  AutocompleteInput,
   Datagrid,
   DateField,
   EditButton,
   FunctionField,
   List,
   NumberField,
-  ReferenceArrayField,
   ReferenceField,
   ReferenceInput,
   TextField,
+  TextInput,
 } from "react-admin";
 
-const filters: ReactElement[] = [];
+const filters = [
+  <TextInput
+    key="reference-input"
+    source="offcuts.reference"
+    alwaysOn
+    label="Référence de chute"
+  />,
+  <ReferenceInput
+    key="user-input"
+    source="createdBy.id"
+    reference="users"
+    alwaysOn
+  >
+    <AutocompleteInput
+      label="Créé par"
+      optionText={(choice: any) => `${choice.firstName} ${choice.lastName}`}
+    />
+  </ReferenceInput>,
+];
 
 const OffcutDatagrid = styled(Datagrid)`
   table-layout: fixed;
@@ -90,7 +108,9 @@ const EntriesList = () => (
                   </div>
                 )}
                 {record.distance && <div>{record.distance} km</div>}
-                {record.weight && <div>{record.weight} kg</div>}
+                {record.weight && (
+                  <div>{(record.weight / 1000).toFixed(3)} kg</div>
+                )}
                 {record.passengers && <div>{record.passengers} passagers</div>}
               </>
             )}

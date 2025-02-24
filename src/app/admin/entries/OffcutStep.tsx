@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -10,11 +12,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import Alert from "@mui/material/Alert";
+import { DataGrid } from "@mui/x-data-grid";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import {
   SimpleForm,
   useCreate,
@@ -22,12 +22,11 @@ import {
   useInput,
   useNotify,
 } from "react-admin";
-import Alert from "@mui/material/Alert";
-import { CartItem } from "./CartItem";
-import { Fields as OffcutFields } from "../offcuts/Create";
-import WeightField from "../catalog/WeightField";
-import ShoppingCart from "../ui/ShoppingCart";
 import { useDebounce } from "usehooks-ts";
+import WeightField from "../catalog/WeightField";
+import { Fields as OffcutFields } from "../offcuts/Create";
+import ShoppingCart from "../ui/ShoppingCart";
+import { CartItem } from "./CartItem";
 
 const Layout = styled.div`
   display: flex;
@@ -48,16 +47,7 @@ const Catalog = () => {
     defaultValue: [],
   });
 
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
-    pageSize: 10,
-  });
-
   const { data, total, isLoading, error, refetch } = useGetList("offcuts", {
-    pagination: {
-      page: paginationModel.page + 1,
-      perPage: paginationModel.pageSize,
-    },
     filter: {
       q: debouncedQ,
       meta: {
@@ -70,12 +60,6 @@ const Catalog = () => {
     },
   });
 
-  const handlePaginationModelChange = (
-    paginationModel: GridPaginationModel
-  ) => {
-    setPaginationModel(paginationModel);
-  };
-
   return (
     <>
       <TextField
@@ -87,15 +71,12 @@ const Catalog = () => {
         style={{ width: "100%", marginTop: "1rem" }}
       />
       <DataGrid
-        paginationMode="server"
-        paginationModel={paginationModel}
         rowSelection={false}
-        rowCount={total || 0}
         loading={isLoading}
-        onPaginationModelChange={handlePaginationModelChange}
         disableColumnFilter
         disableColumnMenu
         disableRowSelectionOnClick
+        hideFooterPagination={true}
         columns={[
           {
             field: `reference`,

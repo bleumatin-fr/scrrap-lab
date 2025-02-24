@@ -20,6 +20,16 @@ export const GET = handleErrors(async (request: NextRequest) => {
     date: "desc",
   };
 
+  if (request.nextUrl.searchParams.has("q")) {
+    const q = request.nextUrl.searchParams.get("q") || "";
+    filters = {
+      $or: [
+        { firstName: { $regex: q, $options: "i" } },
+        { lastName: { $regex: q, $options: "i" } },
+        { email: { $regex: q, $options: "i" } },
+      ],
+    };
+  }
   if (request.nextUrl.searchParams.has("role")) {
     filters = { ...filters, role: request.nextUrl.searchParams.get("role") };
   }
@@ -32,7 +42,7 @@ export const GET = handleErrors(async (request: NextRequest) => {
     };
   }
 
-  let limit = 10;
+  let limit = 0;
   let skip = 0;
   if (request.nextUrl.searchParams.has("_start")) {
     skip = parseInt(request.nextUrl.searchParams.get("_start") || "0");

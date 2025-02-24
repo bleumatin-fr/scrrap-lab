@@ -13,6 +13,7 @@ import { MouseEvent, useRef, useState } from "react";
 import {
   ReferenceArrayField,
   ReferenceField,
+  SingleFieldList,
   TextField,
   usePermissions,
   useStore,
@@ -90,7 +91,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           close={() => setPicturesOpen(false)}
           slides={offcut.pictures.map((picture: any) => ({
             ...picture,
-            src: `/scrrap-lab${picture.src}`,
+            src: `scrrap-lab${picture.src}`,
           }))}
         />
       )}
@@ -112,7 +113,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           >
             <img
               loading="lazy"
-              src={`/scrrap-lab${offcut.pictures[0].src}`}
+              src={`scrrap-lab${offcut.pictures[0].src}`}
               alt={offcut.name}
               style={{
                 objectFit: "cover",
@@ -141,7 +142,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             <CardMediaContainer>
               <img
                 loading="lazy"
-                src={"/scrrap-lab/image-placeholder.svg"}
+                src={"scrrap-lab/image-placeholder.svg"}
                 alt=""
                 style={{
                   width: "102%",
@@ -178,7 +179,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
               <Chip
                 label={
                   <Typography variant="caption">
-                    {offcut.quantity / 1000} kg
+                    {(offcut.quantity / 1000).toFixed(3)} kg
                   </Typography>
                 }
                 size="small"
@@ -205,6 +206,9 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                       reference="matters"
                       label="Matière"
                       record={offcut}
+                      link={
+                        permissions.includes("matters.edit") ? "edit" : false
+                      }
                     />
                   }
                   size="small"
@@ -218,6 +222,9 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                       reference="materials"
                       label="Matériau"
                       record={offcut}
+                      link={
+                        permissions.includes("materials.edit") ? "edit" : false
+                      }
                     />
                   }
                   size="small"
@@ -258,7 +265,13 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Couleur"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={
+                    permissions.includes("colors.edit") ? "edit" : false
+                  }
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.sizes && offcut.sizes.length > 0 && (
@@ -279,7 +292,11 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Taille"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={permissions.includes("sizes.edit") ? "edit" : false}
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.qualities && offcut.qualities.length > 0 && (
@@ -300,7 +317,13 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                 label="Qualité"
                 record={offcut}
                 sx={{ display: "inline-block" }}
-              />
+              >
+                <SingleFieldList
+                  linkType={
+                    permissions.includes("qualities.edit") ? "edit" : false
+                  }
+                />
+              </ReferenceArrayField>
             </Typography>
           )}
           {offcut.brandPolicy && (
@@ -322,6 +345,11 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
                     reference="brandPolicies"
                     label="Exploitation"
                     record={offcut}
+                    link={
+                      permissions.includes("brandPolicies.edit")
+                        ? "edit"
+                        : false
+                    }
                   />
                 }
                 size="small"
