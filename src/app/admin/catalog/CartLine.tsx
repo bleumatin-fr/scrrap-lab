@@ -57,7 +57,7 @@ const CartLine = ({
           {item.offcut.pictures[0] && (
             <img
               loading="lazy"
-              src={`scrrap-lab${item.offcut.pictures[0].src}`}
+              src={`/scrrap-lab${item.offcut.pictures[0].src}`}
               alt={item.offcut.pictures[0].alt}
               width="50px"
             />

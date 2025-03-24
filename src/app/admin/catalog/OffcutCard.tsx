@@ -113,7 +113,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           >
             <img
               loading="lazy"
-              src={`scrrap-lab${offcut.pictures[0].src}`}
+              src={`/scrrap-lab${offcut.pictures[0].src}`}
               alt={offcut.name}
               style={{
                 objectFit: "cover",
@@ -142,7 +142,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
             <CardMediaContainer>
               <img
                 loading="lazy"
-                src={"scrrap-lab/image-placeholder.svg"}
+                src={"/scrrap-lab/image-placeholder.svg"}
                 alt=""
                 style={{
                   width: "102%",
