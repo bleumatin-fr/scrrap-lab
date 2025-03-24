@@ -17,6 +17,7 @@ import {
 } from "react-admin";
 import ValidatedField from "./ValidatedField";
 import { ReactElement } from "react";
+import * as XLSX from "xlsx";
 
 const SubDatagrid = styled(Datagrid)`
   table-layout: fixed;
@@ -75,8 +76,53 @@ const filters = [
 const ExitsList = () => {
   const { permissions } = usePermissions();
 
+  const exporter = (records: any[]) => {
+    const workbook = XLSX.utils.book_new();
+    
+    // Create offcuts sheet with all exit, offcut, and user details
+    const offcutsData = records.flatMap(record => 
+      record.offcuts?.map((offcut: any) => ({
+        // Exit properties
+        "Date de la sortie": new Date(record.date).toLocaleString(),
+        // "Date de création de la sortie": new Date(record.createdAt).toLocaleString(),
+        // "Date de mise à jour de la sortie": new Date(record.updatedAt).toLocaleString(),
+        "Date de validation": record.validatedAt ? new Date(record.validatedAt).toLocaleString() : "",
+        
+        // User properties
+        "Prénom de l'utilisateur": record.createdBy?.firstName,
+        "Nom de l'utilisateur": record.createdBy?.lastName,
+        "Email de l'utilisateur": record.createdBy?.email,
+        "Rôle de l'utilisateur": record.createdBy?.role?.name,
+        
+        // Validator properties (if exists)
+        "Prénom du validateur": record.validatedBy?.firstName,
+        "Nom du validateur": record.validatedBy?.lastName,
+        "Email du validateur": record.validatedBy?.email,
+        "Rôle du validateur": record.validatedBy?.role?.name,
+        
+        // Offcut properties
+        "Référence de la chute": offcut.offcut?.reference,
+        "Nom de la chute": offcut.offcut?.name,
+        "Poids sortie (kg)": (offcut.quantity / 1000).toFixed(3),
+        "Matière": offcut.offcut?.matter?.value,
+        "Matériau": offcut.offcut?.material?.value,
+        "Tailles": offcut.offcut?.sizes?.map((s: any) => s.value).join(", "),
+        "Couleurs": offcut.offcut?.colors?.map((c: any) => c.value).join(", "),
+        "Qualités": offcut.offcut?.qualities?.map((q: any) => q.value).join(", "),
+        "Audiences": offcut.offcut?.audiences?.map((a: any) => a.value).join(", "),
+        "Politique de marque": offcut.offcut?.brandPolicy?.value,
+        "Source": offcut.offcut?.source,
+      })) || []
+    );
+    const offcutsSheet = XLSX.utils.json_to_sheet(offcutsData);
+    XLSX.utils.book_append_sheet(workbook, offcutsSheet, "Chutes sorties");
+
+    // Save the file
+    XLSX.writeFile(workbook, "exits.xlsx");
+  };
+
   return (
-    <List filters={filters} sort={{ field: "date", order: "DESC" }}>
+    <List filters={filters} sort={{ field: "date", order: "DESC" }} exporter={exporter}>
       <Datagrid rowClick={false}>
         <DateField source="date" label="Date" showTime />
         {permissions.includes("users.list") && (
