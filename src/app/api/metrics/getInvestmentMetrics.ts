@@ -98,7 +98,7 @@ const getInvestmentMetrics = async (
               Math.max(investment.start.getTime(), start.getTime())) /
             (86400 * 1000);
           const factor = days / 365.242374; //nb days in a year
-          return acc + investment.weight * investment.quantity * factor;
+          return acc + investment.weight / 1000 * investment.quantity * factor;
         },
         0
       );
