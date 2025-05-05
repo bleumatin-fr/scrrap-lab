@@ -25,7 +25,7 @@ const InvestmentCreate = () => (
         label="Condition"
         required
       />
-      <WeightInput source="weight" label="Poids" required />
+      <WeightInput source="weight" label="Poids transporté" required />
       <NumberInput
         source="usagePeriod"
         label="Durée d'usage prévisionnelle"
