@@ -80,14 +80,6 @@ export const Fields = () => {
         }}
       />
       <NumberInput
-        source="consumption"
-        label="Consommation"
-        validate={[required()]}
-        InputProps={{
-          endAdornment: "L/100km",
-        }}
-      />
-      <NumberInput
         source="weight"
         label="Poids"
         validate={required()}

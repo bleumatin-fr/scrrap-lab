@@ -93,12 +93,6 @@ const TransportStep = () => {
                 },
               },
               {
-                field: "consumption",
-                headerName: "Consommation",
-                width: 150,
-                sortable: false,
-              },
-              {
                 field: "distance",
                 headerName: "Distance",
                 width: 150,

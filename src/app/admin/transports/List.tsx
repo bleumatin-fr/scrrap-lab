@@ -26,17 +26,6 @@ const TransportList = () => (
     <Datagrid rowClick={false}>
       <DateField source="date" label="Date" />
       <ReferenceField source="mode" reference="transportModes" label="Mode" />
-      <FunctionField
-        source="consumption"
-        label="Consommation"
-        textAlign="right"
-        render={(record: RaRecord) =>
-          typeof record.consumption !== "undefined" &&
-          record.consumption !== null
-            ? `${record.consumption} L/100km`
-            : null
-        }
-      />
       <NumberField
         source="distance"
         label="Distance"

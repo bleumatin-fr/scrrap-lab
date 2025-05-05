@@ -7,7 +7,6 @@ import Entry from "../entries/Entry";
 interface Transport {
   date: Date;
   mode: ExtractInterface<typeof List>;
-  consumption: number;
   distance?: number;
   weight?: number;
   passengers?: number;
@@ -50,7 +49,6 @@ export const transportSchema = new Schema<Transport>(
   {
     date: { type: Date },
     mode: { type: Schema.Types.ObjectId, ref: "List" },
-    consumption: { type: Number },
     distance: { type: Number },
     weight: { type: Number },
     passengers: { type: Number },
