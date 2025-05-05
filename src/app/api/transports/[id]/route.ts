@@ -27,7 +27,6 @@ export const PUT = handleErrors(
     const {
       date,
       mode,
-      consumption,
       distance,
       weight,
       passengers,
@@ -43,7 +42,6 @@ export const PUT = handleErrors(
         $set: {
           date,
           mode,
-          consumption,
           distance,
           weight,
           passengers,

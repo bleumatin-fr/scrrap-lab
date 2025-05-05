@@ -56,7 +56,6 @@ export const POST = handleErrors(async (request: NextRequest) => {
   const {
     date,
     mode,
-    consumption,
     distance,
     weight,
     passengers,
@@ -67,7 +66,6 @@ export const POST = handleErrors(async (request: NextRequest) => {
   const addedDocument = await Transport.create({
     date,
     mode,
-    consumption,
     distance,
     weight,
     passengers,

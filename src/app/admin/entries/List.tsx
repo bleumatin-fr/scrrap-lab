@@ -134,7 +134,6 @@ const EntriesList = () => {
         // "ID du transport": transport.id,
         "Date du transport": new Date(transport.date).toLocaleString(),
         "Mode de transport": transport.mode?.value,
-        "Consommation": transport.consumption,
         "Distance (km)": transport.distance || "",
         "Poids entrée (kg)": transport.weight ? (transport.weight / 1000).toFixed(3) : "",
         "Nombre de passagers": transport.passengers || "",
