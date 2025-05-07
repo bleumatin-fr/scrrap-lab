@@ -42,13 +42,19 @@ const TransportEdit = () => (
         label="Condition"
         required
       />
-      <WeightInput source="weight" label="Poids transporté" required />
+      <WeightInput source="weight" label="Poids" required />
+      <DateInput
+        source="usageStart"
+        label="Date de début d'usage"
+        required
+        helperText="Dans le cas d'un bien acheté neuf, renseigner la date d'achat / Dans le cas d'un bien d'occasion, renseigner la date estimée de début d'usage de ce bien pour en connaître la durée de vie passée"
+      />
       <NumberInput
         source="usagePeriod"
         label="Durée d'usage prévisionnelle"
         required
+        helperText="Estimer la durée d'usage du bien pour en connaître la durée de vie restante estimée"
       />
-      <DateInput source="usageStart" label="Date de début d'usage" required />
       <NumberInput source="quantity" label="Quantité" required />
     </SimpleForm>
   </Edit>

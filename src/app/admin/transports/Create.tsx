@@ -85,21 +85,23 @@ export const Fields = () => {
       {reason?.key === "collection" && (
         <NumberInput
           source="weight"
-          label="Poids"
+          label="Poids transporté"
           validate={required()}
           format={(value) => (value ? value / 1000 : 0)}
           parse={(value) => (value ? value * 1000 : 0)}
           InputProps={{
             endAdornment: "kg",
           }}
+          helperText="Considérer le poids de marchandises transportées / facultatif : vous pouvez intégrer le poids des passagers dans le cas le poids de marchandises transportées est faible"
         />
       )}
       {reason?.key !== "collection" && (
         <NumberInput
           source="passengers"
-          label="Nombre de passagers"
+          label="Nombre de passagers transportés"
           validate={required()}
           defaultValue={1}
+          helperText="Renseigner le nombre de passagers incluant le conducteur"
         />
       )}
     </>
