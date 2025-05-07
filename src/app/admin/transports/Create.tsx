@@ -44,8 +44,6 @@ export const Fields = () => {
     distanceTouched.current = false;
   }, [from, to]);
 
-  console.log(reason);
-
   return (
     <>
       <DateInput
