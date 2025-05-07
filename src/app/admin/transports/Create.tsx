@@ -7,6 +7,7 @@ import {
   ReferenceInput,
   SimpleForm,
   required,
+  useGetOne,
   useInput,
 } from "react-admin";
 import { useWatch } from "react-hook-form";
@@ -19,6 +20,8 @@ export const Fields = () => {
   });
   const from = useWatch<{ from: GeoJSON.Feature }>({ name: "from" });
   const to = useWatch<{ to: GeoJSON.Feature }>({ name: "to" });
+  const reasonId = useWatch<{ reason: string }>({ name: "reason" });
+  const { data: reason } = useGetOne("transportReasons", { id: reasonId });
 
   const distance = useWatch<{ distance: GeoJSON.Feature }>({
     name: "distance",
@@ -40,6 +43,8 @@ export const Fields = () => {
   useEffect(() => {
     distanceTouched.current = false;
   }, [from, to]);
+
+  console.log(reason);
 
   return (
     <>
@@ -79,22 +84,26 @@ export const Fields = () => {
           endAdornment: "km",
         }}
       />
-      <NumberInput
-        source="weight"
-        label="Poids"
-        validate={required()}
-        format={(value) => (value ? value / 1000 : 0)}
-        parse={(value) => (value ? value * 1000 : 0)}
-        InputProps={{
-          endAdornment: "kg",
-        }}
-      />
-      <NumberInput
-        source="passengers"
-        label="Nombre de passagers"
-        validate={required()}
-        defaultValue={1}
-      />
+      {reason?.key === "collection" && (
+        <NumberInput
+          source="weight"
+          label="Poids"
+          validate={required()}
+          format={(value) => (value ? value / 1000 : 0)}
+          parse={(value) => (value ? value * 1000 : 0)}
+          InputProps={{
+            endAdornment: "kg",
+          }}
+        />
+      )}
+      {reason?.key !== "collection" && (
+        <NumberInput
+          source="passengers"
+          label="Nombre de passagers"
+          validate={required()}
+          defaultValue={1}
+        />
+      )}
     </>
   );
 };
