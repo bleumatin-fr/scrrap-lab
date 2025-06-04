@@ -1,3 +1,5 @@
+"use client";
+
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -12,7 +14,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { MouseEvent, useState } from "react";
 
-import { ReferenceField, SimpleForm, TextField, useInput } from "react-admin";
+import { ReferenceField, SimpleForm, TextField, useInput, } from "react-admin";
 import { useWatch } from "react-hook-form";
 import { Fields as TransportFields } from "../transports/Create";
 

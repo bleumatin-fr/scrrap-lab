@@ -23,7 +23,7 @@ const Actions = () => {
       );
     }
 
-    const values = data.reduce((values, metric) => {
+    const values = data?.reduce((values, metric) => {
       return [
         ...values,
         {

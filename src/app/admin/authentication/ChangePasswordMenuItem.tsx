@@ -24,7 +24,8 @@ const stopPropagation = {
 };
 
 const ChangePasswordMenuItem = forwardRef((props, ref) => {
-  const { onClose } = useUserMenu();
+  const userMenu = useUserMenu();
+  const onClose = userMenu?.onClose;
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const ChangePasswordMenuItem = forwardRef((props, ref) => {
 
   const handleClose = () => {
     setOpen(false);
-    onClose();
+    onClose?.();
   };
 
   const handleSubmit = async (event: any) => {
@@ -78,7 +79,7 @@ const ChangePasswordMenuItem = forwardRef((props, ref) => {
       notify("Mot de passe modifié avec succès", {
         type: "success",
       });
-      onClose();
+      onClose?.();
     } catch (error) {
       if ((error as any).message === "Forbidden") {
         notify("Mot de passe actuel erronné", {

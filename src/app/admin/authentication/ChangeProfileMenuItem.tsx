@@ -23,7 +23,8 @@ const stopPropagation = {
 };
 
 const ChangeProfileMenuItem = forwardRef((props, ref) => {
-  const { onClose } = useUserMenu();
+  const userMenu = useUserMenu();
+  const onClose = userMenu?.onClose;
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const ChangeProfileMenuItem = forwardRef((props, ref) => {
 
   const handleClose = () => {
     setOpen(false);
-    onClose();
+    onClose?.();
   };
 
   const handleSubmit = async (event: any) => {
@@ -72,7 +73,7 @@ const ChangeProfileMenuItem = forwardRef((props, ref) => {
       notify("Profil modifié avec succès", {
         type: "success",
       });
-      onClose();
+      onClose?.();
     } catch (error) {
       notify("Erreur lors de la modification du profil", {
         type: "error",

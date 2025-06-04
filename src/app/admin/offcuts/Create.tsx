@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "@emotion/styled";
 import { RichTextInput } from "ra-input-rich-text";
 import {
@@ -104,7 +106,7 @@ export const Fields = () => {
           <RemoveChoiceButton source="brandPolicy" resetValue={null} />
         </BrandPolicyContainer>
       </ReferenceInput>
-      <ImageInput source="pictures" multiple accept="image/*">
+      <ImageInput source="pictures" multiple accept={{ "image/*": [".png", ".jpg", ".jpeg"] }}>
         <ImageField source="src" title="title" />
       </ImageInput>
     </>

@@ -46,7 +46,7 @@ const EditButtonGuard = ({ children }: EditButtonGuardProps) => {
     return children;
   }
 
-  if (record.validatedAt && permissions.includes("exits.edit-own")) {
+  if (record?.validatedAt && permissions.includes("exits.edit-own")) {
     return null;
   }
 

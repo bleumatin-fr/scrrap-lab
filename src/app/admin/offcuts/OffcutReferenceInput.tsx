@@ -40,7 +40,7 @@ const OffcutReferenceInput = ({
   } = useInput({
     source: fieldSource,
     defaultValue: record ? record[fieldSource] : "",
-    validate: async (value) => {
+    validate: async (value: string) => {
       const sameNameOffcut = await dataProvider.getList("offcuts", {
         pagination: { page: 1, perPage: 1 },
         sort: { field: "reference", order: "DESC" },
@@ -157,7 +157,6 @@ const OffcutReferenceInput = ({
         helperText={
           (isTouched || isSubmitted) && invalid ? (
             <InputHelperText
-              touched={isTouched || isSubmitted}
               error={error?.message}
             />
           ) : (

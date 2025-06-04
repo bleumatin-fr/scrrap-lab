@@ -24,7 +24,7 @@ import {
 } from "react-admin";
 // @ts-ignore
 import FileUpload, { ExtendedFileProps } from "react-mui-fileuploader";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DataProvider } from "../dataProvider";
 
 const RowErrorModal = ({
@@ -63,7 +63,7 @@ const RowErrorModal = ({
   );
 };
 
-const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
+const UploadField = ({ className, emptyText, ...rest }: Omit<UrlFieldProps, "source">) => {
   const [open, setOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [rowsInError, setRowsInError] = useState<any[][]>([]);
@@ -75,14 +75,14 @@ const UploadField = ({ className, emptyText, ...rest }: UrlFieldProps) => {
   const dataProvider = useDataProvider<DataProvider>();
 
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading } = useMutation(
-    (formData: FormData) => {
-      return dataProvider.importUsers(formData);
-    },
+  const { mutateAsync } = useMutation(
     {
+      mutationFn: (formData: FormData) => {
+        return dataProvider.importUsers(formData);
+      },
       onSuccess: () => {
         // invalidate users
-        queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries({ queryKey: ["users"] });
       },
     }
   );

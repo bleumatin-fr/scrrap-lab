@@ -8,7 +8,7 @@ import {
   useRecordContext,
   useRefresh,
 } from "react-admin";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { MouseEvent } from "react";
 import httpClient from "../httpClient";
 
@@ -18,8 +18,11 @@ const ValidateButton = () => {
   const notify = useNotify();
   const dataProvider = useDataProvider<DataProvider>();
 
-  const { mutateAsync, isLoading } = useMutation(() => {
-    return dataProvider.validateExit(record.id);
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: () => {
+      if (!record) throw new Error("Record not found");
+      return dataProvider.validateExit(record.id);
+    },
   });
 
   if (!record) return null;
@@ -39,7 +42,7 @@ const ValidateButton = () => {
   return (
     <Button
       onClick={handleValidateClicked}
-      disabled={isLoading}
+      disabled={isPending}
       color="primary"
       variant="contained"
       startIcon={<TaskAltIcon />}
