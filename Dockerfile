@@ -1,12 +1,12 @@
 # Install dependencies only when needed
-FROM node:18-slim AS deps
+FROM node:20-slim AS deps
 # RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json ./
 RUN yarn install
 
 # Rebuild the source code only when needed
-FROM node:18-slim AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -17,7 +17,7 @@ RUN yarn add sharp --ignore-engines
 RUN yarn build
 
 # Production image, copy all the files and run next
-FROM node:18-slim AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
