@@ -91,7 +91,7 @@ const OffcutCard = ({ offcut }: { offcut: any }) => {
           close={() => setPicturesOpen(false)}
           slides={offcut.pictures.map((picture: any) => ({
             ...picture,
-            src: `scrrap-lab${picture.src}`,
+            src: `/scrrap-lab${picture.src}`,
           }))}
         />
       )}
