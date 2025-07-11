@@ -15,6 +15,7 @@ const availableActions = [
   "exits.create",
   "exits.edit",
   "exits.edit-own",
+  "exits.delete-own",
   "exits.validate",
   "exits.delete",
 

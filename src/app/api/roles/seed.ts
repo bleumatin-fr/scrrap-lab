@@ -13,6 +13,7 @@ const visitorActions = [
   "sizes.list",
   "exits.list-own",
   "exits.edit-own",
+  "exits.delete-own",
   "offcuts.list",
 ];
 
