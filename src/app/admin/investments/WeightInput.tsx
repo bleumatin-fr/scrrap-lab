@@ -2,15 +2,14 @@ import styled from "@emotion/styled";
 import { Button, ButtonGroup } from "@mui/material";
 import { useState } from "react";
 import {
-  NumberInput,
-  NumberInputProps,
-  TextInput,
-  useInput,
+  useInput
 } from "react-admin";
-import NumberField from "../NumberField";
+import NumberField, { NumberFieldProps } from "../NumberField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-type WeightInputProps = NumberInputProps & {};
+type WeightInputProps = NumberFieldProps & {
+  source: string;
+};
 
 const Container = styled.div`
   display: flex;

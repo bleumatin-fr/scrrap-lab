@@ -4,13 +4,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { IconButton, TextField, TextFieldProps } from "@mui/material";
 import { useState } from "react";
 
-const NumberFieldContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-type NumberFieldProps = Omit<TextFieldProps, "onChange"> & {
-  onChange: (value: number) => void;
+export type NumberFieldProps = Omit<TextFieldProps, "onChange"> & {
+  onChange?: (value: number) => void;
   showButtons?: boolean;
 };
 
